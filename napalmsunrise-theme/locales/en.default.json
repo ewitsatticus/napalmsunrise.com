@@ -1,0 +1,131 @@
+{
+  "general": {
+    "skip_to_content": "Skip to content",
+    "cart": "Cart",
+    "search": "Search",
+    "close": "Close",
+    "menu": "Menu",
+    "loading": "Loading",
+    "404_title": "Page not found",
+    "404_body": "The page you were looking for doesn't exist.",
+    "404_button": "Go home"
+  },
+  "products": {
+    "add_to_cart": "Add to cart",
+    "sold_out": "Sold out",
+    "unavailable": "Unavailable",
+    "quantity": "Quantity",
+    "decrease_quantity": "Decrease quantity",
+    "increase_quantity": "Increase quantity",
+    "price": {
+      "regular": "Regular price",
+      "sale": "Sale price",
+      "from": "From {{ price }}"
+    },
+    "variant": {
+      "select": "Select {{ option_name }}"
+    },
+    "share": "Share",
+    "description": "Description"
+  },
+  "collections": {
+    "title": "Collections",
+    "sort_by": "Sort by",
+    "sort_options": {
+      "manual": "Featured",
+      "best_selling": "Best selling",
+      "title_ascending": "A-Z",
+      "title_descending": "Z-A",
+      "price_ascending": "Price: Low to high",
+      "price_descending": "Price: High to low",
+      "created_ascending": "Oldest",
+      "created_descending": "Newest"
+    },
+    "no_products": "No products found",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{ number }}"
+    }
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty",
+    "continue_shopping": "Continue shopping",
+    "subtotal": "Subtotal",
+    "checkout": "Check out",
+    "remove": "Remove",
+    "note": "Order note",
+    "taxes_and_shipping": "Taxes and shipping calculated at checkout",
+    "update": "Update"
+  },
+  "customer": {
+    "account": {
+      "title": "Account",
+      "orders": "Order history",
+      "addresses": "Addresses",
+      "logout": "Log out",
+      "no_orders": "You haven't placed any orders yet."
+    },
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "forgot_password": "Forgot your password?",
+      "create_account": "Create account",
+      "guest_title": "Continue as guest"
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create"
+    },
+    "reset_password": {
+      "title": "Reset password",
+      "email": "Email",
+      "submit": "Submit",
+      "success": "We've sent you an email with a link to update your password."
+    },
+    "addresses": {
+      "title": "Addresses",
+      "add_new": "Add new address",
+      "default": "Default",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "date": "Placed on {{ date }}",
+      "cancelled": "Order cancelled on {{ date }}",
+      "product": "Product",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "fulfilled": "Fulfilled",
+      "unfulfilled": "Unfulfilled"
+    }
+  },
+  "newsletter": {
+    "heading": "Stay in the loop",
+    "subheading": "Subscribe for updates and exclusive releases.",
+    "email_placeholder": "Your email",
+    "submit": "Subscribe",
+    "success": "Thanks for subscribing!"
+  },
+  "accessibility": {
+    "play_cd": "Play interactive CD",
+    "pause_cd": "Pause interactive CD",
+    "cart_count": {
+      "one": "{{ count }} item",
+      "other": "{{ count }} items"
+    },
+    "product_image": "Product image for {{ title }}"
+  }
+}

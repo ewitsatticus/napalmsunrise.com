@@ -1,0 +1,46 @@
+{%- comment -%}
+  Dynamic variant picker — renders options as pills/swatches.
+  Usage: {% render 'product-variant-picker', product: product %}
+{%- endcomment -%}
+
+{%- unless product.has_only_default_variant -%}
+  <div class="variant-picker" data-variant-picker>
+    {%- for option in product.options_with_values -%}
+      <fieldset class="variant-picker__option">
+        <legend class="variant-picker__label">
+          {{ option.name }}:
+          <span data-option-selected="{{ option.position }}">{{ option.selected_value }}</span>
+        </legend>
+
+        <div class="variant-picker__values">
+          {%- for value in option.values -%}
+            <label class="variant-picker__pill{% if value == option.selected_value %} is-selected{% endif %}">
+              <input
+                type="radio"
+                name="option-{{ option.position }}"
+                value="{{ value | escape }}"
+                data-option-position="{{ option.position }}"
+                {% if value == option.selected_value %}checked{% endif %}
+                class="visually-hidden"
+              >
+              <span>{{ value }}</span>
+            </label>
+          {%- endfor -%}
+        </div>
+      </fieldset>
+    {%- endfor -%}
+
+    <select name="id" class="visually-hidden" data-variant-select>
+      {%- for variant in product.variants -%}
+        <option
+          value="{{ variant.id }}"
+          {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+          {% unless variant.available %}disabled{% endunless %}
+          data-options="{{ variant.options | join: ' / ' }}"
+        >
+          {{ variant.title }} — {{ variant.price | money }}
+        </option>
+      {%- endfor -%}
+    </select>
+  </div>
+{%- endunless -%}

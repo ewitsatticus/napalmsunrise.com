@@ -1,0 +1,21 @@
+{%- comment -%}
+  Price display with sale/compare-at logic.
+  Usage: {% render 'price', product: product %}
+{%- endcomment -%}
+
+<div class="price{% if product.compare_at_price > product.price %} price--on-sale{% endif %}">
+  {%- if product.price_varies -%}
+    <span class="price__regular">
+      {{ 'products.price.from' | t: price: product.price_min | money }}
+    </span>
+  {%- else -%}
+    {%- if product.compare_at_price > product.price -%}
+      <span class="price__sale">{{ product.price | money }}</span>
+      <span class="price__compare">
+        <s>{{ product.compare_at_price | money }}</s>
+      </span>
+    {%- else -%}
+      <span class="price__regular">{{ product.price | money }}</span>
+    {%- endif -%}
+  {%- endif -%}
+</div>
