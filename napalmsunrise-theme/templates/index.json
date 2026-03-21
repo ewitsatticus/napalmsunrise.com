@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-cd",
+      "settings": {
+        "heading": "NAPALM SUNRISE",
+        "subheading": "Virtual interhuman connection.",
+        "button_text": "Enter",
+        "button_url": "/collections/all",
+        "enable_audio": true,
+        "audio_volume": 40
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Featured",
+        "products_count": 4
+      }
+    }
+  },
+  "order": ["hero", "featured"]
+}

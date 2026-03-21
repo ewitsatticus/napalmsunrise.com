@@ -1,0 +1,28 @@
+{%- comment -%}
+  Product card for grid display.
+  Usage: {% render 'product-card', product: product %}
+{%- endcomment -%}
+
+<article class="product-card card">
+  <a href="{{ product.url }}" class="product-card__link" aria-label="{{ product.title | escape }}">
+    <div class="product-card__image">
+      {% render 'image',
+        image: product.featured_image,
+        alt: product.title,
+        sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw',
+        class: 'product-card__img'
+      %}
+      {%- if product.compare_at_price > product.price -%}
+        <span class="product-card__badge">Sale</span>
+      {%- endif -%}
+      {%- if product.available == false -%}
+        <span class="product-card__badge product-card__badge--sold-out">{{ 'products.sold_out' | t }}</span>
+      {%- endif -%}
+    </div>
+
+    <div class="product-card__info">
+      <h3 class="product-card__title">{{ product.title }}</h3>
+      {% render 'price', product: product %}
+    </div>
+  </a>
+</article>

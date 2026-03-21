@@ -1,0 +1,34 @@
+{%- comment -%}
+  Quantity input stepper.
+  Usage: {% render 'quantity-input' %}
+{%- endcomment -%}
+
+<div class="quantity-input">
+  <button
+    type="button"
+    class="quantity-input__btn"
+    aria-label="{{ 'products.decrease_quantity' | t }}"
+    data-qty-minus
+  >
+    {% render 'icon', name: 'minus' %}
+  </button>
+
+  <input
+    type="number"
+    name="quantity"
+    value="1"
+    min="1"
+    class="quantity-input__field"
+    aria-label="{{ 'products.quantity' | t }}"
+    data-qty-input
+  >
+
+  <button
+    type="button"
+    class="quantity-input__btn"
+    aria-label="{{ 'products.increase_quantity' | t }}"
+    data-qty-plus
+  >
+    {% render 'icon', name: 'plus' %}
+  </button>
+</div>

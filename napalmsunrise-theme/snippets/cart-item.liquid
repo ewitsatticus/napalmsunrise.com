@@ -1,0 +1,56 @@
+{%- comment -%}
+  Single cart line item.
+  Usage: {% render 'cart-item', item: item %}
+{%- endcomment -%}
+
+<div class="cart-item" data-cart-item data-key="{{ item.key }}">
+  <a href="{{ item.url }}" class="cart-item__image">
+    {%- if item.image -%}
+      <img
+        src="{{ item.image | image_url: width: 120, height: 120, crop: 'center' }}"
+        alt="{{ item.title | escape }}"
+        width="120"
+        height="120"
+        loading="lazy"
+      >
+    {%- endif -%}
+  </a>
+
+  <div class="cart-item__info">
+    <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title }}</a>
+
+    {%- unless item.product.has_only_default_variant -%}
+      <p class="cart-item__variant">{{ item.variant.title }}</p>
+    {%- endunless -%}
+
+    <div class="cart-item__bottom">
+      <div class="cart-item__quantity">
+        <button
+          class="cart-item__qty-btn"
+          aria-label="{{ 'products.decrease_quantity' | t }}"
+          onclick="NapalmSunrise.changeCart('{{ item.key }}', {{ item.quantity | minus: 1 }})"
+        >
+          {% render 'icon', name: 'minus' %}
+        </button>
+        <span class="cart-item__qty-value">{{ item.quantity }}</span>
+        <button
+          class="cart-item__qty-btn"
+          aria-label="{{ 'products.increase_quantity' | t }}"
+          onclick="NapalmSunrise.changeCart('{{ item.key }}', {{ item.quantity | plus: 1 }})"
+        >
+          {% render 'icon', name: 'plus' %}
+        </button>
+      </div>
+
+      <span class="cart-item__price">{{ item.final_line_price | money }}</span>
+    </div>
+  </div>
+
+  <button
+    class="cart-item__remove"
+    aria-label="{{ 'cart.remove' | t }}"
+    onclick="NapalmSunrise.changeCart('{{ item.key }}', 0)"
+  >
+    {% render 'icon', name: 'close' %}
+  </button>
+</div>

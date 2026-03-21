@@ -1,0 +1,94 @@
+{{ 'component-header.css' | asset_url | stylesheet_tag }}
+
+<header class="header" data-header>
+  <div class="header__inner page-width">
+    <a href="/" class="header__logo">
+      {%- if section.settings.logo -%}
+        <img
+          src="{{ section.settings.logo | image_url: height: 40 }}"
+          alt="{{ shop.name }}"
+          width="{{ section.settings.logo.width }}"
+          height="40"
+          loading="eager"
+        >
+      {%- else -%}
+        <span class="header__logo-text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="header__nav" data-nav>
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}" class="header__nav-link{% if link.active %} is-active{% endif %}">
+          {{ link.title }}
+        </a>
+      {%- endfor -%}
+    </nav>
+
+    <div class="header__actions">
+      <a href="/cart" class="header__cart" data-cart-toggle aria-label="{{ 'general.cart' | t }}">
+        {% render 'icon', name: 'cart' %}
+        <span class="header__cart-count" data-cart-count>{{ cart.item_count }}</span>
+      </a>
+
+      <button class="header__menu-toggle" data-menu-toggle aria-label="{{ 'general.menu' | t }}" aria-expanded="false">
+        {% render 'icon', name: 'menu' %}
+      </button>
+    </div>
+  </div>
+
+  {%- comment -%} Cart Drawer {%- endcomment -%}
+  <div class="cart-drawer" data-cart-drawer aria-hidden="true">
+    <div class="cart-drawer__overlay" data-cart-drawer-close></div>
+    <div class="cart-drawer__panel card">
+      <div class="cart-drawer__header">
+        <h2>{{ 'cart.title' | t }}</h2>
+        <button class="cart-drawer__close" data-cart-drawer-close aria-label="{{ 'general.close' | t }}">
+          {% render 'icon', name: 'close' %}
+        </button>
+      </div>
+      <div class="cart-drawer__body" data-cart-drawer-body>
+        {%- if cart.item_count > 0 -%}
+          {%- for item in cart.items -%}
+            {% render 'cart-item', item: item %}
+          {%- endfor -%}
+        {%- else -%}
+          <p class="cart-drawer__empty">{{ 'cart.empty' | t }}</p>
+        {%- endif -%}
+      </div>
+      {%- if cart.item_count > 0 -%}
+        <div class="cart-drawer__footer">
+          <div class="cart-drawer__subtotal">
+            <span>{{ 'cart.subtotal' | t }}</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+          <p class="cart-drawer__note">{{ 'cart.taxes_and_shipping' | t }}</p>
+          <form action="/cart" method="post">
+            <button type="submit" name="checkout" class="btn btn--accent btn--full">
+              {{ 'cart.checkout' | t }}
+            </button>
+          </form>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}
