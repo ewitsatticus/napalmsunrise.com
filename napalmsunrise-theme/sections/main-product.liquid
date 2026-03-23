@@ -1,157 +1,61 @@
-{{ 'component-product.css' | asset_url | stylesheet_tag }}
+<div class="wrap">
+  <div class="product-layout">
+    <div class="product-gallery">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.featured_image.alt | escape }}" width="800">
+      {%- endif -%}
+      {%- unless product.available -%}
+        <div class="sold-stamp" style="position:absolute;">SOLD OUT</div>
+      {%- endunless -%}
+    </div>
 
-<section class="product-page section-padding" data-product>
-  <div class="page-width">
-    <div class="product-page__grid">
-      {%- comment -%} Product Images {%- endcomment -%}
-      <div class="product-page__media card">
-        <div class="product-page__main-image">
-          {% render 'image',
-            image: product.selected_or_first_available_variant.featured_image | default: product.featured_image,
-            alt: product.title,
-            sizes: '(max-width: 768px) 100vw, 50vw',
-            loading: 'eager',
-            class: 'product-page__img'
-          %}
-        </div>
+    <div class="product-details">
+      <div class="prod-type" style="margin-bottom:12px;">{{ product.type }}</div>
+      <h1>{{ product.title | upcase }}</h1>
 
-        {%- if product.images.size > 1 -%}
-          <div class="product-page__thumbs">
-            {%- for image in product.images -%}
-              <button
-                class="product-page__thumb{% if forloop.first %} is-active{% endif %}"
-                data-thumb
-                data-image-url="{{ image | image_url: width: 1200 }}"
-                aria-label="View image {{ forloop.index }}"
-              >
-                <img
-                  src="{{ image | image_url: width: 100, height: 100, crop: 'center' }}"
-                  alt="{{ product.title | escape }} - image {{ forloop.index }}"
-                  width="100"
-                  height="100"
-                  loading="lazy"
-                >
-              </button>
-            {%- endfor -%}
-          </div>
+      <div class="product-price-main">
+        {%- if product.available -%}
+          {{ product.price | money }}
+        {%- else -%}
+          <span style="text-decoration:line-through;color:var(--gray);">{{ product.price | money }}</span>
+          <span class="oos-label" style="margin-left:12px;">Out of Stock</span>
         {%- endif -%}
       </div>
 
-      {%- comment -%} Product Info {%- endcomment -%}
-      <div class="product-page__info">
-        {%- for block in section.blocks -%}
-          {%- case block.type -%}
+      {%- if product.description != blank -%}
+        <div class="product-description">{{ product.description }}</div>
+      {%- endif -%}
 
-            {%- when 'title' -%}
-              <h1 class="product-page__title" {{ block.shopify_attributes }}>
-                {{ product.title }}
-              </h1>
-
-            {%- when 'price' -%}
-              <div class="product-page__price" {{ block.shopify_attributes }} data-product-price>
-                {% render 'price', product: product %}
-              </div>
-
-            {%- when 'variant_picker' -%}
-              <div {{ block.shopify_attributes }}>
-                {% render 'product-variant-picker', product: product %}
-              </div>
-
-            {%- when 'quantity_selector' -%}
-              <div {{ block.shopify_attributes }}>
-                <label class="product-page__label">{{ 'products.quantity' | t }}</label>
-                {% render 'quantity-input' %}
-              </div>
-
-            {%- when 'buy_button' -%}
-              <div {{ block.shopify_attributes }}>
-                <form action="/cart/add" method="post" data-product-form>
-                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
-                  <input type="hidden" name="quantity" value="1" data-form-qty>
-
-                  <button
-                    type="submit"
-                    class="btn btn--accent btn--full"
-                    {% unless product.available %}disabled{% endunless %}
-                  >
-                    {%- if product.available -%}
-                      {{ 'products.add_to_cart' | t }}
-                    {%- else -%}
-                      {{ 'products.sold_out' | t }}
-                    {%- endif -%}
-                  </button>
-                </form>
-              </div>
-
-            {%- when 'description' -%}
-              {%- if product.description != blank -%}
-                <div class="product-page__description rte" {{ block.shopify_attributes }}>
-                  {{ product.description }}
-                </div>
-              {%- endif -%}
-
-            {%- when 'share' -%}
-              <div class="product-page__share" {{ block.shopify_attributes }}>
-                <button class="btn btn--outline" onclick="navigator.share ? navigator.share({title: '{{ product.title | escape }}', url: window.location.href}) : void(0)">
-                  {% render 'icon', name: 'share' %}
-                  {{ 'products.share' | t }}
-                </button>
-              </div>
-
-          {%- endcase -%}
+      {%- if product.has_only_default_variant == false -%}
+        {%- for option in product.options_with_values -%}
+          <div class="fg">
+            <label>{{ option.name }}</label>
+            <select name="id" style="font-style:normal;">
+              {%- for value in option.values -%}
+                <option value="{{ value }}">{{ value }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
         {%- endfor -%}
-      </div>
+      {%- endif -%}
+
+      <form action="/cart/add" method="post">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        {%- if product.available -%}
+          <button type="submit" class="btn btn-fill" style="width:100%;padding:16px;">Add to Cart</button>
+        {%- else -%}
+          <button type="button" class="btn" style="width:100%;padding:16px;opacity:0.5;cursor:not-allowed;" disabled>Sold Out</button>
+        {%- endif -%}
+      </form>
     </div>
   </div>
-
-  <script type="application/json" data-product-json>
-    {{ product | json }}
-  </script>
-</section>
-
-<script src="{{ 'product.js' | asset_url }}" defer></script>
+</div>
 
 {% schema %}
 {
-  "name": "Product page",
-  "tag": "section",
-  "class": "section-product",
-  "blocks": [
-    {
-      "type": "title",
-      "name": "Title",
-      "limit": 1
-    },
-    {
-      "type": "price",
-      "name": "Price",
-      "limit": 1
-    },
-    {
-      "type": "variant_picker",
-      "name": "Variant picker",
-      "limit": 1
-    },
-    {
-      "type": "quantity_selector",
-      "name": "Quantity selector",
-      "limit": 1
-    },
-    {
-      "type": "buy_button",
-      "name": "Buy button",
-      "limit": 1
-    },
-    {
-      "type": "description",
-      "name": "Description",
-      "limit": 1
-    },
-    {
-      "type": "share",
-      "name": "Share button",
-      "limit": 1
-    }
-  ]
+  "name": "Product Page",
+  "settings": [],
+  "blocks": []
 }
 {% endschema %}

@@ -1,0 +1,61 @@
+<div class="gorthog-band">
+  <div class="gorthog-band-inner">
+    <div>
+      <div class="gb-eyebrow">{{ section.settings.eyebrow }}</div>
+      <h2 class="gb-title">{{ section.settings.heading }}</h2>
+      <p class="gb-body">{{ section.settings.body }}</p>
+      {%- if section.settings.cta_text != blank -%}
+        <a class="btn btn-red" href="{{ section.settings.cta_url }}">{{ section.settings.cta_text }}</a>
+      {%- endif -%}
+    </div>
+    <div class="gb-form">
+      <label class="gb-form-label">Your question for Gorthog</label>
+      <textarea class="dark-textarea" placeholder="Ask the ancient orc anything. He's seen worse."></textarea>
+      <label class="gb-form-label">Your name (optional)</label>
+      <input class="dark-input" type="text" placeholder="Anonymous traveler, if you prefer">
+      <button class="btn btn-red" style="width:100%">Submit to Gorthog</button>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Gorthog Band",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "/ Column Feature"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "ASK<br>GORTHOG"
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body text",
+      "default": "Gorthog is an 847-year-old orc. He has survived four empires, two recessions, and one particularly ill-advised foray into B2B SaaS. He answers life and career questions with the bluntness of someone who ran out of patience approximately 600 years ago."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA text",
+      "default": "Submit Your Question →"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gorthog Band"
+    }
+  ]
+}
+{% endschema %}

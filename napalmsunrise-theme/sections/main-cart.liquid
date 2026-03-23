@@ -1,0 +1,51 @@
+<div class="wrap">
+  <div class="page-hdr">
+    <h1>CART</h1>
+  </div>
+
+  {%- if cart.item_count > 0 -%}
+    <form action="/cart" method="post">
+      {%- for item in cart.items -%}
+        <div style="display:grid;grid-template-columns:100px 1fr auto;gap:24px;align-items:center;padding:24px 0;border-bottom:1px solid var(--muted);">
+          <div style="background:#E5DECE;border:var(--border);overflow:hidden;">
+            {%- if item.image -%}
+              <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.image.alt | escape }}" width="100">
+            {%- endif -%}
+          </div>
+          <div>
+            <div class="prod-name"><a href="{{ item.url }}" style="text-decoration:none;color:inherit;">{{ item.title }}</a></div>
+            {%- unless item.product.has_only_default_variant -%}
+              <div class="prod-type">{{ item.variant.title }}</div>
+            {%- endunless -%}
+            <div style="font-family:var(--font-ui);font-size:12px;margin-top:8px;">Qty: {{ item.quantity }}</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="prod-price">{{ item.line_price | money }}</div>
+          </div>
+        </div>
+      {%- endfor -%}
+
+      <div style="text-align:right;padding:32px 0;">
+        <div style="font-family:var(--font-ui);font-size:14px;margin-bottom:8px;">
+          Subtotal: {{ cart.total_price | money }}
+        </div>
+        <p style="font-family:var(--font-ui);font-size:9px;color:var(--gray);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px;">Taxes and shipping calculated at checkout</p>
+        <button type="submit" name="checkout" class="btn btn-fill" style="padding:16px 40px;">Checkout</button>
+      </div>
+    </form>
+  {%- else -%}
+    <div style="text-align:center;padding:80px 0;">
+      <p style="font-family:var(--font-ui);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gray);margin-bottom:24px;">Your cart is empty</p>
+      <a href="/collections/all" class="btn btn-outline">Continue Shopping →</a>
+    </div>
+  {%- endif -%}
+
+  <div class="spacer-48"></div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart Page",
+  "settings": []
+}
+{% endschema %}
