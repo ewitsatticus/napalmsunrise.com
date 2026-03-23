@@ -1,0 +1,60 @@
+<div class="wrap">
+  <div class="page-hdr">
+    <h1>{{ blog.title | upcase }}</h1>
+    {%- if section.settings.subtitle != blank -%}
+      <p class="sub">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if blog.tags.size > 0 -%}
+    <div class="tag-row">
+      <a href="{{ blog.url }}" class="filter-tag{% if current_tags == blank %} on{% endif %}">All</a>
+      {%- for tag in blog.all_tags -%}
+        <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="filter-tag{% if current_tags contains tag %} on{% endif %}">{{ tag }}</a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="blog-grid">
+    {%- for article in blog.articles -%}
+      <a href="{{ article.url }}" class="blog-card">
+        {%- if article.tags.size > 0 -%}
+          <div class="bc-cat">{{ article.tags | first }}</div>
+        {%- endif -%}
+        <h3 class="bc-title">{{ article.title }}</h3>
+        {%- if article.excerpt != blank -%}
+          <p class="bc-excerpt">{{ article.excerpt | strip_html | truncate: 160 }}</p>
+        {%- endif -%}
+        <div class="bc-meta">{{ article.published_at | date: '%b %d, %Y' }} · {{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min · by {{ article.author }}</div>
+      </a>
+    {%- endfor -%}
+  </div>
+
+  {%- if blog.articles.size == 0 -%}
+    <div class="center pt-64 pb-48">
+      <p style="font-family:var(--font-ui);font-size:11px;color:var(--gray);letter-spacing:0.14em;text-transform:uppercase;">No posts yet. The lab is warming up.</p>
+    </div>
+  {%- endif -%}
+
+  {%- if paginate.pages > 1 -%}
+    <div class="border-top center pt-48 pb-48">
+      {{ paginate | default_pagination }}
+    </div>
+  {%- endif -%}
+
+  <div class="spacer-48"></div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Everything here is either a genuine experiment, a questionable take, or both. Usually both."
+    }
+  ]
+}
+{% endschema %}

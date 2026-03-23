@@ -1,23 +1,66 @@
 {
   "sections": {
     "hero": {
-      "type": "hero-cd",
+      "type": "hero",
       "settings": {
-        "heading": "NAPALM SUNRISE",
-        "subheading": "Virtual interhuman connection.",
-        "button_text": "Enter",
-        "button_url": "/collections/all",
-        "enable_audio": true,
-        "audio_volume": 40
+        "eyebrow": "Public Lab · Personal Brand · Questionable Conclusions",
+        "name": "ATTICUS EBY",
+        "tagline": "A public lab run by someone who should probably know better. Documented SEO and AEO experiments, AI automation, absurdist merch, and brutally honest advice from an 847-year-old orc."
       }
     },
-    "featured": {
-      "type": "featured-collection",
-      "settings": {
-        "heading": "Featured",
-        "products_count": 4
-      }
+    "triple": {
+      "type": "triple-grid",
+      "blocks": {
+        "col1": {
+          "type": "column",
+          "settings": {
+            "label": "/ Experiments",
+            "heading": "ACTIVE<br>TESTS",
+            "card1_tag": "Running",
+            "card1_tag_red": true,
+            "card1_title": "AEO Schema Stacking: Does layering JSON-LD types increase AI citation rate?",
+            "card1_desc": "Product + Article + FAQ + HowTo on identical content. GSC + Perplexity citation tracking weekly.",
+            "card2_tag": "Queued",
+            "card2_title": "Internal Link Velocity: Drip-added links vs. bulk additions",
+            "card2_desc": "20-post control group. 2 links per week over 20 weeks vs. 40 links on day 1.",
+            "link_text": "All Experiments →"
+          }
+        },
+        "col2": {
+          "type": "column",
+          "settings": {
+            "label": "/ Recent Writing",
+            "heading": "LAB<br>NOTES",
+            "card1_tag": "SEO / AEO",
+            "card1_tag_red": false,
+            "card1_title": "What Actually Happens When You Stop Touching a Post for 90 Days",
+            "card1_desc": "Content decay across 8 posts. Rankings vs. AI citations diverged at day 45.",
+            "card2_tag": "Chaos",
+            "card2_title": "Wu-Tang Members Ranked by Oregon Trail Survival Probability",
+            "card2_desc": "Methodology: food management, disease resistance, oxen judgment, frontier vibes.",
+            "link_text": "All Lab Notes →"
+          }
+        },
+        "col3": {
+          "type": "column",
+          "settings": {
+            "label": "/ Ask Gorthog",
+            "heading": "THE<br>COLUMN",
+            "card1_tag": "Latest Answer",
+            "card1_tag_red": true,
+            "card1_title": "Should I take the promotion if it means giving up my passion project?",
+            "card1_desc": "In 847 years I have watched kingdoms burn for less foolish reasons than this...",
+            "dark_card": true,
+            "link_text": "Ask Gorthog →"
+          }
+        }
+      },
+      "block_order": ["col1", "col2", "col3"]
+    },
+    "gorthog": {
+      "type": "gorthog-band",
+      "settings": {}
     }
   },
-  "order": ["hero", "featured"]
+  "order": ["hero", "triple", "gorthog"]
 }

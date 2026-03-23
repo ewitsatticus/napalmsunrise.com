@@ -1,0 +1,122 @@
+<div class="wrap">
+  <div class="home-tri">
+    {%- for block in section.blocks -%}
+      <div class="tri-col" {{ block.shopify_attributes }}>
+        <div class="tri-label">{{ block.settings.label }}</div>
+        <h2 class="tri-heading">{{ block.settings.heading }}</h2>
+
+        {%- if block.settings.card1_title != blank -%}
+          <div class="card"{% if block.settings.dark_card %} style="background:var(--black);color:var(--bg)"{% endif %}>
+            <span class="card-tag{% if block.settings.card1_tag_red %} red{% endif %}">{{ block.settings.card1_tag }}</span>
+            <h4{% if block.settings.dark_card %} style="color:var(--bg)"{% endif %}>{{ block.settings.card1_title }}</h4>
+            <p{% if block.settings.dark_card %} style="color:rgba(243,237,224,0.5)"{% endif %}>{{ block.settings.card1_desc }}</p>
+          </div>
+        {%- endif -%}
+
+        {%- if block.settings.card2_title != blank -%}
+          <div class="card">
+            <span class="card-tag">{{ block.settings.card2_tag }}</span>
+            <h4>{{ block.settings.card2_title }}</h4>
+            <p>{{ block.settings.card2_desc }}</p>
+          </div>
+        {%- endif -%}
+
+        {%- if block.settings.link_text != blank -%}
+          <a class="btn btn-outline" href="{{ block.settings.link_url }}" style="margin-top:8px;display:inline-block">{{ block.settings.link_text }}</a>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Triple Grid",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "/ Section"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading (use <br> for line break)",
+          "default": "HEADING"
+        },
+        {
+          "type": "text",
+          "id": "card1_tag",
+          "label": "Card 1 tag",
+          "default": "Tag"
+        },
+        {
+          "type": "checkbox",
+          "id": "card1_tag_red",
+          "label": "Card 1 tag red?",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "card1_title",
+          "label": "Card 1 title"
+        },
+        {
+          "type": "textarea",
+          "id": "card1_desc",
+          "label": "Card 1 description"
+        },
+        {
+          "type": "text",
+          "id": "card2_tag",
+          "label": "Card 2 tag"
+        },
+        {
+          "type": "text",
+          "id": "card2_title",
+          "label": "Card 2 title"
+        },
+        {
+          "type": "textarea",
+          "id": "card2_desc",
+          "label": "Card 2 description"
+        },
+        {
+          "type": "checkbox",
+          "id": "dark_card",
+          "label": "Dark card style?",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "View All →"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Triple Grid",
+      "blocks": [
+        { "type": "column" },
+        { "type": "column" },
+        { "type": "column" }
+      ]
+    }
+  ]
+}
+{% endschema %}

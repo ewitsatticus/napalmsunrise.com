@@ -1,22 +1,47 @@
 {
   "current": {
-    "color_background": "#bec2c4",
-    "color_surface": "#ffffff",
-    "color_accent": "#0059ff",
-    "color_text": "#2d2d2d",
-    "color_text_secondary": "#666666",
-    "color_border": "#dddddd",
-    "font_size_base": 18,
-    "page_max_width": 1200,
-    "border_radius": 25,
+    "color_bg": "#F3EDE0",
+    "color_black": "#0D0D0D",
+    "color_red": "#E8260A",
+    "color_acid": "#C8FF00",
+    "color_gray": "#7A7468",
+    "color_muted": "#C5BDAA",
     "sections": {
       "header": {
         "type": "header",
-        "settings": {}
+        "settings": {
+          "show_ticker": true
+        },
+        "blocks": {
+          "tick1": {
+            "type": "ticker_item",
+            "settings": {
+              "text": "Active: AEO Schema Stacking Test — Day 23",
+              "status": "active"
+            }
+          },
+          "tick2": {
+            "type": "ticker_item",
+            "settings": {
+              "text": "Completed: Zero-Backlink Ranking Study — Results Published",
+              "status": "done"
+            }
+          },
+          "tick3": {
+            "type": "ticker_item",
+            "settings": {
+              "text": "Queued: Internal Link Velocity — Starting Q2",
+              "status": "queued"
+            }
+          }
+        },
+        "block_order": ["tick1", "tick2", "tick3"]
       },
       "footer": {
         "type": "footer",
-        "settings": {}
+        "settings": {
+          "description": "A public lab. Questionable conclusions. Run by someone who documents everything and regrets nothing."
+        }
       }
     },
     "content_for_index": []

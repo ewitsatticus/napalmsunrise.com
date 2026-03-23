@@ -4,7 +4,33 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "show_ticker": true
+      },
+      "blocks": {
+        "tick1": {
+          "type": "ticker_item",
+          "settings": {
+            "text": "Active: AEO Schema Stacking Test — Day 23",
+            "status": "active"
+          }
+        },
+        "tick2": {
+          "type": "ticker_item",
+          "settings": {
+            "text": "Completed: Zero-Backlink Ranking Study — Results Published",
+            "status": "done"
+          }
+        },
+        "tick3": {
+          "type": "ticker_item",
+          "settings": {
+            "text": "Queued: Internal Link Velocity — Starting Q2",
+            "status": "queued"
+          }
+        }
+      },
+      "block_order": ["tick1", "tick2", "tick3"]
     }
   },
   "order": ["header"]

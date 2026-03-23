@@ -1,0 +1,118 @@
+<div class="wrap">
+  <section class="hero">
+    <div class="hero-left">
+      <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+      <h1 class="hero-name">{{ section.settings.name }}</h1>
+      <div class="hero-site">NAPALM SUNRISE</div>
+      <p class="hero-tagline">{{ section.settings.tagline }}</p>
+      <div class="cta-row">
+        {%- if section.settings.cta1_text != blank -%}
+          <a class="btn btn-fill" href="{{ section.settings.cta1_url }}">{{ section.settings.cta1_text }}</a>
+        {%- endif -%}
+        {%- if section.settings.cta2_text != blank -%}
+          <a class="btn btn-outline" href="{{ section.settings.cta2_url }}">{{ section.settings.cta2_text }}</a>
+        {%- endif -%}
+        {%- if section.settings.cta3_text != blank -%}
+          <a class="btn btn-ghost" href="{{ section.settings.cta3_url }}">{{ section.settings.cta3_text }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="sidebar-module">
+        <div class="module-label">Latest Lab Notes</div>
+        <ul class="post-list">
+          {%- for article in blogs[section.settings.blog].articles limit: 3 -%}
+            <li>
+              <a href="{{ article.url }}">
+                <div class="post-list-title">{{ article.title }}</div>
+                <div class="post-list-meta">{{ article.published_at | date: '%b %d' }} · {{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min</div>
+              </a>
+            </li>
+          {%- else -%}
+            <li>
+              <div class="post-list-title">No posts yet — check back soon</div>
+              <div class="post-list-meta">Coming soon</div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      <div class="sidebar-module">
+        <div class="module-label">Join the Chaos</div>
+        <div class="email-form">
+          <input class="email-input" type="email" placeholder="your@email.com">
+          <button class="btn btn-fill" style="width:100%">Subscribe — It's Free</button>
+          <p class="email-note">Lab updates, Gorthog drops, new posts. Irregular cadence. No fluff.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Public Lab · Personal Brand · Questionable Conclusions"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Name heading",
+      "default": "ATTICUS EBY"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "A public lab run by someone who should probably know better. Documented SEO and AEO experiments, AI automation, absurdist merch, and brutally honest advice from an 847-year-old orc."
+    },
+    {
+      "type": "text",
+      "id": "cta1_text",
+      "label": "CTA 1 text",
+      "default": "Active Experiments →"
+    },
+    {
+      "type": "url",
+      "id": "cta1_url",
+      "label": "CTA 1 link"
+    },
+    {
+      "type": "text",
+      "id": "cta2_text",
+      "label": "CTA 2 text",
+      "default": "Lab Notes"
+    },
+    {
+      "type": "url",
+      "id": "cta2_url",
+      "label": "CTA 2 link"
+    },
+    {
+      "type": "text",
+      "id": "cta3_text",
+      "label": "CTA 3 text",
+      "default": "Ask Gorthog"
+    },
+    {
+      "type": "url",
+      "id": "cta3_url",
+      "label": "CTA 3 link"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog for latest posts"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}

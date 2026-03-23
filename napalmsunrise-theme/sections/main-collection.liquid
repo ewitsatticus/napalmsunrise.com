@@ -1,0 +1,76 @@
+{%- if section.settings.show_alert and section.settings.alert_text != blank -%}
+  <div class="shop-alert">{{ section.settings.alert_text }}</div>
+{%- endif -%}
+
+<div class="wrap">
+  <div class="page-hdr" style="margin-top:32px">
+    <h1>{{ collection.title | upcase }}</h1>
+    {%- if collection.description != blank -%}
+      <p class="sub">{{ collection.description }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="shop-grid">
+    {%- for product in collection.products -%}
+      <a href="{{ product.url }}" class="product-card">
+        <div class="prod-img">
+          {%- if product.featured_image -%}
+            <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy" width="600">
+          {%- endif -%}
+          {%- unless product.available -%}
+            <div class="sold-stamp">SOLD OUT</div>
+          {%- endunless -%}
+        </div>
+        <div class="prod-info">
+          <div class="prod-type">{{ product.type }}</div>
+          <div class="prod-name">{{ product.title }}</div>
+          {%- if product.description != blank -%}
+            <div class="prod-desc">{{ product.description | strip_html | truncate: 120 }}</div>
+          {%- endif -%}
+          <div class="prod-ft">
+            <span class="prod-price{% unless product.available %} sold-out{% endunless %}">{{ product.price | money }}</span>
+            {%- unless product.available -%}
+              <span class="oos-label">Out of Stock</span>
+            {%- endunless -%}
+          </div>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+
+  {%- if paginate.pages > 1 -%}
+    <div class="border-top center pt-48 pb-48">
+      {{ paginate | default_pagination }}
+    </div>
+  {%- else -%}
+    <div class="border-top center pt-48 pb-48">
+      <p style="font-family:var(--font-ui);font-size:10px;letter-spacing:0.14em;color:var(--gray);text-transform:uppercase;">{{ section.settings.bottom_text }}</p>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collection Grid",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_alert",
+      "label": "Show alert banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "alert_text",
+      "label": "Alert text",
+      "default": "⚠ All products currently out of stock — demand has been absolutely unreasonable ⚠"
+    },
+    {
+      "type": "text",
+      "id": "bottom_text",
+      "label": "Bottom text",
+      "default": "Get notified when something becomes available (it won't)"
+    }
+  ]
+}
+{% endschema %}
