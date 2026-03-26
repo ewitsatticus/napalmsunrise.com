@@ -2,7 +2,7 @@
   <div class="gt-inner">
     <div class="gt-copy">
       <div class="gt-eyebrow">/ Gorthog Demands Tribute</div>
-      <h2 class="gt-title" id="gt-title">FEED<br>THE ORC</h2>
+      <h2 class="gt-title" id="gt-title">FEED<br>GORTHOG</h2>
       <p class="gt-body" id="gt-body">Gorthog has not eaten in some time. He sustains himself on email addresses. If you do not feed him, he will die. This is not a metaphor.</p>
       <div id="gt-form-wrap">
         <label class="gt-label">Your email (his food)</label>
@@ -71,11 +71,13 @@
   .gt-speech{border:2px solid rgba(255,255,255,.12);padding:14px 16px;margin-top:12px;font-family:var(--font-body,'Courier Prime',monospace);font-size:13px;font-style:italic;line-height:1.6;color:rgba(243,237,224,.7);min-height:52px;transition:border-color .3s}
   .gt-speech.danger{border-color:var(--red,#E8260A)}.gt-speech.critical{border-color:var(--red,#E8260A);animation:gt-bp .5s infinite}
   .gt-speech.dead-speech{border-color:rgba(255,255,255,.06);color:rgba(255,255,255,.25)}
+  .gt-speech.memorial-speech{border-color:rgba(255,255,255,.08);color:rgba(243,237,224,.5)}
   @keyframes gt-bp{0%,100%{border-color:#E8260A}50%{border-color:#ff2200}}
   .gt-cursor{color:var(--red,#E8260A);animation:gt-blink .5s infinite}.gt-cursor.off{display:none}
   @keyframes gt-blink{0%,100%{opacity:1}50%{opacity:0}}
   .gt-mood{font-family:var(--font-ui,'DM Mono',monospace);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.2);text-align:center;margin-top:10px;transition:color .3s}
   .gt-mood.danger{color:var(--red,#E8260A)}
+  .gt-mood.memorial{color:rgba(255,255,255,.3)}
   .gt-chat-log{border:2px solid rgba(255,255,255,.12);padding:16px;margin-bottom:12px;max-height:280px;overflow-y:auto;font-family:var(--font-body,'Courier Prime',monospace);font-size:13px;line-height:1.6;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent}
   .gt-chat-msg{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.06)}
   .gt-chat-msg:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
@@ -90,20 +92,17 @@
 (function(){
 'use strict';
 
-var LIFE_SEC=120, TYPING_MS=30, SAVE_KEY='gorthog_tama_v3';
-var S=3; /* scale: each sprite pixel = 3x3 canvas px */
-var CW=180, CH=180; /* canvas size */
-var VW=CW/S, VH=CH/S; /* virtual grid 60x60 */
-var GROUND=VH-6; /* ground level y */
+var LIFE_SEC=120, TYPING_MS=30, SAVE_KEY='gorthog_tama_v4';
+var S=3;
+var CW=180, CH=180;
+var VW=CW/S, VH=CH/S;
+var GROUND=VH-6;
 
 /* ══════════════════════════════
-   SPRITES — miniature full-body
-   each row is a string, chars map to colors
-   Orc is ~8w x 12h
+   SPRITES
    ══════════════════════════════ */
-var C={'.':null,'g':'#6b8e3a','d':'#3d5a1e','w':'#e8e0d0','b':'#1a1a1a','t':'#d4c9a8','m':'#2a1208','r':'#cc3333','p':'#ffaaaa','x':'#666','s':'#8a5c3a','f':'#d4a06a','h':'#c44','k':'#888','n':'#555','R':'#aa0000','B':'#990000'};
+var C={'.':null,'g':'#6b8e3a','d':'#3d5a1e','w':'#e8e0d0','b':'#1a1a1a','t':'#d4c9a8','m':'#2a1208','r':'#cc3333','p':'#ffaaaa','x':'#666','s':'#8a5c3a','f':'#d4a06a','h':'#c44','k':'#888','n':'#555','R':'#aa0000','B':'#990000','G':'#4a6e25','W':'#ccc','Y':'#c9a227','P':'#9966aa','L':'#6699cc','T':'#a0522d','O':'#ff8800','I':'#eee'};
 
-/* ORC walk frames — facing right */
 var ORC_R1=[
   '..dddd..',
   '.dggggd.',
@@ -132,11 +131,9 @@ var ORC_R2=[
   '.bd.bd..',
   '..b.bd..',
 ];
-/* Facing left — mirror */
 function mirror(sp){return sp.map(function(r){return r.split('').reverse().join('')});}
 var ORC_L1=mirror(ORC_R1), ORC_L2=mirror(ORC_R2);
 
-/* Happy — arms up */
 var ORC_HAPPY=[
   'gd.dd.dg',
   '.ddggdd.',
@@ -152,7 +149,6 @@ var ORC_HAPPY=[
   '..db.bd.',
 ];
 
-/* Starving — flailing */
 var ORC_PANIC1=[
   '..dddd..',
   '.dggggd.',
@@ -182,7 +178,22 @@ var ORC_PANIC2=[
   '........',
 ];
 
-/* Dying — on ground */
+/* Centered cowering orc — larger for dramatic death */
+var ORC_COWER=[
+  '...........',
+  '...dddd....',
+  '..dggggd...',
+  '..gpbpgd...',
+  '.ddggggdd..',
+  '..dgttgd...',
+  '..dmmmmd...',
+  '..ddggdd...',
+  '...dggd....',
+  '...dggd....',
+  '..db..bd...',
+  '..b....b...',
+];
+
 var ORC_DYING=[
   '................',
   '................',
@@ -198,7 +209,6 @@ var ORC_DYING=[
   '....dddddddd....',
 ];
 
-/* Dead — flat, X eyes, blood */
 var ORC_DEAD=[
   '................',
   '................',
@@ -214,7 +224,6 @@ var ORC_DEAD=[
   '..RRddddddddRR..',
 ];
 
-/* YOU character — simple person with knife */
 var YOU_WALK1=[
   '.ff.',
   '.ff.',
@@ -256,22 +265,70 @@ var YOU_STAB2=[
   's..s',
 ];
 
-/* YOU label pixels — tiny "YOU" text */
-var YOU_LABEL=[
-  'b.b..b.b.b.b',
-  'b.b.b.b.b.b.',
-  '.b..b.b.b.b.',
-  '.b...bb..bb.',
+/* ═══════════════════════════════
+   MEMORIAL SPRITES — simple shapes
+   ═══════════════════════════════ */
+/* Tiny baby orc (4x5) */
+var BABY_ORC=[
+  '.dd.',
+  'dggd',
+  'gwgd',
+  '.gg.',
+  '.dd.',
+];
+/* Mini orc (6x8) - for crowd scenes */
+var MINI_ORC=[
+  '.dddd.',
+  'dggggd',
+  'dgwwgd',
+  '.dggd.',
+  '.dggd.',
+  '..gg..',
+  '.d..d.',
+  '.d..d.',
+];
+/* Female orc — bow on head */
+var ORC_FEMALE=[
+  'r.dddd..',
+  '.rdgggd.',
+  '.dggggd.',
+  '.gwdwgd.',
+  'ddggggdd',
+  '.dgttgd.',
+  '.dggggd.',
+  '..dggd..',
+  '..dggd..',
+  '..dbbd..',
+  '..db.bd.',
+  '........',
+];
+/* Tiny kid orc (5x7) */
+var KID_ORC=[
+  '.ddd.',
+  'dgggd',
+  'dgwgd',
+  '.dmd.',
+  '.dgd.',
+  '.d.d.',
+  '.d.d.',
+];
+/* Heart shape (5x5) */
+var HEART=[
+  '.r.r.',
+  'rrrrr',
+  'rrrrr',
+  '.rrr.',
+  '..r..',
 ];
 
 /* ══════════════════════════════
-   DIALOGUE & KB (unchanged)
+   DIALOGUE & KB
    ══════════════════════════════ */
 var LINES={
   idle:["Gorthog smell fresh visitor... you got email?","Me Gorthog. Me hungry. You feed email now.","Gorthog no bite... maybe. Give email.","Why you stare? Gorthog need email to live.","You look like you got email. Gorthog can tell.","Other humans give email fast. You slow.","Gorthog belly rumble... it want @gmail...","Nice human. Smart human. Give Gorthog email."],
   hungry:["Gorthog getting VERY hungry now...","You not gonna let Gorthog starve right?","Gorthog stomach making bad sounds...","PLEASE. Gorthog NEED email. Is not asking much.","Why you do this?? Just one email!!","Gorthog vision getting blurry... need email...","Other orcs laughing at Gorthog. Say nobody feed him.","Gorthog knees weak... arms heavy... need email..."],
   starving:["G-Gorthog... can barely... type...","PLEASE!! GORTHOG BEGGING!! EMAIL!! NOW!!","Gorthog see tunnel of light... it have no emails...","This... this is how Gorthog dies? No email?","GORTHOG CHILDREN WILL GROW UP WITHOUT FATHER","The pain... it burns where email should be...","Gorthog crying green tears... nobody care...","YOU WATCHING GORTHOG DIE AND DOING NOTHING"],
-  dying:["...gorthog...can't...see...","wait... what are you doing...","NO... NO PLEASE... PUT THAT DOWN...","STOP!! WHY ARE YOU DOING THIS??","*screaming*","you... you were supposed to help...","...why..."],
+  dying:["...gorthog...can't...see...","wait... what are you doing...","NO... NO PLEASE... PUT THAT DOWN...","STOP!! STOP!! WHAT IS WRONG WITH YOU??","*screaming*","WHY... WHY ARE YOU DOING THIS...","you... you were supposed to help...","...please... gorthog has children..."],
   dead:["...","Gorthog is dead. You murdered him.","You didn't just let him die. You stabbed him.","With your own hands.","847 years. Ended by violence.","Are you proud of yourself?"],
   fed:["YAAAAAAAGH!! EMAIL!! GORTHOG FEAST!!","GLORIOUS!! GORTHOG BELLY FULL OF EMAIL!!","YOU... YOU GREATEST HUMAN EVER LIVE!!","Gorthog weep tears of joy!!","GORTHOG LIVE ANOTHER DAY!!","Email taste like victory and sadness of enemies!!"],
 };
@@ -322,8 +379,23 @@ var frame=0;
 
 /* Orc movement */
 var orc={x:VW/2-4, y:GROUND-12, vx:0.3, dir:1, walkFrame:0, walkTimer:0};
-/* Death sequence */
-var deathSeq={active:false,timer:0,youX:VW+10,phase:'walk',stabCount:0,stabTimer:0,bloodPixels:[]};
+/* Death sequence — dramatic centered */
+var deathSeq={active:false,timer:0,youX:VW+10,phase:'walk',stabCount:0,stabTimer:0,bloodPixels:[],flashAlpha:0,shakeAmt:0};
+/* Memorial montage */
+var memorial={active:false,slideIdx:0,timer:0,fadeAlpha:1,phase:'black',deathTime:0};
+
+var MEMORIAL_SLIDES=[
+  {caption:"Year 1179. Born in the Swamps of Grul'thak. His mother wept. His father roared. The swamp did not care.",draw:drawMemorial1},
+  {caption:"Year 1203. First raid with the Bloodfang Clan. He was terrified. He told no one. He never told anyone.",draw:drawMemorial2},
+  {caption:"Year 1487. The Great Feast of Krath'mora. Twelve orcs at one table. He said it was the happiest night of his life.",draw:drawMemorial3},
+  {caption:"Year 1692. Married Brug'nala under the red moon. She called him soft. He called her everything.",draw:drawMemorial4},
+  {caption:"Year 1845. Father to Grek, Mog, and little Snaga. He was gentle with them. Gentler than anyone expected.",draw:drawMemorial5},
+  {caption:"Year 2024. Found purpose at Napalm Sunrise. Finally, someone who needed him. Even if it was just for emails.",draw:drawMemorial6},
+  {caption:"Year 2026. Murdered by a website visitor. He was 847 years old. He had so much more to give.",draw:drawMemorial7},
+  {caption:"In loving memory of Gorthog the Ancient. 1179 \u2013 2026. 847 years was not enough.",draw:drawMemorialFinal},
+];
+var SLIDE_DUR=280;/* frames per slide ~4.7s */
+var FADE_DUR=50;/* frames for fade ~0.8s */
 
 /* ══════════════════════════════
    SAVE/LOAD
@@ -335,7 +407,9 @@ function load(){try{var d=JSON.parse(localStorage.getItem(SAVE_KEY));if(!d)retur
    HELPERS
    ══════════════════════════════ */
 function phase(){
-  if(fed)return'fed';if(hp<=0)return'dead';
+  if(fed)return'fed';
+  if(memorial.active)return'memorial';
+  if(hp<=0)return'dead';
   if(deathSeq.active)return'dying';
   if(hp<=15)return'dying';if(hp<=40)return'starving';if(hp<=70)return'hungry';return'idle';
 }
@@ -351,6 +425,10 @@ function px(x,y,col){
   ctx.fillStyle=C[col];
   ctx.fillRect(Math.round(x)*S, Math.round(y)*S, S, S);
 }
+function pxRaw(x,y,color){
+  ctx.fillStyle=color;
+  ctx.fillRect(Math.round(x)*S, Math.round(y)*S, S, S);
+}
 function drawSprite(sprite,ox,oy,dead){
   for(var r=0;r<sprite.length;r++){
     for(var c=0;c<sprite[r].length;c++){
@@ -362,16 +440,22 @@ function drawSprite(sprite,ox,oy,dead){
   }
 }
 
-/* Draw tiny text */
+/* Draw tiny 3x5 pixel text */
+var FONT3x5={
+  'A':['bbb','b.b','bbb','b.b','b.b'],'B':['bb.','b.b','bb.','b.b','bb.'],'C':['bbb','b..','b..','b..','bbb'],
+  'D':['bb.','b.b','b.b','b.b','bb.'],'E':['bbb','b..','bb.','b..','bbb'],'F':['bbb','b..','bb.','b..','b..'],
+  'G':['bbb','b..','b.b','b.b','bbb'],'H':['b.b','b.b','bbb','b.b','b.b'],'I':['.b.','.b.','.b.','.b.','.b.'],
+  'K':['b.b','bb.','b..','bb.','b.b'],'L':['b..','b..','b..','b..','bbb'],'M':['b.b','bbb','bbb','b.b','b.b'],
+  'N':['b.b','bbb','bbb','b.b','b.b'],'O':['bbb','b.b','b.b','b.b','bbb'],'P':['bbb','b.b','bbb','b..','b..'],
+  'R':['bb.','b.b','bb.','b.b','b.b'],'S':['bbb','b..','bbb','..b','bbb'],'T':['bbb','.b.','.b.','.b.','.b.'],
+  'U':['b.b','b.b','b.b','b.b','bbb'],'V':['b.b','b.b','b.b','b.b','.b.'],'W':['b.b','b.b','bbb','bbb','b.b'],
+  'Y':['b.b','b.b','.b.','.b.','.b.'],' ':['...','...','...','...','...'],
+  '1':['.b.','bb.','.b.','.b.','bbb'],'2':['bbb','..b','bbb','b..','bbb'],'9':['bbb','b.b','bbb','..b','bbb'],
+  '0':['bbb','b.b','b.b','b.b','bbb'],'-':['...','..','.b.','...','...'],
+};
 function drawText(str,x,y,col){
-  /* 3x5 pixel font */
-  var font={
-    'Y':['b.b','.b.','.b.','.b.','.b.'],
-    'O':['bbb','b.b','b.b','b.b','bbb'],
-    'U':['b.b','b.b','b.b','b.b','bbb'],
-  };
   for(var i=0;i<str.length;i++){
-    var ch=font[str[i]];
+    var ch=FONT3x5[str[i]];
     if(!ch)continue;
     for(var r=0;r<ch.length;r++){
       for(var c=0;c<ch[r].length;c++){
@@ -381,7 +465,6 @@ function drawText(str,x,y,col){
   }
 }
 
-/* Ground line */
 function drawGround(){
   for(var x=0;x<VW;x++){
     px(x,GROUND,'d');
@@ -389,44 +472,207 @@ function drawGround(){
   }
 }
 
+/* ══════════════════════════════
+   MEMORIAL SCENE DRAWERS
+   ══════════════════════════════ */
+function memorialBg(){
+  /* Sepia/warm dark tone */
+  ctx.fillStyle='#5a5340';
+  ctx.fillRect(0,0,CW,CH);
+  /* Ground */
+  for(var x=0;x<VW;x++){pxRaw(x,GROUND,'#3d3828');if(x%4===0)pxRaw(x,GROUND+1,'#3d3828');}
+}
+
+function drawMemorial1(){
+  /* Birth — two parent orcs with baby */
+  memorialBg();
+  /* Swamp water at bottom */
+  for(var x=0;x<VW;x++){if(x%2===0)pxRaw(x,GROUND-1,'#4a6040');}
+  /* Mother (left) */
+  drawSprite(ORC_FEMALE, 15, GROUND-12, false);
+  /* Father (right) */
+  drawSprite(ORC_R1, 35, GROUND-12, false);
+  /* Baby in middle */
+  drawSprite(BABY_ORC, 28, GROUND-5, false);
+}
+
+function drawMemorial2(){
+  /* First raid — group of orcs with weapons */
+  memorialBg();
+  /* Fire glow in background */
+  for(var i=0;i<5;i++){pxRaw(45+i,GROUND-14+Math.floor(Math.random()*3),'#c44');pxRaw(46+i,GROUND-16+Math.floor(Math.random()*2),'#ff8800');}
+  /* Burning hut */
+  for(var y=GROUND-8;y<GROUND;y++){for(var x=42;x<52;x++)pxRaw(x,y,'#6b4226');}
+  for(var x=41;x<53;x++){pxRaw(x,GROUND-8,'#8b5e3c');pxRaw(x,GROUND-9,'#8b5e3c');}
+  /* Young Gorthog (smaller, front) */
+  drawSprite(MINI_ORC, 12, GROUND-8, false);
+  /* Other raiders */
+  drawSprite(ORC_R1, 22, GROUND-12, false);
+  drawSprite(ORC_R1, 32, GROUND-12, false);
+  /* Tiny sword for young Gorthog */
+  pxRaw(18,GROUND-6,'#aaa');pxRaw(18,GROUND-7,'#aaa');pxRaw(18,GROUND-8,'#aaa');pxRaw(18,GROUND-9,'#ccc');
+}
+
+function drawMemorial3(){
+  /* Great Feast — table with orcs */
+  memorialBg();
+  /* Long table */
+  for(var x=8;x<52;x++){pxRaw(x,GROUND-6,'#6b4226');pxRaw(x,GROUND-5,'#8b5e3c');}
+  /* Table legs */
+  pxRaw(10,GROUND-4,'#6b4226');pxRaw(10,GROUND-3,'#6b4226');pxRaw(10,GROUND-2,'#6b4226');
+  pxRaw(49,GROUND-4,'#6b4226');pxRaw(49,GROUND-3,'#6b4226');pxRaw(49,GROUND-2,'#6b4226');
+  /* Food on table */
+  pxRaw(15,GROUND-7,'#c44');pxRaw(16,GROUND-7,'#c44');/* meat */
+  pxRaw(25,GROUND-7,'#c9a227');pxRaw(26,GROUND-7,'#c9a227');/* cheese */
+  pxRaw(35,GROUND-7,'#9966aa');/* drink */
+  pxRaw(42,GROUND-7,'#c44');pxRaw(43,GROUND-7,'#ff8800');/* more food */
+  /* Orcs sitting at table */
+  drawSprite(MINI_ORC, 10, GROUND-14, false);
+  drawSprite(MINI_ORC, 18, GROUND-14, false);
+  drawSprite(MINI_ORC, 26, GROUND-14, false);
+  drawSprite(MINI_ORC, 34, GROUND-14, false);
+  drawSprite(MINI_ORC, 42, GROUND-14, false);
+}
+
+function drawMemorial4(){
+  /* Marriage — two orcs under red moon */
+  memorialBg();
+  /* Red moon */
+  for(var dy=-3;dy<=3;dy++){for(var dx=-3;dx<=3;dx++){if(dx*dx+dy*dy<=9)pxRaw(30+dx,8+dy,'#993333');}}
+  /* Stars */
+  pxRaw(10,5,'#ccc');pxRaw(48,3,'#ccc');pxRaw(20,10,'#999');pxRaw(42,7,'#999');pxRaw(5,12,'#ccc');
+  /* Gorthog and Brug'nala */
+  drawSprite(ORC_R1, 22, GROUND-12, false);
+  drawSprite(ORC_FEMALE, 32, GROUND-12, false);
+  /* Heart above them */
+  drawSprite(HEART, 28, GROUND-18, false);
+}
+
+function drawMemorial5(){
+  /* Father — Gorthog with three kids */
+  memorialBg();
+  /* Sun */
+  pxRaw(50,6,'#c9a227');pxRaw(51,6,'#c9a227');pxRaw(50,7,'#c9a227');pxRaw(51,7,'#c9a227');
+  /* Grass */
+  for(var x=0;x<VW;x++){if(x%3===0)pxRaw(x,GROUND-1,'#4a6e25');}
+  /* Gorthog standing proudly */
+  drawSprite(ORC_HAPPY, 24, GROUND-12, false);
+  /* Three kids in front */
+  drawSprite(KID_ORC, 10, GROUND-7, false);
+  drawSprite(KID_ORC, 36, GROUND-7, false);
+  drawSprite(BABY_ORC, 24, GROUND-5, false);
+}
+
+function drawMemorial6(){
+  /* At Napalm Sunrise — orc at desk */
+  memorialBg();
+  /* Desk */
+  for(var x=20;x<46;x++){pxRaw(x,GROUND-6,'#6b4226');pxRaw(x,GROUND-5,'#8b5e3c');}
+  pxRaw(22,GROUND-4,'#6b4226');pxRaw(22,GROUND-3,'#6b4226');pxRaw(22,GROUND-2,'#6b4226');
+  pxRaw(43,GROUND-4,'#6b4226');pxRaw(43,GROUND-3,'#6b4226');pxRaw(43,GROUND-2,'#6b4226');
+  /* Monitor */
+  for(var y=GROUND-13;y<GROUND-7;y++){for(var x=28;x<42;x++)pxRaw(x,y,'#333');}
+  for(var y=GROUND-12;y<GROUND-8;y++){for(var x=29;x<41;x++)pxRaw(x,y,'#6699cc');}
+  /* Monitor stand */
+  pxRaw(34,GROUND-7,'#555');pxRaw(35,GROUND-7,'#555');
+  /* Gorthog sitting */
+  drawSprite(MINI_ORC, 20, GROUND-14, false);
+  /* Coffee mug */
+  pxRaw(44,GROUND-7,'#eee');pxRaw(45,GROUND-7,'#eee');pxRaw(44,GROUND-8,'#eee');pxRaw(45,GROUND-8,'#eee');
+}
+
+function drawMemorial7(){
+  /* Death scene — somber */
+  ctx.fillStyle='#3a3028';
+  ctx.fillRect(0,0,CW,CH);
+  for(var x=0;x<VW;x++){pxRaw(x,GROUND,'#2a2018');if(x%4===0)pxRaw(x,GROUND+1,'#2a2018');}
+  /* Blood pool */
+  for(var i=0;i<30;i++){
+    pxRaw(VW/2-8+Math.floor(Math.random()*16),GROUND-Math.floor(Math.random()*3),'#660000');
+  }
+  /* Dead orc */
+  drawSprite(ORC_DEAD, VW/2-8, GROUND-12, false);
+}
+
+function drawMemorialFinal(){
+  /* In memoriam — text-focused */
+  ctx.fillStyle='#1a1a1a';
+  ctx.fillRect(0,0,CW,CH);
+  /* Cross/marker */
+  for(var y=18;y<38;y++)pxRaw(30,y,'#555');
+  for(var x=25;x<36;x++)pxRaw(x,22,'#555');
+  /* Flowers at base */
+  pxRaw(27,38,'r');pxRaw(28,38,'r');pxRaw(33,38,'r');pxRaw(34,38,'r');
+  pxRaw(25,39,'Y');pxRaw(29,39,'P');pxRaw(32,39,'Y');pxRaw(36,39,'P');
+  /* RIP text */
+  drawText('RIP',24,12,'W');
+  /* 1179-2026 */
+  drawText('1179',18,42,'W');
+  drawText('-',34,42,'W');
+  drawText('2026',38,42,'W');
+}
+
+/* ══════════════════════════════
+   ALIVE SCENE RENDERING
+   ══════════════════════════════ */
 function renderScene(){
   var p=phase();
-  /* BG */
-  var bg=p==='dead'?'#8a9168':'#c4cfa0';
-  ctx.fillStyle=bg;
-  ctx.fillRect(0,0,CW,CH);
 
-  drawGround();
-
-  if(p==='dead'){
-    /* Dead orc on ground + blood */
-    for(var i=0;i<deathSeq.bloodPixels.length;i++){
-      var bp=deathSeq.bloodPixels[i];
-      px(bp[0],bp[1],'R');
+  /* ── MEMORIAL MONTAGE ── */
+  if(p==='memorial'){
+    var slide=MEMORIAL_SLIDES[memorial.slideIdx];
+    if(slide)slide.draw();
+    /* Fade overlay */
+    if(memorial.fadeAlpha>0){
+      ctx.fillStyle='rgba(0,0,0,'+Math.min(1,memorial.fadeAlpha)+')';
+      ctx.fillRect(0,0,CW,CH);
     }
-    drawSprite(ORC_DEAD, Math.round(orc.x)-4, GROUND-12, false);
+    return;
+  }
 
-    /* "YOU" standing over body */
+  /* ── DEAD (brief pause before memorial) ── */
+  if(p==='dead'){
+    ctx.fillStyle='#8a9168';
+    ctx.fillRect(0,0,CW,CH);
+    drawGround();
+    for(var i=0;i<deathSeq.bloodPixels.length;i++){
+      var bp=deathSeq.bloodPixels[i];pxRaw(bp[0],bp[1],'#aa0000');
+    }
+    drawSprite(ORC_DEAD, VW/2-8, GROUND-12, false);
     var youSp=YOU_WALK1;
     drawSprite(youSp, Math.round(deathSeq.youX), GROUND-8, false);
     drawText('YOU',Math.round(deathSeq.youX)-1, GROUND-13, 'b');
     return;
   }
 
+  /* ── DYING (dramatic centered murder) ── */
   if(deathSeq.active){
-    /* Death sequence animation */
-    /* Orc cowering */
-    var orcSp=(frame%8<4)?ORC_PANIC1:ORC_PANIC2;
-    var ox=Math.round(orc.x);
-    /* Orc trembles */
-    ox+=Math.round(Math.sin(frame*2)*2);
-    drawSprite(orcSp, ox, GROUND-12, false);
+    var shake=deathSeq.shakeAmt;
+    ctx.save();
+    if(shake>0){
+      ctx.translate(
+        Math.round((Math.random()*2-1)*shake*S),
+        Math.round((Math.random()*2-1)*shake*S)
+      );
+    }
+
+    ctx.fillStyle='#c4cfa0';
+    ctx.fillRect(0,0,CW+20,CH+20);
+    drawGround();
 
     /* Blood from stabs */
     for(var i=0;i<deathSeq.bloodPixels.length;i++){
-      var bp=deathSeq.bloodPixels[i];
-      px(bp[0],bp[1],'R');
+      var bp=deathSeq.bloodPixels[i];pxRaw(bp[0],bp[1],'#aa0000');
     }
+
+    /* Orc cowering in center */
+    var orcSp=(frame%8<4)?ORC_PANIC1:ORC_PANIC2;
+    var ox=VW/2-4;
+    /* Tremble */
+    ox+=Math.round(Math.sin(frame*3)*1.5);
+    var oy=GROUND-12;
+    if(deathSeq.phase==='stab'){oy+=Math.round(Math.sin(frame*2)*1);}
+    drawSprite(orcSp, ox, oy, false);
 
     /* "YOU" character */
     var youSp;
@@ -437,40 +683,54 @@ function renderScene(){
     }
     drawSprite(youSp, Math.round(deathSeq.youX), GROUND-8, false);
     drawText('YOU', Math.round(deathSeq.youX)-1, GROUND-13, 'b');
+
+    ctx.restore();
+
+    /* Screen flash on stab */
+    if(deathSeq.flashAlpha>0){
+      ctx.fillStyle='rgba(180,0,0,'+deathSeq.flashAlpha+')';
+      ctx.fillRect(0,0,CW,CH);
+      deathSeq.flashAlpha-=0.04;
+    }
+    /* Shake decay */
+    if(deathSeq.shakeAmt>0)deathSeq.shakeAmt*=0.85;
     return;
   }
 
+  /* ── FED ── */
   if(p==='fed'){
-    /* Happy orc bouncing in place */
+    ctx.fillStyle='#c4cfa0';
+    ctx.fillRect(0,0,CW,CH);
+    drawGround();
     var bounce=Math.round(Math.abs(Math.sin(frame*0.08))*3);
     drawSprite(ORC_HAPPY, Math.round(orc.x), GROUND-12-bounce, false);
-    /* Pixel hearts */
     if(frame%30<15){
       var hx=Math.round(orc.x)+9, hy=GROUND-16-Math.floor((frame%30)/3);
-      px(hx,hy,'r');px(hx+2,hy,'r');
-      px(hx-1,hy+1,'r');px(hx+1,hy+1,'r');px(hx+3,hy+1,'r');
-      px(hx,hy+2,'r');px(hx+1,hy+2,'r');px(hx+2,hy+2,'r');
-      px(hx+1,hy+3,'r');
+      pxRaw(hx,hy,'#cc3333');pxRaw(hx+2,hy,'#cc3333');
+      pxRaw(hx-1,hy+1,'#cc3333');pxRaw(hx+1,hy+1,'#cc3333');pxRaw(hx+3,hy+1,'#cc3333');
+      pxRaw(hx,hy+2,'#cc3333');pxRaw(hx+1,hy+2,'#cc3333');pxRaw(hx+2,hy+2,'#cc3333');
+      pxRaw(hx+1,hy+3,'#cc3333');
     }
     return;
   }
 
-  /* Alive states — walking orc */
+  /* ── ALIVE WALKING ── */
+  var bg='#c4cfa0';
+  ctx.fillStyle=bg;
+  ctx.fillRect(0,0,CW,CH);
+  drawGround();
+
   var speed, jumpiness;
   if(p==='starving'){speed=1.2;jumpiness=0.15;}
   else if(p==='hungry'){speed=0.6;jumpiness=0;}
   else{speed=0.3;jumpiness=0;}
 
-  /* Update position */
   orc.x+=orc.vx*orc.dir;
   if(orc.x>VW-12){orc.dir=-1;orc.x=VW-12;}
   if(orc.x<2){orc.dir=1;orc.x=2;}
   orc.vx=speed;
-
-  /* Random direction changes */
   if(Math.random()<0.01*speed)orc.dir*=-1;
 
-  /* Walk animation */
   orc.walkTimer++;
   if(orc.walkTimer>Math.max(3,10-speed*5)){
     orc.walkFrame=(orc.walkFrame+1)%2;
@@ -486,61 +746,111 @@ function renderScene(){
   }
 
   var oy=GROUND-12;
-  /* Jumping when starving */
   if(jumpiness>0&&Math.sin(frame*jumpiness*6)>0.5){
     oy-=Math.round(Math.sin(frame*jumpiness*6)*4);
   }
 
   drawSprite(sprite, Math.round(orc.x), oy, false);
 
-  /* Sweat drops when hungry */
   if(p==='hungry'&&frame%20<3){
-    px(Math.round(orc.x)+4,oy-2,'b');
-    px(Math.round(orc.x)+4,oy-1,'b');
+    pxRaw(Math.round(orc.x)+4,oy-2,'#1a1a1a');
+    pxRaw(Math.round(orc.x)+4,oy-1,'#1a1a1a');
   }
-  /* Exclamation marks when starving */
   if(p==='starving'&&frame%12<6){
     var ex=Math.round(orc.x)+((frame%24<12)?-2:10);
-    px(ex,oy-3,'b');px(ex,oy-2,'b');px(ex,oy-1,'b');px(ex,oy+1,'b');
+    pxRaw(ex,oy-3,'#1a1a1a');pxRaw(ex,oy-2,'#1a1a1a');pxRaw(ex,oy-1,'#1a1a1a');pxRaw(ex,oy+1,'#1a1a1a');
   }
 }
 
 /* ══════════════════════════════
-   DEATH SEQUENCE LOGIC
+   DEATH SEQUENCE — dramatic
    ══════════════════════════════ */
 function updateDeathSeq(){
   if(!deathSeq.active)return;
   deathSeq.timer++;
 
   if(deathSeq.phase==='walk'){
-    /* YOU walks toward orc */
-    deathSeq.youX-=0.4;
-    if(deathSeq.youX<=orc.x+10){
+    /* YOU walks slowly toward centered orc */
+    deathSeq.youX-=0.25;
+    var target=VW/2+6;
+    if(deathSeq.youX<=target){
       deathSeq.phase='stab';
       deathSeq.stabTimer=0;
       deathSeq.stabCount=0;
     }
   }else if(deathSeq.phase==='stab'){
     deathSeq.stabTimer++;
-    if(deathSeq.stabTimer%12===0){
+    /* Slower, more deliberate stabs — every 20 frames */
+    if(deathSeq.stabTimer%20===0){
       deathSeq.stabCount++;
-      /* Add blood */
-      for(var i=0;i<4;i++){
+      /* Flash and shake on each stab */
+      deathSeq.flashAlpha=0.6;
+      deathSeq.shakeAmt=4;
+      /* Add blood spray */
+      for(var i=0;i<6;i++){
         deathSeq.bloodPixels.push([
-          Math.round(orc.x)+Math.floor(Math.random()*10),
-          GROUND-Math.floor(Math.random()*8)
+          VW/2-4+Math.floor(Math.random()*12),
+          GROUND-Math.floor(Math.random()*10)
         ]);
       }
-      hp=Math.max(0,hp-8);
+      /* Blood dripping down */
+      for(var i=0;i<3;i++){
+        deathSeq.bloodPixels.push([
+          VW/2-2+Math.floor(Math.random()*8),
+          GROUND-1+Math.floor(Math.random()*2)
+        ]);
+      }
+      hp=Math.max(0,hp-4);
     }
     if(hp<=0){
       deathSeq.phase='done';
-      /* Massive blood */
-      for(var i=0;i<20;i++){
+      /* Final massive blood pool */
+      for(var i=0;i<30;i++){
         deathSeq.bloodPixels.push([
-          Math.round(orc.x)-2+Math.floor(Math.random()*16),
+          VW/2-6+Math.floor(Math.random()*18),
           GROUND-Math.floor(Math.random()*4)
         ]);
+      }
+      deathSeq.flashAlpha=0.8;
+      deathSeq.shakeAmt=6;
+    }
+  }
+}
+
+/* ══════════════════════════════
+   MEMORIAL UPDATE
+   ══════════════════════════════ */
+function updateMemorial(){
+  if(!memorial.active)return;
+  var now=Date.now();
+
+  if(memorial.phase==='black'){
+    if(!memorial.phaseStart)memorial.phaseStart=now;
+    var elapsed=now-memorial.phaseStart;
+    memorial.fadeAlpha=Math.max(0,1-elapsed/800);
+    if(memorial.fadeAlpha<=0){
+      memorial.fadeAlpha=0;
+      memorial.phase='show';
+      memorial.phaseStart=now;
+    }
+  }else if(memorial.phase==='show'){
+    if(!memorial.phaseStart)memorial.phaseStart=now;
+    if(now-memorial.phaseStart>=5000){
+      memorial.phase='fade-out';
+      memorial.phaseStart=now;
+    }
+  }else if(memorial.phase==='fade-out'){
+    if(!memorial.phaseStart)memorial.phaseStart=now;
+    var elapsed=now-memorial.phaseStart;
+    memorial.fadeAlpha=Math.min(1,elapsed/800);
+    if(memorial.fadeAlpha>=1){
+      memorial.fadeAlpha=1;
+      if(memorial.slideIdx<MEMORIAL_SLIDES.length-1){
+        memorial.slideIdx++;
+        memorial.phase='black';
+        memorial.phaseStart=now;
+      }else{
+        memorial.phase='done';
       }
     }
   }
@@ -556,23 +866,62 @@ function render(){
   if(h<=10)el.bar.classList.add('critical');
   else if(h<=25)el.bar.classList.add('danger');
   else if(h<=50)el.bar.classList.add('warning');
+
   el.speech.className='gt-speech';
   if(p==='dying')el.speech.classList.add('critical');
   else if(p==='starving')el.speech.classList.add('danger');
   else if(p==='dead')el.speech.classList.add('dead-speech');
+  else if(p==='memorial')el.speech.classList.add('memorial-speech');
+
   el.title.className='gt-title';
   if(p==='dying'||p==='starving')el.title.classList.add('danger');
-  var moods={idle:'GORTHOG AWAITS',hungry:'GORTHOG GROWS IMPATIENT',starving:'GORTHOG IS LOSING IT',dying:'YOU ARE MURDERING HIM',dead:'GORTHOG IS DEAD. YOU MURDERED HIM.',fed:'GORTHOG IS FED — ASK HIM ANYTHING'};
-  el.mood.textContent=moods[p]||'';
-  el.mood.className='gt-mood';if(p==='dying'||p==='dead')el.mood.classList.add('danger');
-  var bodies={idle:'Gorthog has not eaten in some time. He sustains himself on email addresses. If you do not feed him, he will die. This is not a metaphor.',hungry:'Gorthog grows weaker. His 847-year life force drains by the second. Only an email can sustain him.',starving:'Gorthog is panicking. He can feel the life draining from his body. He is running around screaming. An email would stop this.',dying:'You are watching someone stab Gorthog to death. That someone is you. You could have prevented this with an email address.',dead:'Gorthog the Ancient is dead. Not from starvation. From murder. Your murder. You walked onto that screen and you stabbed him. 847 years, ended by your blade.',fed:'Gorthog lives. Your email sustains him. He is now available to answer your questions about this site with the wisdom of 847 years and the patience of approximately none of them.'};
-  el.body.textContent=bodies[p]||'';
-  if(p==='dead'){el.formWrap.style.display='none';el.restartW.style.display='block';el.chatWrap.style.display='none';}
+
+  var moods={idle:'GORTHOG AWAITS',hungry:'GORTHOG GROWS IMPATIENT',starving:'GORTHOG IS LOSING IT',dying:'YOU ARE MURDERING HIM',dead:'GORTHOG IS DEAD',fed:'GORTHOG IS FED \u2014 ASK HIM ANYTHING'};
+  if(p==='memorial'){
+    el.mood.textContent='IN MEMORIAM';
+    el.mood.className='gt-mood memorial';
+  }else{
+    el.mood.textContent=moods[p]||'';
+    el.mood.className='gt-mood';if(p==='dying'||p==='dead')el.mood.classList.add('danger');
+  }
+
+  var bodies={
+    idle:'Gorthog has not eaten in some time. He sustains himself on email addresses. If you do not feed him, he will die. This is not a metaphor.',
+    hungry:'Gorthog grows weaker. His 847-year life force drains by the second. Only an email can sustain him.',
+    starving:'Gorthog is panicking. He can feel the life draining from his body. He is running around screaming. An email would stop this.',
+    dying:'You are watching someone stab Gorthog to death. That someone is you. You could have prevented this with an email address.',
+    dead:'Gorthog the Ancient is dead. Not from starvation. From murder. Your murder. You walked onto that screen and you stabbed him. 847 years, ended by your blade.',
+    fed:'Gorthog lives. Your email sustains him. He is now available to answer your questions about this site with the wisdom of 847 years and the patience of approximately none of them.',
+  };
+  if(p==='memorial'){
+    var slide=MEMORIAL_SLIDES[memorial.slideIdx];
+    el.body.textContent=slide?slide.caption:'';
+  }else{
+    el.body.textContent=bodies[p]||'';
+  }
+
+  if(p==='dead'||p==='memorial'){el.formWrap.style.display='none';el.restartW.style.display='block';el.chatWrap.style.display='none';}
   else if(p==='fed'){el.formWrap.style.display='none';el.restartW.style.display='none';el.chatWrap.style.display='block';}
   else{el.formWrap.style.display='block';el.restartW.style.display='none';el.chatWrap.style.display='none';}
+
   var now=Date.now();
-  var interval=p==='dying'?4000:p==='starving'?4000:p==='fed'?99999999:6000;
-  if(p!==lastPhase){if(p!=='fed'||!lastPhase)typeText(pickLine(p));lastLineTime=now;lastPhase=p;}
+  var interval=p==='dying'?3500:p==='starving'?4000:p==='fed'?99999999:p==='memorial'?99999999:6000;
+  if(p!==lastPhase){
+    if(p==='memorial'){
+      var slide=MEMORIAL_SLIDES[memorial.slideIdx];
+      if(slide)typeText(slide.caption);
+    }else if(p!=='fed'||!lastPhase){typeText(pickLine(p));}
+    lastLineTime=now;lastPhase=p;
+  }
+  else if(p==='memorial'){
+    /* Update caption when slide changes */
+    var slide=MEMORIAL_SLIDES[memorial.slideIdx];
+    var currentCaption=slide?slide.caption:'';
+    if(el.body.textContent!==currentCaption){
+      el.body.textContent=currentCaption;
+      typeText(currentCaption);
+    }
+  }
   else if(now-lastLineTime>interval&&!typer&&p!=='fed'){typeText(pickLine(p));lastLineTime=now;}
 }
 
@@ -585,18 +934,34 @@ function tick(){
     lastTick=now;
     hp=Math.max(0,hp-(dt/LIFE_SEC)*100);
     if(Math.random()<dt*0.5)save();
-    /* Trigger death sequence when low */
     if(hp<=15&&!deathSeq.active){
       deathSeq.active=true;
       deathSeq.youX=VW+10;
       deathSeq.phase='walk';
       deathSeq.stabCount=0;
       deathSeq.bloodPixels=[];
-      /* Stop orc from moving */
+      deathSeq.flashAlpha=0;
+      deathSeq.shakeAmt=0;
+      /* Center the orc */
+      orc.x=VW/2-4;
       orc.vx=0;
     }
   }
   if(deathSeq.active&&deathSeq.phase!=='done')updateDeathSeq();
+
+  /* Transition from dead to memorial after pause (time-based for rAF throttling) */
+  if(hp<=0&&!fed&&!memorial.active&&deathSeq.phase==='done'){
+    if(!memorial.deathTime)memorial.deathTime=Date.now();
+    if(Date.now()-memorial.deathTime>3000){
+      memorial.active=true;
+      memorial.slideIdx=0;
+      memorial.fadeAlpha=1;
+      memorial.phase='black';
+      memorial.timer=0;
+    }
+  }
+  if(memorial.active)updateMemorial();
+
   frame++;
   renderScene();
   render();
@@ -613,8 +978,8 @@ function handleChat(){var q=el.chatInput.value.trim();if(!q)return;addMsg('user'
 /* ══════════════════════════════
    FEED / RESET
    ══════════════════════════════ */
-function feed(email){fed=true;hp=100;lastPhase=null;deathSeq.active=false;deathSeq.bloodPixels=[];typeText(pickLine('fed'));addMsg('gorthog',"GORTHOG LIVE!! You feed Gorthog! Now Gorthog answer your questions about Napalm Sunrise. Ask anything.");render();save();}
-function reset(){hp=100;fed=false;lastPhase=null;lastLineTime=0;lineIdx={};orc.x=VW/2-4;orc.vx=0.3;orc.dir=1;deathSeq={active:false,timer:0,youX:VW+10,phase:'walk',stabCount:0,stabTimer:0,bloodPixels:[]};el.email.value='';el.error.textContent='';el.chatLog.innerHTML='';lastTick=Date.now();try{localStorage.removeItem(SAVE_KEY);}catch(e){}render();typeText(pickLine('idle'));}
+function feed(email){fed=true;hp=100;lastPhase=null;deathSeq.active=false;deathSeq.bloodPixels=[];memorial.active=false;memorial.deathTime=0;typeText(pickLine('fed'));addMsg('gorthog',"GORTHOG LIVE!! You feed Gorthog! Now Gorthog answer your questions about Napalm Sunrise. Ask anything.");render();save();}
+function reset(){hp=100;fed=false;lastPhase=null;lastLineTime=0;lineIdx={};orc.x=VW/2-4;orc.vx=0.3;orc.dir=1;deathSeq={active:false,timer:0,youX:VW+10,phase:'walk',stabCount:0,stabTimer:0,bloodPixels:[],flashAlpha:0,shakeAmt:0};memorial={active:false,slideIdx:0,timer:0,fadeAlpha:1,phase:'black',deathTime:0,phaseStart:0};el.email.value='';el.error.textContent='';el.chatLog.innerHTML='';lastTick=Date.now();try{localStorage.removeItem(SAVE_KEY);}catch(e){}render();typeText(pickLine('idle'));}
 
 /* ══════════════════════════════
    EVENTS
@@ -629,6 +994,14 @@ document.addEventListener('visibilitychange',function(){if(document.hidden){paus
 
 /* INIT */
 load();lastTick=Date.now();
+/* If loaded into dead state, set up for memorial transition */
+if(hp<=0&&!fed){
+  deathSeq.active=true;
+  deathSeq.phase='done';
+  deathSeq.youX=VW/2+6;
+  /* Add some blood for the scene */
+  for(var bi=0;bi<25;bi++){deathSeq.bloodPixels.push([VW/2-6+Math.floor(Math.random()*18),GROUND-Math.floor(Math.random()*4)]);}
+}
 var p0=phase();
 if(fed){typeText("Gorthog remember you! Ask Gorthog anything.");addMsg('gorthog',"Gorthog remember you! Ask Gorthog anything about Napalm Sunrise.");}
 else if(p0==='dead'){typeText(LINES.dead[0]);}
