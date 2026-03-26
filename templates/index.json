@@ -57,10 +57,14 @@
       },
       "block_order": ["col1", "col2", "col3"]
     },
+    "gorthog_tama": {
+      "type": "gorthog-tamagotchi",
+      "settings": {}
+    },
     "gorthog": {
       "type": "gorthog-band",
       "settings": {}
     }
   },
-  "order": ["hero", "triple", "gorthog"]
+  "order": ["hero", "triple", "gorthog_tama", "gorthog"]
 }
