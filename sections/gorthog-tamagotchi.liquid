@@ -374,9 +374,10 @@
   .gt-orc.dying .gt-orc-brow--r { transform: rotate(-22deg) translateY(7px); }
 
   .gt-orc.dead {
-    filter: grayscale(1) brightness(0.35);
-    transform: translateX(-50%) rotate(8deg);
-    transition: all 2s ease;
+    filter: grayscale(1) brightness(0.35) !important;
+    transform: translateX(-50%) rotate(8deg) !important;
+    animation: none !important;
+    transition: none !important;
   }
   .gt-orc.dead .gt-orc-eye { background: #555; }
   .gt-orc.dead .gt-orc-pupil {
@@ -568,7 +569,7 @@
 
   /* --- STATE --- */
   var hp = 100, fed = false, paused = false, lastTick = Date.now();
-  var typer = null, lineIdx = {}, lastPhase = null, lastLineTime = 0;
+  var typer = null, lineIdx = {}, lastPhase = null, lastLineTime = 0, currentOrcClass = '';
 
   /* --- SAVE/LOAD --- */
   function save() {
@@ -644,8 +645,12 @@
     else if (h <= 25) el.bar.classList.add('danger');
     else if (h <= 50) el.bar.classList.add('warning');
 
-    /* orc sprite */
-    el.orc.className = 'gt-orc ' + (p === 'fed' ? 'happy' : p);
+    /* orc sprite — only update when phase changes to avoid resetting transitions */
+    var orcState = p === 'fed' ? 'happy' : p;
+    if (orcState !== currentOrcClass) {
+      currentOrcClass = orcState;
+      el.orc.className = 'gt-orc ' + orcState;
+    }
 
     /* speech styling */
     el.speech.className = 'gt-speech';
