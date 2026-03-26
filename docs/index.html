@@ -7,113 +7,35 @@
 <meta name="description" content="An 847-year-old orc tamagotchi that craves your email. Feed Gorthog or watch him perish.">
 <meta property="og:title" content="GORTHOG THE HUNGRY">
 <meta property="og:description" content="An 847-year-old orc is dying. Only your email can save him.">
-<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #F3EDE0;
-  --black: #0D0D0D;
-  --red: #E8260A;
-  --acid: #C8FF00;
-  --gray: #7A7468;
-  --muted: #C5BDAA;
-  --border: 3px solid #0D0D0D;
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-body: 'Courier Prime', monospace;
-  --font-ui: 'DM Mono', monospace;
-}
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: var(--bg);
-  color: var(--black);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-.btn {
-  font-family: var(--font-ui);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  padding: 11px 22px;
-  border: 2px solid var(--black);
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.12s;
-  line-height: 1;
-  background: transparent;
-}
-.btn-red { background: var(--red); border-color: var(--red); color: white; }
-.btn-red:hover { background: #c41e06; }
-.btn-outline { background: transparent; color: var(--black); }
-.btn-outline:hover { background: var(--black); color: var(--bg); }
-
-/* Page header */
-.page-header {
-  padding: 28px;
-  border-bottom: var(--border);
-}
-.page-header-inner {
-  max-width: 1440px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.page-logo {
-  font-family: var(--font-display);
-  font-size: 24px;
-  letter-spacing: 0.06em;
-  text-decoration: none;
-  color: var(--black);
-}
-.page-logo span { color: var(--red); }
-.page-nav {
-  font-family: var(--font-ui);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gray);
-}
-
-/* Page footer */
-.page-footer {
-  margin-top: auto;
-  padding: 24px 28px;
-  border-top: var(--border);
-  font-family: var(--font-ui);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: var(--gray);
-  text-align: center;
-}
+:root{--bg:#F3EDE0;--black:#0D0D0D;--red:#E8260A;--acid:#C8FF00;--gray:#7A7468;--muted:#C5BDAA;--border:3px solid #0D0D0D;--font-display:'Bebas Neue',sans-serif;--font-body:'Courier Prime',monospace;--font-ui:'DM Mono',monospace;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--black);font-family:var(--font-body);font-size:16px;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;}
+.btn{font-family:var(--font-ui);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;padding:11px 22px;border:2px solid var(--black);cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.12s;line-height:1;background:transparent;}
+.btn-red{background:var(--red);border-color:var(--red);color:white;}.btn-red:hover{background:#c41e06;}
+.btn-outline{background:transparent;color:var(--black);}.btn-outline:hover{background:var(--black);color:var(--bg);}
+.page-header{padding:28px;border-bottom:var(--border);}
+.page-header-inner{max-width:1440px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+.page-logo{font-family:var(--font-display);font-size:24px;letter-spacing:0.06em;text-decoration:none;color:var(--black);}
+.page-logo span{color:var(--red);}
+.page-nav{font-family:var(--font-ui);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gray);}
+.page-footer{margin-top:auto;padding:24px 28px;border-top:var(--border);font-family:var(--font-ui);font-size:9px;letter-spacing:0.1em;color:var(--gray);text-align:center;}
 </style>
 </head>
 <body>
-
-<header class="page-header">
-  <div class="page-header-inner">
-    <div class="page-logo">NAPALM <span>SUNRISE</span></div>
-    <nav class="page-nav">Gorthog demands tribute</nav>
-  </div>
-</header>
-
+<header class="page-header"><div class="page-header-inner"><div class="page-logo">NAPALM <span>SUNRISE</span></div><nav class="page-nav">Gorthog demands tribute</nav></div></header>
 <div class="gorthog-tama" id="gorthog-tama">
   <div class="gt-inner">
 
-    <!-- LEFT: copy + email -->
     <div class="gt-copy">
       <div class="gt-eyebrow">/ Gorthog Demands Tribute</div>
       <h2 class="gt-title" id="gt-title">FEED<br>THE ORC</h2>
       <p class="gt-body" id="gt-body">Gorthog has not eaten in some time. He sustains himself on email addresses. If you do not feed him, he will die. This is not a metaphor.</p>
 
-      <div class="gt-form-wrap" id="gt-form-wrap">
+      <div id="gt-form-wrap">
         <label class="gt-label">Your email (his food)</label>
         <div class="gt-input-row">
           <input class="gt-input" type="email" id="gt-email" placeholder="your@email.com" autocomplete="email">
@@ -123,12 +45,21 @@ body {
         <p class="gt-note">He will remember this kindness. Or he will die. One of the two.</p>
       </div>
 
-      <div class="gt-restart-wrap" id="gt-restart-wrap" style="display:none;">
+      <div id="gt-restart-wrap" style="display:none;">
         <button class="btn btn-outline gt-restart-btn" id="gt-restart-btn">Resurrect Gorthog</button>
+      </div>
+
+      <!-- CHATBOT (shown after fed) -->
+      <div id="gt-chat-wrap" style="display:none;">
+        <div class="gt-chat-log" id="gt-chat-log"></div>
+        <div class="gt-chat-input-row">
+          <input class="gt-input" type="text" id="gt-chat-input" placeholder="Ask Gorthog anything..." autocomplete="off">
+          <button class="btn btn-red gt-feed-btn" id="gt-chat-send">Ask</button>
+        </div>
+        <p class="gt-note">Gorthog knows things about this site. He has opinions about all of them.</p>
       </div>
     </div>
 
-    <!-- RIGHT: the orc viewport -->
     <div class="gt-viewport-wrap">
       <div class="gt-status-bar">
         <span class="gt-status-label">LIFE FORCE</span>
@@ -138,23 +69,8 @@ body {
         <div class="gt-bar-fill" id="gt-bar"></div>
       </div>
 
-      <div class="gt-viewport" id="gt-viewport">
-        <!-- ORC PORTRAIT -->
-        <div class="gt-orc" id="gt-orc">
-          <div class="gt-orc-ear gt-orc-ear--l"></div>
-          <div class="gt-orc-ear gt-orc-ear--r"></div>
-          <div class="gt-orc-head">
-            <div class="gt-orc-brow gt-orc-brow--l"></div>
-            <div class="gt-orc-brow gt-orc-brow--r"></div>
-            <div class="gt-orc-eye gt-orc-eye--l"><div class="gt-orc-pupil"></div></div>
-            <div class="gt-orc-eye gt-orc-eye--r"><div class="gt-orc-pupil"></div></div>
-            <div class="gt-orc-tusk gt-orc-tusk--l"></div>
-            <div class="gt-orc-tusk gt-orc-tusk--r"></div>
-            <div class="gt-orc-mouth"></div>
-          </div>
-          <div class="gt-orc-body"></div>
-        </div>
-        <div class="gt-blood" id="gt-blood"></div>
+      <div class="gt-screen" id="gt-screen">
+        <canvas id="gt-canvas" width="160" height="160"></canvas>
       </div>
 
       <div class="gt-speech" id="gt-speech">
@@ -168,7 +84,6 @@ body {
 </div>
 
 <style>
-  /* ── GORTHOG TAMAGOTCHI ── */
   .gorthog-tama {
     background: var(--black, #0D0D0D);
     color: var(--bg, #F3EDE0);
@@ -184,8 +99,6 @@ body {
     gap: 72px;
     align-items: start;
   }
-
-  /* ── LEFT COLUMN ── */
   .gt-eyebrow {
     font-family: var(--font-ui, 'DM Mono', monospace);
     font-size: 10px;
@@ -211,8 +124,6 @@ body {
     margin-bottom: 28px;
     max-width: 560px;
   }
-
-  /* Form */
   .gt-label {
     font-family: var(--font-ui, 'DM Mono', monospace);
     font-size: 9px;
@@ -222,7 +133,7 @@ body {
     display: block;
     margin-bottom: 8px;
   }
-  .gt-input-row {
+  .gt-input-row, .gt-chat-input-row {
     display: flex;
     gap: 10px;
     margin-bottom: 8px;
@@ -243,7 +154,6 @@ body {
   .gt-input::placeholder { color: rgba(255,255,255,0.2); }
   .gt-input:disabled { opacity: 0.3; cursor: not-allowed; }
   .gt-feed-btn { white-space: nowrap; flex-shrink: 0; }
-  .gt-feed-btn:disabled { opacity: 0.3; cursor: not-allowed; }
   .gt-error {
     font-family: var(--font-ui, 'DM Mono', monospace);
     font-size: 10px;
@@ -260,10 +170,8 @@ body {
     line-height: 1.5;
   }
 
-  /* ── RIGHT COLUMN ── */
+  /* SCREEN — tamagotchi LCD look */
   .gt-viewport-wrap { position: relative; }
-
-  /* Status bar */
   .gt-status-bar {
     display: flex;
     justify-content: space-between;
@@ -277,8 +185,6 @@ body {
     color: rgba(255,255,255,0.35);
   }
   .gt-status-pct { color: rgba(255,255,255,0.6); }
-
-  /* Health bar */
   .gt-bar-track {
     width: 100%;
     height: 6px;
@@ -294,225 +200,44 @@ body {
   }
   .gt-bar-fill.warning { background: #C9A227; }
   .gt-bar-fill.danger { background: var(--red, #E8260A); }
-  .gt-bar-fill.critical {
-    background: var(--red, #E8260A);
-    animation: gt-pulse 0.4s infinite;
-  }
-  @keyframes gt-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
+  .gt-bar-fill.critical { background: var(--red, #E8260A); animation: gt-pulse 0.4s infinite; }
+  @keyframes gt-pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
 
-  /* Viewport */
-  .gt-viewport {
+  .gt-screen {
     width: 100%;
     aspect-ratio: 1;
-    background: #111;
-    border: 3px solid rgba(255,255,255,0.12);
+    background: #c4cfa0;
+    border: 6px solid #555;
+    border-radius: 12px;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.15), 0 0 0 3px #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    image-rendering: pixelated;
     position: relative;
     overflow: hidden;
   }
-
-  /* ── ORC (CSS portrait) ── */
-  .gt-orc {
+  .gt-screen::before {
+    content: '';
     position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 160px;
-    height: 200px;
-    transition: filter 0.5s ease;
-  }
-  .gt-orc-head {
-    position: absolute;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 110px;
-    height: 100px;
-    background: #4a7a2e;
-    border: 3px solid #2d4a1c;
-    border-radius: 50% 50% 40% 40%;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.03) 0px,
+      rgba(0,0,0,0.03) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
     z-index: 2;
   }
-  .gt-orc-body {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 110px;
-    background: #4a7a2e;
-    border: 3px solid #2d4a1c;
-    border-radius: 16px 16px 24px 24px;
-  }
-  .gt-orc-ear {
-    position: absolute;
-    top: 120px;
-    width: 28px;
-    height: 18px;
-    background: #4a7a2e;
-    border: 2px solid #2d4a1c;
-    z-index: 1;
-  }
-  .gt-orc-ear--l { left: 4px; border-radius: 50% 0 0 50%; transform: rotate(-15deg); }
-  .gt-orc-ear--r { right: 4px; border-radius: 0 50% 50% 0; transform: rotate(15deg); }
-  .gt-orc-eye {
-    position: absolute;
-    top: 30px;
-    width: 22px;
-    height: 26px;
-    background: #F3EDE0;
-    border-radius: 50%;
-    border: 2px solid #2d4a1c;
-    overflow: hidden;
-  }
-  .gt-orc-eye--l { left: 20px; }
-  .gt-orc-eye--r { right: 20px; }
-  .gt-orc-pupil {
-    position: absolute;
-    top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10px;
-    height: 12px;
-    background: #0D0D0D;
-    border-radius: 50%;
-    transition: all 0.15s ease;
-  }
-  .gt-orc-brow {
-    position: absolute;
-    top: 20px;
-    width: 28px;
-    height: 5px;
-    background: #2d4a1c;
-    border-radius: 3px;
-    transition: transform 0.3s ease;
-    z-index: 3;
-  }
-  .gt-orc-brow--l { left: 16px; transform: rotate(-5deg); }
-  .gt-orc-brow--r { right: 16px; transform: rotate(5deg); }
-  .gt-orc-mouth {
-    position: absolute;
-    bottom: 16px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 30px;
-    height: 6px;
-    background: #2d4a1c;
-    border-radius: 3px;
-    transition: all 0.3s ease;
-  }
-  .gt-orc-tusk {
-    position: absolute;
-    bottom: 30px;
-    width: 9px;
-    height: 14px;
-    background: #F3EDE0;
-    border-radius: 3px 3px 50% 50%;
-    border: 1px solid #999;
-    z-index: 3;
-  }
-  .gt-orc-tusk--l { left: 26px; transform: rotate(5deg); }
-  .gt-orc-tusk--r { right: 26px; transform: rotate(-5deg); }
-
-  /* Blood pool */
-  .gt-blood {
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    background: radial-gradient(ellipse, var(--red, #E8260A), #4a0000);
-    border-radius: 50%;
-    opacity: 0;
-    transition: all 3s ease;
-  }
-  .gt-blood.active { width: 180px; height: 30px; opacity: 0.7; }
-
-  /* ── ORC STATES ── */
-  .gt-orc.happy .gt-orc-mouth {
-    width: 44px; height: 20px;
-    border-radius: 0 0 22px 22px;
-    background: #2a1208;
-    border: 2px solid #2d4a1c;
-    border-top: none;
-  }
-  .gt-orc.happy .gt-orc-eye { height: 6px; top: 38px; }
-  .gt-orc.happy .gt-orc-brow--l { transform: rotate(-15deg) translateY(-4px); }
-  .gt-orc.happy .gt-orc-brow--r { transform: rotate(15deg) translateY(-4px); }
-
-  .gt-orc.hungry .gt-orc-mouth {
-    width: 36px; height: 22px;
-    border-radius: 50%;
-    background: #2a1208;
-    border: 2px solid #2d4a1c;
-  }
-  .gt-orc.hungry .gt-orc-brow--l { transform: rotate(10deg) translateY(2px); }
-  .gt-orc.hungry .gt-orc-brow--r { transform: rotate(-10deg) translateY(2px); }
-
-  .gt-orc.starving {
-    animation: gt-tremble 0.12s infinite;
-  }
-  .gt-orc.starving .gt-orc-mouth {
-    width: 42px; height: 28px;
-    border-radius: 50%;
-    background: #1a0505;
-    border: 2px solid #2d4a1c;
-  }
-  .gt-orc.starving .gt-orc-brow--l { transform: rotate(18deg) translateY(5px); }
-  .gt-orc.starving .gt-orc-brow--r { transform: rotate(-18deg) translateY(5px); }
-  .gt-orc.starving .gt-orc-eye { background: #ffcccc; }
-
-  .gt-orc.dying {
-    animation: gt-convulse 0.25s infinite;
-    filter: saturate(0.4) brightness(0.6);
-  }
-  .gt-orc.dying .gt-orc-mouth {
-    width: 48px; height: 32px;
-    border-radius: 50%;
-    background: #0a0202;
-  }
-  .gt-orc.dying .gt-orc-eye { background: #ff6666; }
-  .gt-orc.dying .gt-orc-pupil { width: 4px; height: 4px; top: 10px; }
-  .gt-orc.dying .gt-orc-brow--l { transform: rotate(22deg) translateY(7px); }
-  .gt-orc.dying .gt-orc-brow--r { transform: rotate(-22deg) translateY(7px); }
-
-  .gt-orc.dead {
-    filter: grayscale(1) brightness(0.35) !important;
-    transform: translateX(-50%) rotate(8deg) !important;
-    animation: none !important;
-    transition: none !important;
-  }
-  .gt-orc.dead .gt-orc-eye { background: #555; }
-  .gt-orc.dead .gt-orc-pupil {
-    width: 16px; height: 2px; border-radius: 1px; top: 12px; background: #333;
-  }
-  .gt-orc.dead .gt-orc-pupil::after {
-    content: ''; position: absolute;
-    width: 2px; height: 16px; background: #333;
-    top: -7px; left: 7px;
-  }
-  .gt-orc.dead .gt-orc-mouth {
-    width: 28px; height: 3px; border-radius: 0; bottom: 22px;
-  }
-  .gt-orc.dead .gt-orc-brow--l, .gt-orc.dead .gt-orc-brow--r { display: none; }
-
-  @keyframes gt-tremble {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    25% { transform: translateX(calc(-50% + 2px)) translateY(-1px); }
-    75% { transform: translateX(calc(-50% - 2px)) translateY(1px); }
-  }
-  @keyframes gt-convulse {
-    0% { transform: translateX(-50%) rotate(0deg); }
-    25% { transform: translateX(calc(-50% + 4px)) rotate(2deg); }
-    50% { transform: translateX(calc(-50% - 3px)) rotate(-1deg); }
-    75% { transform: translateX(calc(-50% + 5px)) rotate(3deg); }
-    100% { transform: translateX(-50%) rotate(0deg); }
+  #gt-canvas {
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
   }
 
-  /* ── SPEECH BUBBLE ── */
   .gt-speech {
     border: 2px solid rgba(255,255,255,0.12);
     padding: 14px 16px;
@@ -526,26 +251,13 @@ body {
     transition: border-color 0.3s;
   }
   .gt-speech.danger { border-color: var(--red, #E8260A); }
-  .gt-speech.critical {
-    border-color: var(--red, #E8260A);
-    animation: gt-border-pulse 0.5s infinite;
-  }
+  .gt-speech.critical { border-color: var(--red, #E8260A); animation: gt-bp 0.5s infinite; }
   .gt-speech.dead-speech { border-color: rgba(255,255,255,0.06); color: rgba(255,255,255,0.25); }
-  @keyframes gt-border-pulse {
-    0%, 100% { border-color: var(--red, #E8260A); }
-    50% { border-color: #ff2200; }
-  }
-  .gt-cursor {
-    color: var(--red, #E8260A);
-    animation: gt-blink 0.5s infinite;
-  }
+  @keyframes gt-bp { 0%,100%{border-color:#E8260A}50%{border-color:#ff2200} }
+  .gt-cursor { color: var(--red, #E8260A); animation: gt-blink 0.5s infinite; }
   .gt-cursor.off { display: none; }
-  @keyframes gt-blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
+  @keyframes gt-blink { 0%,100%{opacity:1}50%{opacity:0} }
 
-  /* Mood label */
   .gt-mood {
     font-family: var(--font-ui, 'DM Mono', monospace);
     font-size: 9px;
@@ -558,28 +270,44 @@ body {
   }
   .gt-mood.danger { color: var(--red, #E8260A); }
 
-  /* Hearts */
-  .gt-heart {
-    position: absolute;
-    font-size: 18px;
-    animation: gt-float-heart 2s ease-out forwards;
-    opacity: 0;
-    pointer-events: none;
+  /* CHATBOT */
+  .gt-chat-log {
+    border: 2px solid rgba(255,255,255,0.12);
+    padding: 16px;
+    margin-bottom: 12px;
+    max-height: 280px;
+    overflow-y: auto;
+    font-family: var(--font-body, 'Courier Prime', monospace);
+    font-size: 13px;
+    line-height: 1.6;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
   }
-  @keyframes gt-float-heart {
-    0% { opacity: 1; transform: translateY(0) scale(0.5); }
-    50% { opacity: 1; transform: translateY(-50px) scale(1.1); }
-    100% { opacity: 0; transform: translateY(-100px) scale(0.7); }
+  .gt-chat-msg {
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
+  .gt-chat-msg:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .gt-chat-msg .gt-chat-who {
+    font-family: var(--font-ui, 'DM Mono', monospace);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .gt-chat-msg.user .gt-chat-who { color: rgba(255,255,255,0.3); }
+  .gt-chat-msg.gorthog .gt-chat-who { color: var(--red, #E8260A); }
+  .gt-chat-msg.user .gt-chat-body { color: rgba(243,237,224,0.5); font-style: italic; }
+  .gt-chat-msg.gorthog .gt-chat-body { color: rgba(243,237,224,0.8); }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 1024px) {
     .gt-inner { grid-template-columns: 1fr; gap: 40px; }
     .gt-title { font-size: 56px; }
   }
   @media (max-width: 768px) {
     .gt-title { font-size: 44px; }
-    .gt-input-row { flex-direction: column; }
+    .gt-input-row, .gt-chat-input-row { flex-direction: column; }
     .gt-feed-btn { width: 100%; }
   }
 </style>
@@ -588,10 +316,217 @@ body {
 (function() {
   'use strict';
 
+  /* ═══════════════════════════════════════
+     CONFIG
+     ═══════════════════════════════════════ */
   var LIFE_SECONDS = 120;
   var TYPING_MS = 30;
-  var SAVE_KEY = 'gorthog_tama_v1';
+  var SAVE_KEY = 'gorthog_tama_v2';
+  var PX = 4; /* pixel scale: each "pixel" = 4x4 canvas pixels */
+  var GW = 40, GH = 40; /* grid size */
 
+  /* ═══════════════════════════════════════
+     PIXEL ART SPRITES
+     Each sprite is an array of strings.
+     Characters: . = transparent, G = green skin, D = dark green,
+     W = white, B = black, T = tusk/bone, M = mouth dark,
+     R = red, P = pink, X = gray (dead)
+     ═══════════════════════════════════════ */
+  var SPRITES = {
+    idle: [
+      '................',
+      '....DDDDDDDD....',
+      '...DGGGGGGGGGD..',
+      '..DGGGGGGGGGGD..',
+      '.DGGGGGGGGGGGD..',
+      '.DGGGGGGGGGGGGD.',
+      'DDD.GGGGGGGGDDD.',
+      'DGD.GGGGGGGG.DGD',
+      'DDD.GGGGGGGG.DDD',
+      '.DGGWWWGGWWWGGD.',
+      '.DGGWBWGGWBWGGD.',
+      '.DGGWWWGGWWWGGD.',
+      '.DGGGGGGGGGGGD..',
+      '.DGTGGGGGGGTGD..',
+      '.DGTTGMMMMTTGD..',
+      '.DGGGGMMMMGGGD..',
+      '..DGGGGGGGGGGD..',
+      '..DDGGGGGGGGDD..',
+      '...DDDDDDDDD....',
+      '....DGGGGGGD.....',
+      '...DGGGGGGGD.....',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '...DDDDDDDDDD....',
+    ],
+    happy: [
+      '................',
+      '....DDDDDDDD....',
+      '...DGGGGGGGGGD..',
+      '..DGGGGGGGGGGD..',
+      '.DGGGGGGGGGGGD..',
+      '.DGGGGGGGGGGGGD.',
+      'DDD.GGGGGGGGDDD.',
+      'DGD.GGGGGGGG.DGD',
+      'DDD.GGGGGGGG.DDD',
+      '.DGGBBBGGBBBGGD.',
+      '.DGGGGGGGGGGGD..',
+      '.DGGGGGGGGGGGD..',
+      '.DGGGGGGGGGGGD..',
+      '.DGTGGGGGGGTGD..',
+      '.DGTTGMMMTTTGD..',
+      '.DGGGGMMMMMGGD..',
+      '..DGGGMMMMMGD...',
+      '..DDGGGGGGGGDD..',
+      '...DDDDDDDDD....',
+      '....DGGDDGGD.....',
+      '...DGGD..DGGD...',
+      '..DGD......DGD..',
+      '..DGD......DGD..',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '...DDDDDDDDDD....',
+    ],
+    hungry: [
+      '................',
+      '....DDDDDDDD....',
+      '...DGGGGGGGGGD..',
+      '..DGGGGGGGGGGD..',
+      '.DGGDDDGGDDDGD..',
+      '.DGGGGGGGGGGGGD.',
+      'DDD.GGGGGGGGDDD.',
+      'DGD.GGGGGGGG.DGD',
+      'DDD.GGGGGGGG.DDD',
+      '.DGGWWWGGWWWGGD.',
+      '.DGGWBWGGWBWGGD.',
+      '.DGGWWWGGWWWGGD.',
+      '.DGGGGGGGGGGGD..',
+      '.DGTGGGGGGGTGD..',
+      '.DGTTGGGGGGTTD..',
+      '.DGGGMMMMMGGGD..',
+      '..DGMMMMMMMGD...',
+      '..DDGGGGGGGGDD..',
+      '...DDDDDDDDD....',
+      '....DGGGGGGD.....',
+      '...DGGGGGGGD.....',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '...DDDDDDDDDD....',
+    ],
+    starving: [
+      '................',
+      '....DDDDDDDD....',
+      '...DGGGGGGGGGD..',
+      '..DGGGGGGGGGGD..',
+      '.DGGDDDGGDDDGD..',
+      '.DGGGGGGGGGGGGD.',
+      'DDD.GGGGGGGGDDD.',
+      'DGD.GGGGGGGG.DGD',
+      'DDD.GGGGGGGG.DDD',
+      '.DGGPPWGGWPPGGD.',
+      '.DGGPBWGGWBPGGD.',
+      '.DGGPPWGGWPPGGD.',
+      '.DGGGGGGGGGGGD..',
+      '.DGTGGGGGGGTGD..',
+      '.DGTTGGGGGGTTD..',
+      '.DGGMMMMMMMGGD..',
+      '..DMMMMMMMMMMD..',
+      '..DDMMMMMMMGDD..',
+      '...DDDDDDDDD....',
+      '....DGGGGGGD.....',
+      '...DGGGGGGGD.....',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '...DDDDDDDDDD....',
+    ],
+    dying: [
+      '................',
+      '....DDDDDDDD....',
+      '...DGGGGGGGGGD..',
+      '..DGGGGGGGGGGD..',
+      '.DGGDDDGGDDDGD..',
+      '.DGGGGGGGGGGGGD.',
+      'DDD.GGGGGGGGDDD.',
+      'DGD.GGGGGGGG.DGD',
+      'DDD.GGGGGGGG.DDD',
+      '.DGGRRRGGRRRGD..',
+      '.DGGRBRGGRBRGD..',
+      '.DGGRRRGGRRRGD..',
+      '.DGGGGGGGGGGGD..',
+      '.DGTGGGGGGGTGD..',
+      '.DGTTGGGGGGTTD..',
+      '.DGGGMMMMMMGGD..',
+      '..DGMMMMMMMMGD..',
+      '..DDMMMMMMMMDD..',
+      '...DDDDDDDDD....',
+      '....DGGGGGGD.....',
+      '...DGGGGGGGD.....',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '..DGGGGGGGGGGD...',
+      '...DDDDDDDDDD....',
+    ],
+    dead: [
+      '................',
+      '....XXXXXXXX....',
+      '...XXXXXXXXXXXX.',
+      '..XXXXXXXXXXXXXX',
+      '.XXXXXXXXXXXXXXX',
+      '.XXXXXXXXXXXXXXX',
+      'XXX.XXXXXXXXXX.X',
+      'XXX.XXXXXXXXXX.X',
+      'XXX.XXXXXXXXXX.X',
+      '.XXXBXBXXBXBXXXX',
+      '.XXXXBXXXXBXXXXX',
+      '.XXXBXBXXBXBXXXX',
+      '.XXXXXXXXXXXXXXX',
+      '.XXXTXXXXXXTXXXX',
+      '.XXXTTXXXXTTXXXX',
+      '.XXXXXXXXXXXXXXX',
+      '..XXXBBBBBBBXXXX',
+      '..XXXXXXXXXXXXXX',
+      '...XXXXXXXXXXX..',
+      '................',
+      '......XXX.......',
+      '.....XXXXX......',
+      '.....XXXXX......',
+      '.....XXXXX......',
+      '......XXX.......',
+      '................',
+    ],
+  };
+
+  /* Color map */
+  var COLORS = {
+    '.': null,
+    'G': '#6b8e3a',
+    'D': '#3d5a1e',
+    'W': '#e8e0d0',
+    'B': '#1a1a1a',
+    'T': '#d4c9a8',
+    'M': '#2a1208',
+    'R': '#cc3333',
+    'P': '#ffaaaa',
+    'X': '#666666',
+  };
+
+  /* LCD green-tint versions for dead screen */
+  var COLORS_DEAD = {};
+  for (var k in COLORS) {
+    if (COLORS[k]) COLORS_DEAD[k] = '#5a6348';
+    else COLORS_DEAD[k] = null;
+  }
+
+  /* ═══════════════════════════════════════
+     DIALOGUE
+     ═══════════════════════════════════════ */
   var LINES = {
     idle: [
       "Gorthog smell fresh visitor... you got email?",
@@ -605,10 +540,10 @@ body {
     ],
     hungry: [
       "Gorthog getting VERY hungry now...",
-      "You... you not gonna let Gorthog starve right?",
+      "You not gonna let Gorthog starve right?",
       "Gorthog stomach making bad sounds...",
       "PLEASE. Gorthog NEED email. Is not asking much.",
-      "Why you do this to Gorthog?? Just one email!!",
+      "Why you do this?? Just one email!!",
       "Gorthog vision getting blurry... need email...",
       "Other orcs laughing at Gorthog. Say nobody feed him.",
       "Gorthog knees weak... arms heavy... need email...",
@@ -619,16 +554,16 @@ body {
       "Gorthog see tunnel of light... it have no emails...",
       "This... this is how Gorthog dies? No email?",
       "GORTHOG CHILDREN WILL GROW UP WITHOUT FATHER",
-      "The pain... THE PAIN... it burns where email should be...",
-      "Gorthog crying green tears... nobody care about orc...",
+      "The pain... it burns where email should be...",
+      "Gorthog crying green tears... nobody care...",
       "YOU WATCHING GORTHOG DIE AND DOING NOTHING",
     ],
     dying: [
       "...gorthog...can't...see...",
       "tell... gorthog's wife... he died... hungry...",
-      "the void... it comes... cold... no emails there...",
+      "the void... it comes... cold... no emails...",
       "gorthog's... last... breath...",
-      "why... why didn't you... just... type... email...",
+      "why didn't you... just... type... email...",
       "everything... going... dark...",
       "*gurgling sounds*",
       "mama... mama gorthog... is that you...",
@@ -639,45 +574,130 @@ body {
       "He had a family. Three little orclings.",
       "847 years. Ended by your indifference.",
       "All he wanted was one email.",
-      "But you didn't.",
     ],
     fed: [
       "YAAAAAAAGH!! EMAIL!! GORTHOG FEAST!!",
       "GLORIOUS!! GORTHOG BELLY FULL OF EMAIL!!",
       "YOU... YOU GREATEST HUMAN EVER LIVE!!",
-      "Gorthog weep tears of joy!! BIG GREEN TEARS!!",
-      "GORTHOG LIVE!! GORTHOG LIVE ANOTHER DAY!!",
+      "Gorthog weep tears of joy!!",
+      "GORTHOG LIVE ANOTHER DAY!!",
       "Email taste like victory and sadness of enemies!!",
-      "Gorthog name firstborn after you!! (It ugly baby but is honor!!)",
     ],
   };
 
-  /* --- DOM --- */
+  /* ═══════════════════════════════════════
+     KNOWLEDGE BASE
+     ═══════════════════════════════════════ */
+  var KB = [
+    {
+      keys: ['who','atticus','eby','owner','creator','founder','run','behind'],
+      answer: "Gorthog work for Atticus Eby. Him run this whole operation. Public lab, SEO experiments, AI automation, questionable merch decisions. Gorthog respect him. Mostly because him sign Gorthog paycheck."
+    },
+    {
+      keys: ['napalm','sunrise','site','website','about','what is','this place'],
+      answer: "Napalm Sunrise is public lab run by Atticus Eby. Documented SEO experiments, AEO tests, AI automation, absurdist merch, and Gorthog column where Gorthog give advice from 847 years of orc wisdom. Is like if laboratory had existential crisis and also sold t-shirts."
+    },
+    {
+      keys: ['experiment','test','seo','aeo','lab','research','schema','stacking'],
+      answer: "Right now there active experiments running. One is AEO Schema Stacking — layering JSON-LD types to see if AI cite site more. Product + Article + FAQ + HowTo on same content, tracking through GSC and Perplexity citations weekly. Another is Internal Link Velocity — drip-adding links vs bulk. 20 post control group. Atticus very serious about data. Gorthog very serious about not understanding any of it."
+    },
+    {
+      keys: ['internal link','link velocity','drip','bulk'],
+      answer: "Internal Link Velocity experiment: 20 post control group. 2 links per week over 20 weeks vs 40 links on day 1. Question is whether Google treat slow drip differently than big dump. Gorthog think big dump always better but Gorthog not search engine."
+    },
+    {
+      keys: ['blog','lab notes','writing','article','post','content','wu-tang','oregon'],
+      answer: "Lab Notes is blog. Has real SEO analysis like 'What Actually Happens When You Stop Touching a Post for 90 Days' — content decay across 8 posts where rankings vs AI citations diverged at day 45. Also has chaos posts like ranking Wu-Tang members by Oregon Trail survival probability. Methodology include food management, disease resistance, oxen judgment, and frontier vibes. Gorthog approve of this methodology."
+    },
+    {
+      keys: ['shop','store','merch','buy','product','shirt','sell'],
+      answer: "There is shop. Absurdist merch. Gorthog not allowed to say more because last time Gorthog describe merch, sales go down 40%. Atticus say Gorthog 'not brand ambassador material.' Gorthog disagree but also Gorthog not know what ambassador mean."
+    },
+    {
+      keys: ['gorthog','orc','you','yourself','who are','age','old','847'],
+      answer: "Gorthog is 847-year-old orc. Survived four empires, two recessions, and one particularly ill-advised foray into B2B SaaS. Gorthog give advice column on this site. Life and career questions answered with bluntness of someone who ran out of patience approximately 600 years ago. Gorthog also very hungry most of the time."
+    },
+    {
+      keys: ['ask gorthog','column','advice','question','submit','help me'],
+      answer: "Ask Gorthog is advice column. Humans submit life and career questions. Gorthog answer from 847 years of experience watching humans make same mistakes over and over. Recent question: 'Should I take the promotion if it means giving up my passion project?' Gorthog answer: In 847 years Gorthog watched kingdoms burn for less foolish reasons. Submit your question on the site. Gorthog read all of them. Gorthog judge most of them."
+    },
+    {
+      keys: ['ai','automation','claude','anthropic','llm','artificial','machine'],
+      answer: "Atticus use AI automation heavily. SEO content pipeline use Claude API for generating copy, then check through AI detection, then output to Google Docs. Whole system automated. Gorthog not sure how Gorthog feel about AI. On one hand, AI help Gorthog communicate with humans. On other hand, AI probably replace Gorthog eventually. Circle of life. Circle of tech debt."
+    },
+    {
+      keys: ['content decay','stop','90 days','ranking','citation'],
+      answer: "One of lab notes track what happen when you leave post alone for 90 days. Content decay across 8 posts. Big finding: rankings and AI citations diverged at day 45. Rankings dropped predictably. AI citations did own thing. This important because it mean AI engines not just following Google. They have own opinion. Like Gorthog have own opinion, except AI opinion based on data and Gorthog opinion based on vibes and rage."
+    },
+    {
+      keys: ['subscribe','email','newsletter','updates','join'],
+      answer: "You already feed Gorthog email. That was the subscription. Lab updates, Gorthog drops, new posts. Irregular cadence. No fluff. Atticus say 'no fluff' but Gorthog entire existence is fluff so this contradictory. You on the list now. No take-backs."
+    },
+    {
+      keys: ['contact','reach','talk','connect','hire','work'],
+      answer: "You talking to Gorthog right now. That basically same thing as contact. If you want actual human contact, Atticus is on the site. But Gorthog better conversationalist. Gorthog been talking for 847 years. Atticus been talking for significantly less."
+    },
+    {
+      keys: ['hello','hi','hey','sup','yo','greetings','what up'],
+      answer: "Greetings, small human. Gorthog is fed and in generous mood. Ask Gorthog about the site, the experiments, the merch, the blog, the advice column, or the meaning of life. Gorthog have opinions on all of these. Some of them even correct."
+    },
+    {
+      keys: ['thank','thanks','appreciate','love','great','awesome','cool'],
+      answer: "Gorthog... Gorthog not used to kind words. Most humans either scream or run. You different. Gorthog remember this. When the dark times come — and they always come — Gorthog will remember you were kind. Now ask another question before Gorthog get emotional. Orc tears corrode metal."
+    },
+    {
+      keys: ['meaning of life','purpose','why','philosophy','exist'],
+      answer: "In 847 years Gorthog learn this: meaning of life is whatever you doing when you forget to check your phone. For Gorthog it is eating emails and yelling at clouds. For you it maybe something more noble. Or maybe not. Gorthog not here to judge. Gorthog here to answer questions about this website. Which you should browse more. There good stuff on here."
+    },
+  ];
+
+  var FALLBACKS = [
+    "Gorthog not sure about that. Ask about the experiments, the blog, the shop, or the advice column. Those things Gorthog know.",
+    "Gorthog scratch head. That not in Gorthog knowledge scrolls. Try asking about Napalm Sunrise, the SEO experiments, or who Atticus Eby is.",
+    "Hmmm. Gorthog 847 years old and still not know answer to that. Ask Gorthog about something on this site and Gorthog do better.",
+    "That outside Gorthog area of expertise. Gorthog area of expertise: this website, eating emails, and surviving empires. Ask about one of those.",
+    "Gorthog confused by question. But Gorthog always confused. Try asking about the lab notes, experiments, merch, or Gorthog advice column.",
+  ];
+
+  /* ═══════════════════════════════════════
+     DOM
+     ═══════════════════════════════════════ */
   var el = {
-    title:     document.getElementById('gt-title'),
-    body:      document.getElementById('gt-body'),
-    formWrap:  document.getElementById('gt-form-wrap'),
-    restartW:  document.getElementById('gt-restart-wrap'),
-    email:     document.getElementById('gt-email'),
-    feedBtn:   document.getElementById('gt-feed-btn'),
-    restartBtn:document.getElementById('gt-restart-btn'),
-    error:     document.getElementById('gt-error'),
-    bar:       document.getElementById('gt-bar'),
-    pct:       document.getElementById('gt-pct'),
-    orc:       document.getElementById('gt-orc'),
-    blood:     document.getElementById('gt-blood'),
-    viewport:  document.getElementById('gt-viewport'),
-    speech:    document.getElementById('gt-speech'),
+    title: document.getElementById('gt-title'),
+    body: document.getElementById('gt-body'),
+    formWrap: document.getElementById('gt-form-wrap'),
+    restartW: document.getElementById('gt-restart-wrap'),
+    chatWrap: document.getElementById('gt-chat-wrap'),
+    chatLog: document.getElementById('gt-chat-log'),
+    chatInput: document.getElementById('gt-chat-input'),
+    chatSend: document.getElementById('gt-chat-send'),
+    email: document.getElementById('gt-email'),
+    feedBtn: document.getElementById('gt-feed-btn'),
+    restartBtn: document.getElementById('gt-restart-btn'),
+    error: document.getElementById('gt-error'),
+    bar: document.getElementById('gt-bar'),
+    pct: document.getElementById('gt-pct'),
+    canvas: document.getElementById('gt-canvas'),
     speechTxt: document.getElementById('gt-speech-text'),
-    cursor:    document.getElementById('gt-cursor'),
-    mood:      document.getElementById('gt-mood'),
+    cursor: document.getElementById('gt-cursor'),
+    speech: document.getElementById('gt-speech'),
+    mood: document.getElementById('gt-mood'),
   };
 
-  /* --- STATE --- */
-  var hp = 100, fed = false, paused = false, lastTick = Date.now();
-  var typer = null, lineIdx = {}, lastPhase = null, lastLineTime = 0, currentOrcClass = '';
+  var ctx = el.canvas.getContext('2d');
+  el.canvas.width = GW * PX;
+  el.canvas.height = GH * PX;
 
-  /* --- SAVE/LOAD --- */
+  /* ═══════════════════════════════════════
+     STATE
+     ═══════════════════════════════════════ */
+  var hp = 100, fed = false, paused = false, lastTick = Date.now();
+  var typer = null, lineIdx = {}, lastPhase = null, lastLineTime = 0, currentOrcState = '';
+  var animFrame = 0;
+
+  /* ═══════════════════════════════════════
+     SAVE/LOAD
+     ═══════════════════════════════════════ */
   function save() {
     try { localStorage.setItem(SAVE_KEY, JSON.stringify({ hp: hp, fed: fed, at: Date.now() })); } catch(e) {}
   }
@@ -691,7 +711,9 @@ body {
     } catch(e) {}
   }
 
-  /* --- HELPERS --- */
+  /* ═══════════════════════════════════════
+     HELPERS
+     ═══════════════════════════════════════ */
   function phase() {
     if (fed) return 'fed';
     if (hp <= 0) return 'dead';
@@ -739,11 +761,91 @@ body {
     return null;
   }
 
-  /* --- RENDER --- */
+  /* ═══════════════════════════════════════
+     PIXEL RENDERER
+     ═══════════════════════════════════════ */
+  function drawSprite(sprite, colorMap, offsetX, offsetY) {
+    for (var row = 0; row < sprite.length; row++) {
+      for (var col = 0; col < sprite[row].length; col++) {
+        var ch = sprite[row][col];
+        var c = colorMap[ch];
+        if (!c) continue;
+        ctx.fillStyle = c;
+        ctx.fillRect((offsetX + col) * PX, (offsetY + row) * PX, PX, PX);
+      }
+    }
+  }
+
+  function renderPixels() {
+    var p = phase();
+    var bg = p === 'dead' ? '#8a9168' : '#c4cfa0';
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, GW * PX, GH * PX);
+
+    var spriteKey = p;
+    if (p === 'fed') spriteKey = 'happy';
+    var sprite = SPRITES[spriteKey] || SPRITES.idle;
+    var cm = p === 'dead' ? COLORS_DEAD : COLORS;
+
+    /* Center sprite */
+    var sw = sprite[0] ? sprite[0].length : 16;
+    var sh = sprite.length;
+    var ox = Math.floor((GW - sw) / 2);
+    var oy = Math.floor((GH - sh) / 2) + 2;
+
+    /* Tremble for starving */
+    if (p === 'starving') {
+      ox += Math.round(Math.sin(animFrame * 0.8) * 1);
+    }
+    /* Convulse for dying */
+    if (p === 'dying') {
+      ox += Math.round(Math.sin(animFrame * 1.5) * 2);
+      oy += Math.round(Math.cos(animFrame * 1.2) * 1);
+    }
+    /* Dead tilt — shift right and add blood pixels */
+    if (p === 'dead') {
+      ox += 2;
+      /* Blood pool */
+      ctx.fillStyle = '#5a6348';
+      for (var bx = 8; bx < 32; bx++) {
+        for (var by = 34; by < 37; by++) {
+          if (Math.abs(bx - 20) + (by - 34) < 14) {
+            ctx.fillRect(bx * PX, by * PX, PX, PX);
+          }
+        }
+      }
+    }
+    /* Hearts for happy */
+    if (p === 'fed') {
+      var hf = animFrame % 40;
+      if (hf < 20) {
+        var heartPositions = [[6,4],[30,6],[8,10],[28,3]];
+        for (var hi = 0; hi < heartPositions.length; hi++) {
+          var hx = heartPositions[hi][0], hy = heartPositions[hi][1] - Math.floor(hf / 4);
+          if (hy > 0) {
+            ctx.fillStyle = '#8a3a2a';
+            ctx.fillRect(hx * PX, hy * PX, PX, PX);
+            ctx.fillRect((hx+2) * PX, hy * PX, PX, PX);
+            ctx.fillRect((hx-1) * PX, (hy+1) * PX, PX, PX);
+            ctx.fillRect((hx+1) * PX, (hy+1) * PX, PX, PX);
+            ctx.fillRect((hx+3) * PX, (hy+1) * PX, PX, PX);
+            ctx.fillRect(hx * PX, (hy+2) * PX, PX * 3, PX);
+            ctx.fillRect((hx+1) * PX, (hy+3) * PX, PX, PX);
+          }
+        }
+      }
+    }
+
+    drawSprite(sprite, cm, ox, oy);
+    animFrame++;
+  }
+
+  /* ═══════════════════════════════════════
+     RENDER UI
+     ═══════════════════════════════════════ */
   function render() {
     var p = phase(), h = Math.max(0, Math.round(hp));
 
-    /* bar */
     el.bar.style.width = h + '%';
     el.pct.textContent = h + '%';
     el.bar.className = 'gt-bar-fill';
@@ -751,82 +853,68 @@ body {
     else if (h <= 25) el.bar.classList.add('danger');
     else if (h <= 50) el.bar.classList.add('warning');
 
-    /* orc sprite — only update when phase changes to avoid resetting transitions */
-    var orcState = p === 'fed' ? 'happy' : p;
-    if (orcState !== currentOrcClass) {
-      currentOrcClass = orcState;
-      el.orc.className = 'gt-orc ' + orcState;
-    }
-
-    /* speech styling */
     el.speech.className = 'gt-speech';
     if (p === 'dying') el.speech.classList.add('critical');
     else if (p === 'starving') el.speech.classList.add('danger');
     else if (p === 'dead') el.speech.classList.add('dead-speech');
 
-    /* title color */
     el.title.className = 'gt-title';
     if (p === 'dying' || p === 'starving') el.title.classList.add('danger');
 
-    /* mood label */
     var moods = {
       idle: 'GORTHOG AWAITS',
       hungry: 'GORTHOG GROWS IMPATIENT',
       starving: 'GORTHOG IS SUFFERING',
       dying: 'GORTHOG IS DYING',
       dead: 'GORTHOG IS DEAD. YOU KILLED HIM.',
-      fed: 'GORTHOG IS FED AND GRATEFUL',
+      fed: 'GORTHOG IS FED — ASK HIM ANYTHING',
     };
     el.mood.textContent = moods[p] || '';
     el.mood.className = 'gt-mood';
     if (p === 'dying' || p === 'dead') el.mood.classList.add('danger');
 
-    /* body text */
     var bodies = {
       idle: 'Gorthog has not eaten in some time. He sustains himself on email addresses. If you do not feed him, he will die. This is not a metaphor.',
-      hungry: 'Gorthog grows weaker. His 847-year life force drains by the second. Only an email can sustain him. You hold his fate in your inbox.',
-      starving: 'Gorthog is in visible pain. His green skin pales. His tusks tremble. He has perhaps moments left. An email would save him.',
+      hungry: 'Gorthog grows weaker. His 847-year life force drains by the second. Only an email can sustain him.',
+      starving: 'Gorthog is in visible pain. His green skin pales. His tusks tremble. An email would save him.',
       dying: 'This is it. Gorthog is dying. Right here. In front of you. Because you would not type a few characters into a box.',
       dead: 'Gorthog the Ancient is dead. 847 years survived. Four empires. Two recessions. One ill-advised B2B SaaS venture. All undone by your refusal to share an email.',
-      fed: 'Gorthog lives. Your email sustains him for another age. He will speak of your generosity in the great halls. Or at least in his newsletter.',
+      fed: 'Gorthog lives. Your email sustains him. He is now available to answer your questions about this site with the wisdom of 847 years and the patience of approximately none of them.',
     };
     el.body.textContent = bodies[p] || '';
 
-    /* form visibility */
     if (p === 'dead') {
       el.formWrap.style.display = 'none';
       el.restartW.style.display = 'block';
-      el.email.disabled = true;
-      el.feedBtn.disabled = true;
+      el.chatWrap.style.display = 'none';
     } else if (p === 'fed') {
       el.formWrap.style.display = 'none';
       el.restartW.style.display = 'none';
+      el.chatWrap.style.display = 'block';
     } else {
       el.formWrap.style.display = 'block';
       el.restartW.style.display = 'none';
-      el.email.disabled = false;
-      el.feedBtn.disabled = false;
+      el.chatWrap.style.display = 'none';
     }
 
-    /* blood */
-    if (p === 'dead') el.blood.classList.add('active');
-    else el.blood.classList.remove('active');
-
-    /* dialogue */
     var now = Date.now();
-    var interval = p === 'dying' ? 3000 : p === 'starving' ? 4000 : 6000;
+    var interval = p === 'dying' ? 3000 : p === 'starving' ? 4000 : p === 'fed' ? 99999999 : 6000;
 
     if (p !== lastPhase) {
-      typeText(pickLine(p));
+      if (p !== 'fed' || !lastPhase) typeText(pickLine(p));
       lastLineTime = now;
       lastPhase = p;
-    } else if (now - lastLineTime > interval && !typer) {
+    } else if (now - lastLineTime > interval && !typer && p !== 'fed') {
       typeText(pickLine(p));
       lastLineTime = now;
     }
+
+    renderPixels();
   }
 
-  /* --- GAME LOOP --- */
+  /* ═══════════════════════════════════════
+     GAME LOOP
+     ═══════════════════════════════════════ */
   function tick() {
     if (!fed && hp > 0 && !paused) {
       var now = Date.now(), dt = (now - lastTick) / 1000;
@@ -838,36 +926,73 @@ body {
     requestAnimationFrame(tick);
   }
 
-  /* --- FEED --- */
+  /* ═══════════════════════════════════════
+     CHATBOT
+     ═══════════════════════════════════════ */
+  function addMsg(who, text) {
+    var div = document.createElement('div');
+    div.className = 'gt-chat-msg ' + who;
+    div.innerHTML = '<div class="gt-chat-who">' + (who === 'user' ? 'You' : 'Gorthog') + '</div><div class="gt-chat-body"></div>';
+    div.querySelector('.gt-chat-body').textContent = text;
+    el.chatLog.appendChild(div);
+    el.chatLog.scrollTop = el.chatLog.scrollHeight;
+  }
+
+  function findAnswer(q) {
+    var low = q.toLowerCase().replace(/[^a-z0-9 ]/g, '');
+    var words = low.split(/\s+/);
+    var best = null, bestScore = 0;
+    for (var i = 0; i < KB.length; i++) {
+      var score = 0;
+      for (var j = 0; j < KB[i].keys.length; j++) {
+        var key = KB[i].keys[j];
+        if (low.indexOf(key) > -1) {
+          /* Weight by keyword length — longer matches are more specific */
+          score += key.length;
+        }
+      }
+      if (score > bestScore) { bestScore = score; best = KB[i]; }
+    }
+    if (best && bestScore > 0) return best.answer;
+    return FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)];
+  }
+
+  function handleChat() {
+    var q = el.chatInput.value.trim();
+    if (!q) return;
+    addMsg('user', q);
+    el.chatInput.value = '';
+    var answer = findAnswer(q);
+    /* Slight delay for realism */
+    setTimeout(function() {
+      addMsg('gorthog', answer);
+      typeText(answer.substring(0, 60) + (answer.length > 60 ? '...' : ''));
+    }, 300 + Math.random() * 400);
+  }
+
+  /* ═══════════════════════════════════════
+     FEED / RESET
+     ═══════════════════════════════════════ */
   function feed(email) {
     fed = true; hp = 100; lastPhase = null;
-    /* hearts */
-    for (var i = 0; i < 6; i++) {
-      var h = document.createElement('div');
-      h.className = 'gt-heart';
-      h.textContent = '\u2764';
-      h.style.left = (60 + Math.random() * 260) + 'px';
-      h.style.bottom = (60 + Math.random() * 100) + 'px';
-      h.style.animationDelay = (Math.random() * 0.8) + 's';
-      h.style.color = '#E8260A';
-      el.viewport.appendChild(h);
-      (function(node){ setTimeout(function(){ node.remove(); }, 2800); })(h);
-    }
     typeText(pickLine('fed'));
+    addMsg('gorthog', "GORTHOG LIVE!! You feed Gorthog! Now Gorthog answer your questions about Napalm Sunrise. Ask anything. Gorthog in good mood. For now.");
     render(); save();
   }
 
   function reset() {
     hp = 100; fed = false; lastPhase = null; lastLineTime = 0; lineIdx = {};
-    el.blood.classList.remove('active');
     el.email.value = '';
     el.error.textContent = '';
+    el.chatLog.innerHTML = '';
     lastTick = Date.now();
     try { localStorage.removeItem(SAVE_KEY); } catch(e) {}
     render(); typeText(pickLine('idle'));
   }
 
-  /* --- EVENTS --- */
+  /* ═══════════════════════════════════════
+     EVENTS
+     ═══════════════════════════════════════ */
   el.feedBtn.addEventListener('click', function(e) {
     e.preventDefault();
     var err = validateEmail(el.email.value);
@@ -882,50 +1007,39 @@ body {
   });
 
   el.email.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      el.feedBtn.click();
-    }
+    if (e.key === 'Enter') { e.preventDefault(); el.feedBtn.click(); }
   });
-
   el.email.addEventListener('input', function() { el.error.textContent = ''; });
   el.restartBtn.addEventListener('click', reset);
 
-  /* Eye tracking */
-  document.addEventListener('mousemove', function(e) {
-    if (hp <= 0 || fed) return;
-    var r = el.viewport.getBoundingClientRect();
-    var cx = r.left + r.width / 2, cy = r.top + r.height * 0.35;
-    var dx = (e.clientX - cx) / window.innerWidth;
-    var dy = (e.clientY - cy) / window.innerHeight;
-    var pupils = el.orc.querySelectorAll('.gt-orc-pupil');
-    for (var i = 0; i < pupils.length; i++) {
-      pupils[i].style.left = 'calc(50% + ' + (dx * 6) + 'px)';
-      pupils[i].style.top = (6 + dy * 6) + 'px';
-    }
+  el.chatSend.addEventListener('click', handleChat);
+  el.chatInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); handleChat(); }
   });
 
-  /* Pause when hidden */
   document.addEventListener('visibilitychange', function() {
     if (document.hidden) { paused = true; save(); }
     else { paused = false; lastTick = Date.now(); }
   });
 
-  /* --- INIT --- */
+  /* ═══════════════════════════════════════
+     INIT
+     ═══════════════════════════════════════ */
   load();
   lastTick = Date.now();
   var p0 = phase();
-  if (fed) typeText("Gorthog remember you! You the good one!");
-  else if (p0 === 'dead') typeText(LINES.dead[0]);
-  else typeText(pickLine(p0));
+  if (fed) {
+    typeText("Gorthog remember you! Ask Gorthog anything.");
+    addMsg('gorthog', "Gorthog remember you! You the good one. Ask Gorthog anything about Napalm Sunrise.");
+  } else if (p0 === 'dead') {
+    typeText(LINES.dead[0]);
+  } else {
+    typeText(pickLine(p0));
+  }
   lastLineTime = Date.now();
   requestAnimationFrame(tick);
 })();
 </script>
 
-
-<footer class="page-footer">
-  napalmsunrise.com — A public lab by Atticus Eby
-</footer>
-</body>
-</html>
+<footer class="page-footer">napalmsunrise.com — A public lab by Atticus Eby</footer>
+</body></html>
