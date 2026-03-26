@@ -1,0 +1,825 @@
+<div class="gorthog-tama" id="gorthog-tama">
+  <div class="gt-inner">
+
+    <!-- LEFT: copy + email -->
+    <div class="gt-copy">
+      <div class="gt-eyebrow">/ Gorthog Demands Tribute</div>
+      <h2 class="gt-title" id="gt-title">FEED<br>THE ORC</h2>
+      <p class="gt-body" id="gt-body">Gorthog has not eaten in some time. He sustains himself on email addresses. If you do not feed him, he will die. This is not a metaphor.</p>
+
+      <div class="gt-form-wrap" id="gt-form-wrap">
+        <label class="gt-label">Your email (his food)</label>
+        <div class="gt-input-row">
+          <input class="gt-input" type="email" id="gt-email" placeholder="your@email.com" autocomplete="email">
+          <button class="btn btn-red gt-feed-btn" id="gt-feed-btn">Feed Him</button>
+        </div>
+        <p class="gt-error" id="gt-error"></p>
+        <p class="gt-note">He will remember this kindness. Or he will die. One of the two.</p>
+      </div>
+
+      <div class="gt-restart-wrap" id="gt-restart-wrap" style="display:none;">
+        <button class="btn btn-outline gt-restart-btn" id="gt-restart-btn">Resurrect Gorthog</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: the orc viewport -->
+    <div class="gt-viewport-wrap">
+      <div class="gt-status-bar">
+        <span class="gt-status-label">LIFE FORCE</span>
+        <span class="gt-status-pct" id="gt-pct">100%</span>
+      </div>
+      <div class="gt-bar-track">
+        <div class="gt-bar-fill" id="gt-bar"></div>
+      </div>
+
+      <div class="gt-viewport" id="gt-viewport">
+        <!-- ORC PORTRAIT -->
+        <div class="gt-orc" id="gt-orc">
+          <div class="gt-orc-ear gt-orc-ear--l"></div>
+          <div class="gt-orc-ear gt-orc-ear--r"></div>
+          <div class="gt-orc-head">
+            <div class="gt-orc-brow gt-orc-brow--l"></div>
+            <div class="gt-orc-brow gt-orc-brow--r"></div>
+            <div class="gt-orc-eye gt-orc-eye--l"><div class="gt-orc-pupil"></div></div>
+            <div class="gt-orc-eye gt-orc-eye--r"><div class="gt-orc-pupil"></div></div>
+            <div class="gt-orc-tusk gt-orc-tusk--l"></div>
+            <div class="gt-orc-tusk gt-orc-tusk--r"></div>
+            <div class="gt-orc-mouth"></div>
+          </div>
+          <div class="gt-orc-body"></div>
+        </div>
+        <div class="gt-blood" id="gt-blood"></div>
+      </div>
+
+      <div class="gt-speech" id="gt-speech">
+        <span class="gt-speech-text" id="gt-speech-text"></span><span class="gt-cursor" id="gt-cursor">_</span>
+      </div>
+
+      <div class="gt-mood" id="gt-mood">GORTHOG AWAITS</div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* ── GORTHOG TAMAGOTCHI ── */
+  .gorthog-tama {
+    background: var(--black, #0D0D0D);
+    color: var(--bg, #F3EDE0);
+    padding: 64px 28px;
+    border-bottom: 4px solid var(--red, #E8260A);
+    overflow: hidden;
+  }
+  .gt-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 72px;
+    align-items: start;
+  }
+
+  /* ── LEFT COLUMN ── */
+  .gt-eyebrow {
+    font-family: var(--font-ui, 'DM Mono', monospace);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--red, #E8260A);
+    margin-bottom: 16px;
+  }
+  .gt-title {
+    font-family: var(--font-display, 'Bebas Neue', sans-serif);
+    font-size: 84px;
+    line-height: 0.88;
+    letter-spacing: 0.02em;
+    margin-bottom: 24px;
+    transition: color 0.3s;
+  }
+  .gt-title.danger { color: var(--red, #E8260A); }
+  .gt-body {
+    font-family: var(--font-body, 'Courier Prime', monospace);
+    font-size: 15px;
+    line-height: 1.75;
+    color: rgba(243,237,224,0.6);
+    margin-bottom: 28px;
+    max-width: 560px;
+  }
+
+  /* Form */
+  .gt-label {
+    font-family: var(--font-ui, 'DM Mono', monospace);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .gt-input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .gt-input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 2px solid rgba(255,255,255,0.12);
+    color: var(--bg, #F3EDE0);
+    font-family: var(--font-body, 'Courier Prime', monospace);
+    font-size: 14px;
+    font-style: italic;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .gt-input:focus { border-color: var(--red, #E8260A); }
+  .gt-input::placeholder { color: rgba(255,255,255,0.2); }
+  .gt-input:disabled { opacity: 0.3; cursor: not-allowed; }
+  .gt-feed-btn { white-space: nowrap; flex-shrink: 0; }
+  .gt-feed-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .gt-error {
+    font-family: var(--font-ui, 'DM Mono', monospace);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--red, #E8260A);
+    min-height: 1.4em;
+    margin-bottom: 4px;
+  }
+  .gt-note {
+    font-family: var(--font-ui, 'DM Mono', monospace);
+    font-size: 9px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+  }
+
+  /* ── RIGHT COLUMN ── */
+  .gt-viewport-wrap { position: relative; }
+
+  /* Status bar */
+  .gt-status-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .gt-status-label, .gt-status-pct {
+    font-family: var(--font-ui, 'DM Mono', monospace);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .gt-status-pct { color: rgba(255,255,255,0.6); }
+
+  /* Health bar */
+  .gt-bar-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    margin-bottom: 16px;
+  }
+  .gt-bar-fill {
+    height: 100%;
+    width: 100%;
+    background: var(--bg, #F3EDE0);
+    transition: width 0.5s ease, background-color 0.5s ease;
+  }
+  .gt-bar-fill.warning { background: #C9A227; }
+  .gt-bar-fill.danger { background: var(--red, #E8260A); }
+  .gt-bar-fill.critical {
+    background: var(--red, #E8260A);
+    animation: gt-pulse 0.4s infinite;
+  }
+  @keyframes gt-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Viewport */
+  .gt-viewport {
+    width: 100%;
+    aspect-ratio: 1;
+    background: #111;
+    border: 3px solid rgba(255,255,255,0.12);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── ORC (CSS portrait) ── */
+  .gt-orc {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 200px;
+    transition: filter 0.5s ease;
+  }
+  .gt-orc-head {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 100px;
+    background: #4a7a2e;
+    border: 3px solid #2d4a1c;
+    border-radius: 50% 50% 40% 40%;
+    z-index: 2;
+  }
+  .gt-orc-body {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 110px;
+    background: #4a7a2e;
+    border: 3px solid #2d4a1c;
+    border-radius: 16px 16px 24px 24px;
+  }
+  .gt-orc-ear {
+    position: absolute;
+    top: 120px;
+    width: 28px;
+    height: 18px;
+    background: #4a7a2e;
+    border: 2px solid #2d4a1c;
+    z-index: 1;
+  }
+  .gt-orc-ear--l { left: 4px; border-radius: 50% 0 0 50%; transform: rotate(-15deg); }
+  .gt-orc-ear--r { right: 4px; border-radius: 0 50% 50% 0; transform: rotate(15deg); }
+  .gt-orc-eye {
+    position: absolute;
+    top: 30px;
+    width: 22px;
+    height: 26px;
+    background: #F3EDE0;
+    border-radius: 50%;
+    border: 2px solid #2d4a1c;
+    overflow: hidden;
+  }
+  .gt-orc-eye--l { left: 20px; }
+  .gt-orc-eye--r { right: 20px; }
+  .gt-orc-pupil {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 12px;
+    background: #0D0D0D;
+    border-radius: 50%;
+    transition: all 0.15s ease;
+  }
+  .gt-orc-brow {
+    position: absolute;
+    top: 20px;
+    width: 28px;
+    height: 5px;
+    background: #2d4a1c;
+    border-radius: 3px;
+    transition: transform 0.3s ease;
+    z-index: 3;
+  }
+  .gt-orc-brow--l { left: 16px; transform: rotate(-5deg); }
+  .gt-orc-brow--r { right: 16px; transform: rotate(5deg); }
+  .gt-orc-mouth {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 6px;
+    background: #2d4a1c;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+  }
+  .gt-orc-tusk {
+    position: absolute;
+    bottom: 30px;
+    width: 9px;
+    height: 14px;
+    background: #F3EDE0;
+    border-radius: 3px 3px 50% 50%;
+    border: 1px solid #999;
+    z-index: 3;
+  }
+  .gt-orc-tusk--l { left: 26px; transform: rotate(5deg); }
+  .gt-orc-tusk--r { right: 26px; transform: rotate(-5deg); }
+
+  /* Blood pool */
+  .gt-blood {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    background: radial-gradient(ellipse, var(--red, #E8260A), #4a0000);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 3s ease;
+  }
+  .gt-blood.active { width: 180px; height: 30px; opacity: 0.7; }
+
+  /* ── ORC STATES ── */
+  .gt-orc.happy .gt-orc-mouth {
+    width: 44px; height: 20px;
+    border-radius: 0 0 22px 22px;
+    background: #2a1208;
+    border: 2px solid #2d4a1c;
+    border-top: none;
+  }
+  .gt-orc.happy .gt-orc-eye { height: 6px; top: 38px; }
+  .gt-orc.happy .gt-orc-brow--l { transform: rotate(-15deg) translateY(-4px); }
+  .gt-orc.happy .gt-orc-brow--r { transform: rotate(15deg) translateY(-4px); }
+
+  .gt-orc.hungry .gt-orc-mouth {
+    width: 36px; height: 22px;
+    border-radius: 50%;
+    background: #2a1208;
+    border: 2px solid #2d4a1c;
+  }
+  .gt-orc.hungry .gt-orc-brow--l { transform: rotate(10deg) translateY(2px); }
+  .gt-orc.hungry .gt-orc-brow--r { transform: rotate(-10deg) translateY(2px); }
+
+  .gt-orc.starving {
+    animation: gt-tremble 0.12s infinite;
+  }
+  .gt-orc.starving .gt-orc-mouth {
+    width: 42px; height: 28px;
+    border-radius: 50%;
+    background: #1a0505;
+    border: 2px solid #2d4a1c;
+  }
+  .gt-orc.starving .gt-orc-brow--l { transform: rotate(18deg) translateY(5px); }
+  .gt-orc.starving .gt-orc-brow--r { transform: rotate(-18deg) translateY(5px); }
+  .gt-orc.starving .gt-orc-eye { background: #ffcccc; }
+
+  .gt-orc.dying {
+    animation: gt-convulse 0.25s infinite;
+    filter: saturate(0.4) brightness(0.6);
+  }
+  .gt-orc.dying .gt-orc-mouth {
+    width: 48px; height: 32px;
+    border-radius: 50%;
+    background: #0a0202;
+  }
+  .gt-orc.dying .gt-orc-eye { background: #ff6666; }
+  .gt-orc.dying .gt-orc-pupil { width: 4px; height: 4px; top: 10px; }
+  .gt-orc.dying .gt-orc-brow--l { transform: rotate(22deg) translateY(7px); }
+  .gt-orc.dying .gt-orc-brow--r { transform: rotate(-22deg) translateY(7px); }
+
+  .gt-orc.dead {
+    filter: grayscale(1) brightness(0.35);
+    transform: translateX(-50%) rotate(8deg);
+    transition: all 2s ease;
+  }
+  .gt-orc.dead .gt-orc-eye { background: #555; }
+  .gt-orc.dead .gt-orc-pupil {
+    width: 16px; height: 2px; border-radius: 1px; top: 12px; background: #333;
+  }
+  .gt-orc.dead .gt-orc-pupil::after {
+    content: ''; position: absolute;
+    width: 2px; height: 16px; background: #333;
+    top: -7px; left: 7px;
+  }
+  .gt-orc.dead .gt-orc-mouth {
+    width: 28px; height: 3px; border-radius: 0; bottom: 22px;
+  }
+  .gt-orc.dead .gt-orc-brow--l, .gt-orc.dead .gt-orc-brow--r { display: none; }
+
+  @keyframes gt-tremble {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    25% { transform: translateX(calc(-50% + 2px)) translateY(-1px); }
+    75% { transform: translateX(calc(-50% - 2px)) translateY(1px); }
+  }
+  @keyframes gt-convulse {
+    0% { transform: translateX(-50%) rotate(0deg); }
+    25% { transform: translateX(calc(-50% + 4px)) rotate(2deg); }
+    50% { transform: translateX(calc(-50% - 3px)) rotate(-1deg); }
+    75% { transform: translateX(calc(-50% + 5px)) rotate(3deg); }
+    100% { transform: translateX(-50%) rotate(0deg); }
+  }
+
+  /* ── SPEECH BUBBLE ── */
+  .gt-speech {
+    border: 2px solid rgba(255,255,255,0.12);
+    padding: 14px 16px;
+    margin-top: 12px;
+    font-family: var(--font-body, 'Courier Prime', monospace);
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.6;
+    color: rgba(243,237,224,0.7);
+    min-height: 52px;
+    transition: border-color 0.3s;
+  }
+  .gt-speech.danger { border-color: var(--red, #E8260A); }
+  .gt-speech.critical {
+    border-color: var(--red, #E8260A);
+    animation: gt-border-pulse 0.5s infinite;
+  }
+  .gt-speech.dead-speech { border-color: rgba(255,255,255,0.06); color: rgba(255,255,255,0.25); }
+  @keyframes gt-border-pulse {
+    0%, 100% { border-color: var(--red, #E8260A); }
+    50% { border-color: #ff2200; }
+  }
+  .gt-cursor {
+    color: var(--red, #E8260A);
+    animation: gt-blink 0.5s infinite;
+  }
+  .gt-cursor.off { display: none; }
+  @keyframes gt-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Mood label */
+  .gt-mood {
+    font-family: var(--font-ui, 'DM Mono', monospace);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    text-align: center;
+    margin-top: 10px;
+    transition: color 0.3s;
+  }
+  .gt-mood.danger { color: var(--red, #E8260A); }
+
+  /* Hearts */
+  .gt-heart {
+    position: absolute;
+    font-size: 18px;
+    animation: gt-float-heart 2s ease-out forwards;
+    opacity: 0;
+    pointer-events: none;
+  }
+  @keyframes gt-float-heart {
+    0% { opacity: 1; transform: translateY(0) scale(0.5); }
+    50% { opacity: 1; transform: translateY(-50px) scale(1.1); }
+    100% { opacity: 0; transform: translateY(-100px) scale(0.7); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .gt-inner { grid-template-columns: 1fr; gap: 40px; }
+    .gt-title { font-size: 56px; }
+  }
+  @media (max-width: 768px) {
+    .gt-title { font-size: 44px; }
+    .gt-input-row { flex-direction: column; }
+    .gt-feed-btn { width: 100%; }
+  }
+</style>
+
+<script>
+(function() {
+  'use strict';
+
+  var LIFE_SECONDS = 120;
+  var TYPING_MS = 30;
+  var SAVE_KEY = 'gorthog_tama_v1';
+
+  var LINES = {
+    idle: [
+      "Gorthog smell fresh visitor... you got email?",
+      "Me Gorthog. Me hungry. You feed email now.",
+      "Gorthog no bite... maybe. Give email.",
+      "Why you stare? Gorthog need email to live.",
+      "You look like you got email. Gorthog can tell.",
+      "Other humans give email fast. You slow.",
+      "Gorthog belly rumble... it want @gmail...",
+      "Nice human. Smart human. Give Gorthog email.",
+    ],
+    hungry: [
+      "Gorthog getting VERY hungry now...",
+      "You... you not gonna let Gorthog starve right?",
+      "Gorthog stomach making bad sounds...",
+      "PLEASE. Gorthog NEED email. Is not asking much.",
+      "Why you do this to Gorthog?? Just one email!!",
+      "Gorthog vision getting blurry... need email...",
+      "Other orcs laughing at Gorthog. Say nobody feed him.",
+      "Gorthog knees weak... arms heavy... need email...",
+    ],
+    starving: [
+      "G-Gorthog... can barely... type...",
+      "PLEASE!! GORTHOG BEGGING!! EMAIL!! NOW!!",
+      "Gorthog see tunnel of light... it have no emails...",
+      "This... this is how Gorthog dies? No email?",
+      "GORTHOG CHILDREN WILL GROW UP WITHOUT FATHER",
+      "The pain... THE PAIN... it burns where email should be...",
+      "Gorthog crying green tears... nobody care about orc...",
+      "YOU WATCHING GORTHOG DIE AND DOING NOTHING",
+    ],
+    dying: [
+      "...gorthog...can't...see...",
+      "tell... gorthog's wife... he died... hungry...",
+      "the void... it comes... cold... no emails there...",
+      "gorthog's... last... breath...",
+      "why... why didn't you... just... type... email...",
+      "everything... going... dark...",
+      "*gurgling sounds*",
+      "mama... mama gorthog... is that you...",
+    ],
+    dead: [
+      "...",
+      "Gorthog is dead. You killed him.",
+      "He had a family. Three little orclings.",
+      "847 years. Ended by your indifference.",
+      "All he wanted was one email.",
+      "But you didn't.",
+    ],
+    fed: [
+      "YAAAAAAAGH!! EMAIL!! GORTHOG FEAST!!",
+      "GLORIOUS!! GORTHOG BELLY FULL OF EMAIL!!",
+      "YOU... YOU GREATEST HUMAN EVER LIVE!!",
+      "Gorthog weep tears of joy!! BIG GREEN TEARS!!",
+      "GORTHOG LIVE!! GORTHOG LIVE ANOTHER DAY!!",
+      "Email taste like victory and sadness of enemies!!",
+      "Gorthog name firstborn after you!! (It ugly baby but is honor!!)",
+    ],
+  };
+
+  /* --- DOM --- */
+  var el = {
+    title:     document.getElementById('gt-title'),
+    body:      document.getElementById('gt-body'),
+    formWrap:  document.getElementById('gt-form-wrap'),
+    restartW:  document.getElementById('gt-restart-wrap'),
+    email:     document.getElementById('gt-email'),
+    feedBtn:   document.getElementById('gt-feed-btn'),
+    restartBtn:document.getElementById('gt-restart-btn'),
+    error:     document.getElementById('gt-error'),
+    bar:       document.getElementById('gt-bar'),
+    pct:       document.getElementById('gt-pct'),
+    orc:       document.getElementById('gt-orc'),
+    blood:     document.getElementById('gt-blood'),
+    viewport:  document.getElementById('gt-viewport'),
+    speech:    document.getElementById('gt-speech'),
+    speechTxt: document.getElementById('gt-speech-text'),
+    cursor:    document.getElementById('gt-cursor'),
+    mood:      document.getElementById('gt-mood'),
+  };
+
+  /* --- STATE --- */
+  var hp = 100, fed = false, paused = false, lastTick = Date.now();
+  var typer = null, lineIdx = {}, lastPhase = null, lastLineTime = 0;
+
+  /* --- SAVE/LOAD --- */
+  function save() {
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify({ hp: hp, fed: fed, at: Date.now() })); } catch(e) {}
+  }
+  function load() {
+    try {
+      var d = JSON.parse(localStorage.getItem(SAVE_KEY));
+      if (!d) return;
+      if (d.fed) { fed = true; hp = 100; return; }
+      var gone = (Date.now() - d.at) / 1000;
+      hp = Math.max(0, d.hp - (gone / LIFE_SECONDS) * 100);
+    } catch(e) {}
+  }
+
+  /* --- HELPERS --- */
+  function phase() {
+    if (fed) return 'fed';
+    if (hp <= 0) return 'dead';
+    if (hp <= 25) return 'dying';
+    if (hp <= 50) return 'starving';
+    if (hp <= 80) return 'hungry';
+    return 'idle';
+  }
+
+  function pickLine(p) {
+    var arr = LINES[p]; if (!arr) return '...';
+    if (!lineIdx[p]) lineIdx[p] = 0;
+    if (p === 'dead') {
+      var i = Math.min(lineIdx[p], arr.length - 1);
+      lineIdx[p]++;
+      return arr[i];
+    }
+    var i2 = lineIdx[p] % arr.length;
+    lineIdx[p]++;
+    return arr[i2];
+  }
+
+  function typeText(txt) {
+    if (typer) { clearTimeout(typer); typer = null; }
+    el.speechTxt.textContent = '';
+    el.cursor.classList.remove('off');
+    var i = 0;
+    (function go() {
+      if (i < txt.length) {
+        el.speechTxt.textContent += txt[i]; i++;
+        typer = setTimeout(go, TYPING_MS);
+      } else {
+        el.cursor.classList.add('off');
+        typer = null;
+      }
+    })();
+  }
+
+  function validateEmail(v) {
+    if (!v || !v.trim()) return 'GORTHOG NEED EMAIL, NOT EMPTY AIR';
+    var t = v.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t)) return 'THAT NOT REAL EMAIL. GORTHOG NOT STUPID.';
+    var dom = t.split('@')[1].toLowerCase();
+    if (['test.com','example.com','fake.com','asdf.com'].indexOf(dom) > -1) return 'GORTHOG KNOW FAKE EMAIL WHEN SEE ONE.';
+    return null;
+  }
+
+  /* --- RENDER --- */
+  function render() {
+    var p = phase(), h = Math.max(0, Math.round(hp));
+
+    /* bar */
+    el.bar.style.width = h + '%';
+    el.pct.textContent = h + '%';
+    el.bar.className = 'gt-bar-fill';
+    if (h <= 10) el.bar.classList.add('critical');
+    else if (h <= 25) el.bar.classList.add('danger');
+    else if (h <= 50) el.bar.classList.add('warning');
+
+    /* orc sprite */
+    el.orc.className = 'gt-orc ' + (p === 'fed' ? 'happy' : p);
+
+    /* speech styling */
+    el.speech.className = 'gt-speech';
+    if (p === 'dying') el.speech.classList.add('critical');
+    else if (p === 'starving') el.speech.classList.add('danger');
+    else if (p === 'dead') el.speech.classList.add('dead-speech');
+
+    /* title color */
+    el.title.className = 'gt-title';
+    if (p === 'dying' || p === 'starving') el.title.classList.add('danger');
+
+    /* mood label */
+    var moods = {
+      idle: 'GORTHOG AWAITS',
+      hungry: 'GORTHOG GROWS IMPATIENT',
+      starving: 'GORTHOG IS SUFFERING',
+      dying: 'GORTHOG IS DYING',
+      dead: 'GORTHOG IS DEAD. YOU KILLED HIM.',
+      fed: 'GORTHOG IS FED AND GRATEFUL',
+    };
+    el.mood.textContent = moods[p] || '';
+    el.mood.className = 'gt-mood';
+    if (p === 'dying' || p === 'dead') el.mood.classList.add('danger');
+
+    /* body text */
+    var bodies = {
+      idle: 'Gorthog has not eaten in some time. He sustains himself on email addresses. If you do not feed him, he will die. This is not a metaphor.',
+      hungry: 'Gorthog grows weaker. His 847-year life force drains by the second. Only an email can sustain him. You hold his fate in your inbox.',
+      starving: 'Gorthog is in visible pain. His green skin pales. His tusks tremble. He has perhaps moments left. An email would save him.',
+      dying: 'This is it. Gorthog is dying. Right here. In front of you. Because you would not type a few characters into a box.',
+      dead: 'Gorthog the Ancient is dead. 847 years survived. Four empires. Two recessions. One ill-advised B2B SaaS venture. All undone by your refusal to share an email.',
+      fed: 'Gorthog lives. Your email sustains him for another age. He will speak of your generosity in the great halls. Or at least in his newsletter.',
+    };
+    el.body.textContent = bodies[p] || '';
+
+    /* form visibility */
+    if (p === 'dead') {
+      el.formWrap.style.display = 'none';
+      el.restartW.style.display = 'block';
+      el.email.disabled = true;
+      el.feedBtn.disabled = true;
+    } else if (p === 'fed') {
+      el.formWrap.style.display = 'none';
+      el.restartW.style.display = 'none';
+    } else {
+      el.formWrap.style.display = 'block';
+      el.restartW.style.display = 'none';
+      el.email.disabled = false;
+      el.feedBtn.disabled = false;
+    }
+
+    /* blood */
+    if (p === 'dead') el.blood.classList.add('active');
+    else el.blood.classList.remove('active');
+
+    /* dialogue */
+    var now = Date.now();
+    var interval = p === 'dying' ? 3000 : p === 'starving' ? 4000 : 6000;
+
+    if (p !== lastPhase) {
+      typeText(pickLine(p));
+      lastLineTime = now;
+      lastPhase = p;
+    } else if (now - lastLineTime > interval && !typer) {
+      typeText(pickLine(p));
+      lastLineTime = now;
+    }
+  }
+
+  /* --- GAME LOOP --- */
+  function tick() {
+    if (!fed && hp > 0 && !paused) {
+      var now = Date.now(), dt = (now - lastTick) / 1000;
+      lastTick = now;
+      hp = Math.max(0, hp - (dt / LIFE_SECONDS) * 100);
+      if (Math.random() < dt * 0.5) save();
+    }
+    render();
+    requestAnimationFrame(tick);
+  }
+
+  /* --- FEED --- */
+  function feed(email) {
+    fed = true; hp = 100; lastPhase = null;
+    /* hearts */
+    for (var i = 0; i < 6; i++) {
+      var h = document.createElement('div');
+      h.className = 'gt-heart';
+      h.textContent = '\u2764';
+      h.style.left = (60 + Math.random() * 260) + 'px';
+      h.style.bottom = (60 + Math.random() * 100) + 'px';
+      h.style.animationDelay = (Math.random() * 0.8) + 's';
+      h.style.color = '#E8260A';
+      el.viewport.appendChild(h);
+      (function(node){ setTimeout(function(){ node.remove(); }, 2800); })(h);
+    }
+    typeText(pickLine('fed'));
+    render(); save();
+  }
+
+  function reset() {
+    hp = 100; fed = false; lastPhase = null; lastLineTime = 0; lineIdx = {};
+    el.blood.classList.remove('active');
+    el.email.value = '';
+    el.error.textContent = '';
+    lastTick = Date.now();
+    try { localStorage.removeItem(SAVE_KEY); } catch(e) {}
+    render(); typeText(pickLine('idle'));
+  }
+
+  /* --- EVENTS --- */
+  el.feedBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    var err = validateEmail(el.email.value);
+    if (err) {
+      el.error.textContent = err;
+      el.email.style.borderColor = '#E8260A';
+      setTimeout(function() { el.email.style.borderColor = ''; }, 1200);
+      return;
+    }
+    el.error.textContent = '';
+    feed(el.email.value.trim());
+  });
+
+  el.email.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      el.feedBtn.click();
+    }
+  });
+
+  el.email.addEventListener('input', function() { el.error.textContent = ''; });
+  el.restartBtn.addEventListener('click', reset);
+
+  /* Eye tracking */
+  document.addEventListener('mousemove', function(e) {
+    if (hp <= 0 || fed) return;
+    var r = el.viewport.getBoundingClientRect();
+    var cx = r.left + r.width / 2, cy = r.top + r.height * 0.35;
+    var dx = (e.clientX - cx) / window.innerWidth;
+    var dy = (e.clientY - cy) / window.innerHeight;
+    var pupils = el.orc.querySelectorAll('.gt-orc-pupil');
+    for (var i = 0; i < pupils.length; i++) {
+      pupils[i].style.left = 'calc(50% + ' + (dx * 6) + 'px)';
+      pupils[i].style.top = (6 + dy * 6) + 'px';
+    }
+  });
+
+  /* Pause when hidden */
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) { paused = true; save(); }
+    else { paused = false; lastTick = Date.now(); }
+  });
+
+  /* --- INIT --- */
+  load();
+  lastTick = Date.now();
+  var p0 = phase();
+  if (fed) typeText("Gorthog remember you! You the good one!");
+  else if (p0 === 'dead') typeText(LINES.dead[0]);
+  else typeText(pickLine(p0));
+  lastLineTime = Date.now();
+  requestAnimationFrame(tick);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Gorthog Tamagotchi",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Gorthog Tamagotchi"
+    }
+  ]
+}
+{% endschema %}
