@@ -1,0 +1,137 @@
+{%- comment -%}
+  Editorial homepage: hero, 9 recent posts, Ask Gorthog callout, email signup.
+  Pulls from blogs[section.settings.blog_handle].
+{%- endcomment -%}
+
+{%- assign blog_handle = section.settings.blog_handle | default: 'news' -%}
+{%- assign feed = blogs[blog_handle] -%}
+{%- assign posts_to_show = section.settings.post_count | default: 9 -%}
+
+<div class="ed-wrap">
+  <section class="ed-hero">
+    <h1>{{ section.settings.hero_title }}</h1>
+    <p>{{ section.settings.hero_subtitle }}</p>
+  </section>
+
+  <section>
+    <h2 class="ed-h2" style="margin-top:0;">{{ section.settings.recent_label }}</h2>
+
+    {%- if feed.articles.size > 0 -%}
+      <div class="ed-post-list">
+        {%- for article in feed.articles limit: posts_to_show -%}
+          {%- assign author_handle = article.metafields.custom.author | default: article.author | handleize -%}
+          <a href="{{ article.url }}" class="ed-post-card">
+            <div class="ed-post-meta">
+              By {{ article.author }} &middot; {{ article.published_at | date: '%B %-d, %Y' }}
+              {%- if article.tags.size > 0 -%} &middot; {{ article.tags | first }}{%- endif -%}
+            </div>
+            <h3 class="ed-post-title">{{ article.title }}</h3>
+            {%- if article.excerpt != blank -%}
+              <p class="ed-post-excerpt">{{ article.excerpt | strip_html | truncate: 200 }}</p>
+            {%- else -%}
+              <p class="ed-post-excerpt">{{ article.content | strip_html | truncate: 200 }}</p>
+            {%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+
+      <a href="{{ feed.url }}" class="ed-read-more">Read more posts</a>
+    {%- else -%}
+      <p style="font-family:var(--font-ui);font-size:11px;color:var(--gray);letter-spacing:0.14em;text-transform:uppercase;padding:48px 0;">No posts published yet.</p>
+    {%- endif -%}
+  </section>
+
+  <section class="ed-callout">
+    <h2>{{ section.settings.callout_title }}</h2>
+    <p>{{ section.settings.callout_body }}</p>
+    <div class="ed-callout-actions">
+      <a href="/pages/contact" class="btn btn-fill">Submit a Question</a>
+      <a href="/pages/ask-gorthog" class="btn btn-outline">Read the Archive</a>
+    </div>
+  </section>
+
+  <section class="ed-email-block ed-email-block-dark">
+    <h3>{{ section.settings.email_title }}</h3>
+    <p>{{ section.settings.email_body }}</p>
+    {%- form 'customer', class: 'ed-email-form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="email" name="contact[email]" placeholder="your@email.com" required aria-label="Email address">
+      <button type="submit">Subscribe</button>
+      {%- if form.posted_successfully? -%}
+        <p class="ed-email-fineprint" style="width:100%;color:var(--acid);">Subscribed.</p>
+      {%- endif -%}
+    {%- endform -%}
+    <p class="ed-email-fineprint">One email per week, on average. Unsubscribe in one click.</p>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Editorial Home",
+  "settings": [
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero title",
+      "default": "Napalm Sunrise"
+    },
+    {
+      "type": "text",
+      "id": "hero_subtitle",
+      "label": "Hero subtitle",
+      "default": "An independent publication. Music. Absurdist culture. Unsolicited orc advice."
+    },
+    {
+      "type": "text",
+      "id": "recent_label",
+      "label": "Recent posts label",
+      "default": "Recent"
+    },
+    {
+      "type": "text",
+      "id": "blog_handle",
+      "label": "Blog handle",
+      "default": "news",
+      "info": "Shopify blog handle to pull posts from."
+    },
+    {
+      "type": "range",
+      "id": "post_count",
+      "label": "Number of posts to show",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 9
+    },
+    {
+      "type": "text",
+      "id": "callout_title",
+      "label": "Callout title",
+      "default": "Got a question?"
+    },
+    {
+      "type": "textarea",
+      "id": "callout_body",
+      "label": "Callout body",
+      "default": "Gorthog is an 847-year-old orc advice columnist. He has been solving problems since before your civilization developed written language. His track record is extensive. His patience is not."
+    },
+    {
+      "type": "text",
+      "id": "email_title",
+      "label": "Email block title",
+      "default": "New posts. Your inbox. That is it."
+    },
+    {
+      "type": "textarea",
+      "id": "email_body",
+      "label": "Email block body",
+      "default": "We publish weekly. We do not sell your information. We do not send you things you did not ask for."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Home"
+    }
+  ]
+}
+{% endschema %}
