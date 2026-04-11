@@ -1,0 +1,109 @@
+{%- comment -%} About page content + AboutPage JSON-LD. {%- endcomment -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "url": "{{ canonical_url }}",
+  "name": "About Napalm Sunrise",
+  "isPartOf": { "@id": "{{ shop.url }}#website" },
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "Napalm Sunrise",
+    "url": "{{ shop.url }}",
+    "founder": {
+      "@type": "Person",
+      "name": "Atticus Eby",
+      "url": "{{ shop.url }}/pages/atticus-eby",
+      "sameAs": [
+        "https://linkedin.com/in/atticuseby",
+        "https://x.com/EbyAtticus"
+      ]
+    },
+    "description": "An independent publication covering music, absurdist culture, and unsolicited orc advice."
+  }
+}
+</script>
+
+<div class="ed-wrap">
+  <section class="ed-hero">
+    <h1>About Napalm Sunrise</h1>
+  </section>
+
+  <div class="ed-prose">
+    <h2 class="ed-h2" style="margin-top:0;">What this is</h2>
+
+    <p>Napalm Sunrise is an independent publication founded by <a href="/pages/atticus-eby">Atticus Eby</a>. It covers music, absurdist culture, and the kinds of questions most publications are too reasonable to take seriously.</p>
+
+    <p>The editorial approach is straightforward: pick a subject, commit to it fully, and follow the logic wherever it leads. Sometimes that logic leads to a rigorous survival analysis of the Wu-Tang Clan on the Oregon Trail. Sometimes it leads to a papal ranking system based on historical evidence. The methodology is consistent even when the subject matter is not.</p>
+
+    <p>The publication also houses <a href="/pages/ask-gorthog">Ask Gorthog</a>, an advice column written by an 847-year-old orc whose credentials include several centuries of conflict resolution, three failed marriages, and the successful governance of a mid-sized territorial holding.</p>
+
+    <p>New content publishes weekly.</p>
+  </div>
+
+  <h2 class="ed-h2">Contributors</h2>
+
+  <div class="ed-bio">
+    <div class="ed-portrait-wrap">
+      <div class="ed-portrait-inner">
+        <canvas class="ed-smoke-canvas" id="atticus-smoke" width="32" height="80"></canvas>
+        <canvas class="ed-portrait-canvas" id="atticus-canvas" width="192" height="192"></canvas>
+      </div>
+    </div>
+    <div class="ed-bio-role">Editor &amp; primary contributor</div>
+    <h3>Atticus Eby</h3>
+    <p>Atticus writes the editorial features, music coverage, and anything that requires sustained engagement with a premise that most people would abandon after the first paragraph. His work has a tendency to treat absurd subjects with the same rigor typically reserved for things that matter.</p>
+    <div class="ed-bio-links">
+      <a href="/pages/atticus-eby">Read articles by Atticus</a>
+      <a href="https://linkedin.com/in/atticuseby">LinkedIn</a>
+      <a href="https://x.com/EbyAtticus">X</a>
+    </div>
+  </div>
+
+  <div class="ed-bio">
+    <div class="ed-portrait-wrap">
+      <div class="ed-portrait-inner">
+        <canvas class="ed-portrait-canvas" id="gorthog-canvas" width="192" height="192"></canvas>
+      </div>
+    </div>
+    <div class="ed-bio-role">Advice columnist</div>
+    <h3>Gorthog</h3>
+    <p>Gorthog has been dispensing wisdom since the fall of the Second Orcish Confederacy, which predates most of your cultural reference points by several hundred years. He specializes in career transitions, interpersonal conflict, and the quiet desperation of modern existence. His methods are direct. His advice is practical. His patience for follow-up questions is limited.</p>
+    <div class="ed-bio-links">
+      <a href="/pages/ask-gorthog">Read Ask Gorthog</a>
+      <a href="/pages/contact">Submit a question</a>
+    </div>
+  </div>
+
+  <section class="ed-callout">
+    <h2>Start reading.</h2>
+    <p>Two regular contributors. Weekly publishing schedule. No promotional emails, no sponsored content, no banner ads.</p>
+    <div class="ed-callout-actions">
+      <a href="/blogs/news" class="btn btn-fill">Latest posts</a>
+      <a href="/pages/ask-gorthog" class="btn btn-outline">Ask Gorthog</a>
+    </div>
+  </section>
+
+  <section class="ed-email-block ed-email-block-dark">
+    <h3>New posts. Your inbox. That is it.</h3>
+    <p>We publish weekly. We do not sell your information.</p>
+    {%- form 'customer', class: 'ed-email-form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="email" name="contact[email]" placeholder="your@email.com" required aria-label="Email address">
+      <button type="submit">Subscribe</button>
+      {%- if form.posted_successfully? -%}
+        <p class="ed-email-fineprint" style="width:100%;color:var(--acid);">Subscribed.</p>
+      {%- endif -%}
+    {%- endform -%}
+  </section>
+</div>
+
+<script src="{{ 'portraits.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Page: About",
+  "settings": []
+}
+{% endschema %}
