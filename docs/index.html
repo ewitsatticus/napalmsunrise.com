@@ -1,3 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gorthog Tamagotchi — Napalm Sunrise</title>
+<meta name="description" content="Feed the orc or watch him die. An interactive tamagotchi by Napalm Sunrise.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Courier+Prime:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3EDE0;--black:#0D0D0D;--red:#E8260A;--font-display:'Bebas Neue',sans-serif;--font-body:'Courier Prime',monospace;--font-ui:'DM Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);font-family:var(--font-body)}
+.btn{font-family:var(--font-ui);font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:12px 24px;border:none;cursor:pointer;transition:background .15s,color .15s}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#c41e08}
+.btn-outline{background:transparent;color:var(--bg);border:2px solid rgba(255,255,255,.2)}.btn-outline:hover{border-color:var(--bg);background:rgba(255,255,255,.05)}
+.site-header{background:var(--black);padding:20px 28px;border-bottom:2px solid var(--red)}
+.site-header-inner{max-width:1440px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.site-logo{font-family:var(--font-display);font-size:24px;color:var(--bg);letter-spacing:.06em;text-decoration:none}
+.site-nav{font-family:var(--font-ui);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.site-footer{background:var(--black);padding:32px 28px;text-align:center;font-family:var(--font-ui);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);border-top:2px solid rgba(255,255,255,.06)}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="#">NAPALM SUNRISE</a>
+    <nav class="site-nav">Gorthog Tamagotchi Preview</nav>
+  </div>
+</header>
 <div class="gorthog-tama" id="gorthog-tama">
   <div class="gt-inner">
     <div class="gt-copy">
@@ -1011,10 +1041,8 @@ requestAnimationFrame(tick);
 })();
 </script>
 
-{% schema %}
-{
-  "name": "Gorthog Tamagotchi",
-  "settings": [],
-  "presets": [{ "name": "Gorthog Tamagotchi" }]
-}
-{% endschema %}
+<footer class="site-footer">
+  Napalm Sunrise &mdash; A public lab by Atticus Eby &mdash; Gorthog approves this message (under duress)
+</footer>
+</body>
+</html>
