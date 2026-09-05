@@ -14,9 +14,15 @@
 
 <header class="ns-header{% if apply_transparent %} ns-header--transparent{% endif %}{% if apply_transparent and solidify %} ns-header--solidify{% endif %}" data-header>
   <div class="ns-header-inner">
-    <a href="/" class="ns-logo{% if section.settings.logo %} ns-logo--image{% endif %}" aria-label="{{ shop.name | escape }}">
+    {%- assign logo_w = section.settings.logo_width | default: 180 -%}
+    {%- assign logo_variant = section.settings.logo_variant | default: 'white' -%}
+    {%- if logo_variant == 'black' -%}
+      {%- assign default_logo_url = 'logo-black.png' | asset_url -%}
+    {%- else -%}
+      {%- assign default_logo_url = 'logo-white.png' | asset_url -%}
+    {%- endif -%}
+    <a href="/" class="ns-logo ns-logo--image" aria-label="{{ shop.name | escape }}">
       {%- if section.settings.logo -%}
-        {%- assign logo_w = section.settings.logo_width | default: 140 -%}
         <img src="{{ section.settings.logo | image_url: width: 600 }}"
              alt="{{ shop.name | escape }}"
              width="{{ logo_w }}"
@@ -24,7 +30,12 @@
              loading="eager"
              fetchpriority="high">
       {%- else -%}
-        NAPALM<span>SUNRISE</span>
+        <img src="{{ default_logo_url }}"
+             alt="{{ shop.name | escape }}"
+             width="{{ logo_w }}"
+             style="width:{{ logo_w }}px;max-width:100%;"
+             loading="eager"
+             fetchpriority="high">
       {%- endif -%}
     </a>
 
@@ -305,20 +316,31 @@
       "content": "Logo"
     },
     {
+      "type": "select",
+      "id": "logo_variant",
+      "label": "Default logo variant",
+      "options": [
+        { "value": "white", "label": "White (for dark header)" },
+        { "value": "black", "label": "Black (for light header)" }
+      ],
+      "default": "white",
+      "info": "Which built-in logo to use when no custom image is uploaded below."
+    },
+    {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo image",
-      "info": "Replaces the NAPALM/SUNRISE wordmark. SVG or transparent PNG recommended."
+      "label": "Custom logo (overrides default)",
+      "info": "Upload via Shopify Files. Leave blank to use the built-in variant above. SVG or transparent PNG recommended."
     },
     {
       "type": "range",
       "id": "logo_width",
       "label": "Logo width",
       "min": 60,
-      "max": 260,
+      "max": 320,
       "step": 4,
       "unit": "px",
-      "default": 140
+      "default": 180
     },
     {
       "type": "header",
