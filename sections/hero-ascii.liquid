@@ -1,0 +1,569 @@
+{%- comment -%}
+  Hero ASCII — UnicornStudio animated background with editorial CTA overlay.
+  Ported from 21st.dev React/Tailwind component. Vanilla CSS, scoped to .hero-ascii.
+{%- endcomment -%}
+
+{%- assign us_project = section.settings.unicorn_project_id | default: 'OMzqyUv6M3kSnv0JeAtC' -%}
+
+<section class="hero-ascii" id="hero-ascii-{{ section.id }}">
+  {%- if us_project != blank -%}
+    <div class="hero-ascii__bg-anim">
+      <div data-us-project="{{ us_project }}"></div>
+    </div>
+  {%- endif -%}
+
+  <div class="hero-ascii__stars" aria-hidden="true"></div>
+
+  <div class="hero-ascii__top">
+    <div class="hero-ascii__top-inner">
+      <div class="hero-ascii__brand-group">
+        <div class="hero-ascii__brand">{{ section.settings.brand_text }}</div>
+        <div class="hero-ascii__divider"></div>
+        <span class="hero-ascii__est">{{ section.settings.est_text }}</span>
+      </div>
+      <div class="hero-ascii__coords">
+        <span>{{ section.settings.coord_lat }}</span>
+        <div class="hero-ascii__dot"></div>
+        <span>{{ section.settings.coord_long }}</span>
+      </div>
+    </div>
+  </div>
+
+  <span class="hero-ascii__corner hero-ascii__corner--tl" aria-hidden="true"></span>
+  <span class="hero-ascii__corner hero-ascii__corner--tr" aria-hidden="true"></span>
+  <span class="hero-ascii__corner hero-ascii__corner--bl" aria-hidden="true"></span>
+  <span class="hero-ascii__corner hero-ascii__corner--br" aria-hidden="true"></span>
+
+  <div class="hero-ascii__content">
+    <div class="hero-ascii__cta">
+      <div class="hero-ascii__rule">
+        <span class="hero-ascii__rule-short"></span>
+        <span class="hero-ascii__rule-sym">&infin;</span>
+        <span class="hero-ascii__rule-long"></span>
+      </div>
+
+      <div class="hero-ascii__title-wrap">
+        <div class="hero-ascii__dither" aria-hidden="true"></div>
+        <h1 class="hero-ascii__title">{{ section.settings.title }}</h1>
+      </div>
+
+      <div class="hero-ascii__dots" aria-hidden="true">
+        {%- for i in (1..40) -%}<span class="hero-ascii__dot-tiny"></span>{%- endfor -%}
+      </div>
+
+      <div class="hero-ascii__body-wrap">
+        <p class="hero-ascii__body">{{ section.settings.body }}</p>
+        <div class="hero-ascii__side-mark" aria-hidden="true"><span></span></div>
+      </div>
+
+      <div class="hero-ascii__buttons">
+        {%- if section.settings.cta1_text != blank -%}
+          <a class="hero-ascii__btn hero-ascii__btn--primary" href="{{ section.settings.cta1_url | default: '#' }}">
+            <span class="hero-ascii__btn-tick hero-ascii__btn-tick--tl"></span>
+            <span class="hero-ascii__btn-tick hero-ascii__btn-tick--br"></span>
+            {{ section.settings.cta1_text }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.cta2_text != blank -%}
+          <a class="hero-ascii__btn" href="{{ section.settings.cta2_url | default: '#' }}">{{ section.settings.cta2_text }}</a>
+        {%- endif -%}
+      </div>
+
+      <div class="hero-ascii__rule hero-ascii__rule--foot">
+        <span class="hero-ascii__rule-sym">&infin;</span>
+        <span class="hero-ascii__rule-long"></span>
+        <span class="hero-ascii__rule-label">{{ section.settings.protocol_label }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-ascii__footer">
+    <div class="hero-ascii__footer-inner">
+      <div class="hero-ascii__footer-left">
+        <span class="hero-ascii__footer-status hero-ascii__desktop">SYSTEM.ACTIVE</span>
+        <span class="hero-ascii__footer-status hero-ascii__mobile">SYS.ACT</span>
+        <div class="hero-ascii__bars hero-ascii__desktop" aria-hidden="true">
+          <span style="height:10px"></span><span style="height:6px"></span><span style="height:14px"></span><span style="height:8px"></span>
+          <span style="height:12px"></span><span style="height:5px"></span><span style="height:11px"></span><span style="height:7px"></span>
+        </div>
+        <span>{{ section.settings.version_text }}</span>
+      </div>
+      <div class="hero-ascii__footer-right">
+        <span class="hero-ascii__desktop">&#9680; RENDERING</span>
+        <div class="hero-ascii__pulse" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="hero-ascii__desktop">FRAME: &infin;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function(){
+    if (window.__heroAsciiUnicornBoot) return;
+    window.__heroAsciiUnicornBoot = true;
+
+    if (!window.UnicornStudio) {
+      window.UnicornStudio = { isInitialized: false };
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.33/dist/unicornStudio.umd.js';
+      s.onload = function(){
+        if (!window.UnicornStudio.isInitialized) {
+          try { UnicornStudio.init(); } catch(e){}
+          window.UnicornStudio.isInitialized = true;
+        }
+      };
+      (document.head || document.body).appendChild(s);
+    }
+
+    function hideBranding(){
+      var containers = document.querySelectorAll('[data-us-project]');
+      containers.forEach(function(container){
+        container.querySelectorAll('*').forEach(function(el){
+          var text = (el.textContent || '').toLowerCase();
+          var title = (el.getAttribute && (el.getAttribute('title') || '')).toLowerCase();
+          var href = (el.getAttribute && (el.getAttribute('href') || '')).toLowerCase();
+          if (text.indexOf('made with') !== -1 || text.indexOf('unicorn') !== -1 ||
+              title.indexOf('made with') !== -1 || title.indexOf('unicorn') !== -1 ||
+              href.indexOf('unicorn.studio') !== -1) {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.style.opacity = '0';
+            el.style.pointerEvents = 'none';
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            el.style.top = '-9999px';
+            try { el.remove(); } catch(e){}
+          }
+        });
+      });
+    }
+
+    hideBranding();
+    var iv = setInterval(hideBranding, 50);
+    [500, 1000, 2000, 5000, 10000].forEach(function(t){ setTimeout(hideBranding, t); });
+    setTimeout(function(){ clearInterval(iv); }, 12000);
+  })();
+</script>
+
+<style>
+  #hero-ascii-{{ section.id }}.hero-ascii {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+    font-family: 'Courier Prime', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  /* Background layers */
+  #hero-ascii-{{ section.id }} .hero-ascii__bg-anim {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    display: none;
+    pointer-events: none;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__bg-anim [data-us-project] {
+    width: 100%; height: 100%; min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__bg-anim [data-us-project] canvas {
+    clip-path: inset(0 0 10% 0);
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__bg-anim [data-us-project] * {
+    pointer-events: none !important;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__bg-anim [data-us-project] a[href*="unicorn"],
+  #hero-ascii-{{ section.id }} .hero-ascii__bg-anim [data-us-project] [class*="brand"],
+  #hero-ascii-{{ section.id }} .hero-ascii__bg-anim [data-us-project] [class*="credit"],
+  #hero-ascii-{{ section.id }} .hero-ascii__bg-anim [data-us-project] [class*="watermark"] {
+    display: none !important; visibility: hidden !important; opacity: 0 !important;
+    position: absolute !important; left: -9999px !important; top: -9999px !important;
+  }
+
+  #hero-ascii-{{ section.id }} .hero-ascii__stars {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+      radial-gradient(1px 1px at 60% 70%, #fff, transparent),
+      radial-gradient(1px 1px at 50% 50%, #fff, transparent),
+      radial-gradient(1px 1px at 80% 10%, #fff, transparent),
+      radial-gradient(1px 1px at 90% 60%, #fff, transparent),
+      radial-gradient(1px 1px at 33% 80%, #fff, transparent),
+      radial-gradient(1px 1px at 15% 60%, #fff, transparent),
+      radial-gradient(1px 1px at 70% 40%, #fff, transparent);
+    background-size: 200% 200%, 180% 180%, 250% 250%, 220% 220%, 190% 190%, 240% 240%, 210% 210%, 230% 230%;
+    background-position: 0% 0%, 40% 40%, 60% 60%, 20% 20%, 80% 80%, 30% 30%, 70% 70%, 50% 50%;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* Top bar */
+  #hero-ascii-{{ section.id }} .hero-ascii__top {
+    position: absolute; top: 0; left: 0; right: 0;
+    z-index: 20;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__top-inner {
+    max-width: 1440px; margin: 0 auto;
+    padding: 12px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__brand-group {
+    display: flex; align-items: center; gap: 8px;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__brand {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    color: #fff; font-size: 20px; font-weight: 700;
+    letter-spacing: 0.2em; font-style: italic;
+    transform: skewX(-12deg);
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__divider {
+    height: 12px; width: 1px; background: rgba(255,255,255,0.4);
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__est {
+    color: rgba(255,255,255,0.6);
+    font-size: 8px;
+    font-family: 'DM Mono', ui-monospace, monospace;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__coords {
+    display: none;
+    align-items: center; gap: 12px;
+    font-size: 10px;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    color: rgba(255,255,255,0.6);
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__dot {
+    width: 4px; height: 4px; background: rgba(255,255,255,0.4); border-radius: 50%;
+  }
+
+  /* Corners */
+  #hero-ascii-{{ section.id }} .hero-ascii__corner {
+    position: absolute;
+    width: 32px; height: 32px;
+    z-index: 20;
+    pointer-events: none;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__corner--tl { top: 0; left: 0; border-top: 2px solid rgba(255,255,255,0.3); border-left: 2px solid rgba(255,255,255,0.3); }
+  #hero-ascii-{{ section.id }} .hero-ascii__corner--tr { top: 0; right: 0; border-top: 2px solid rgba(255,255,255,0.3); border-right: 2px solid rgba(255,255,255,0.3); }
+  #hero-ascii-{{ section.id }} .hero-ascii__corner--bl { bottom: 5vh; left: 0; border-bottom: 2px solid rgba(255,255,255,0.3); border-left: 2px solid rgba(255,255,255,0.3); }
+  #hero-ascii-{{ section.id }} .hero-ascii__corner--br { bottom: 5vh; right: 0; border-bottom: 2px solid rgba(255,255,255,0.3); border-right: 2px solid rgba(255,255,255,0.3); }
+
+  /* Content */
+  #hero-ascii-{{ section.id }} .hero-ascii__content {
+    position: relative; z-index: 10;
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: flex-end;
+    padding-top: 64px;
+    margin-top: 5vh;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__cta {
+    width: 100%;
+    padding: 0 24px;
+    max-width: 512px;
+    position: relative;
+  }
+
+  #hero-ascii-{{ section.id }} .hero-ascii__rule {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 12px; opacity: 0.6;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__rule--foot { display: none; margin-top: 24px; opacity: 0.4; }
+  #hero-ascii-{{ section.id }} .hero-ascii__rule-short { display: block; width: 32px; height: 1px; background: #fff; }
+  #hero-ascii-{{ section.id }} .hero-ascii__rule-long { flex: 1; height: 1px; background: #fff; }
+  #hero-ascii-{{ section.id }} .hero-ascii__rule-sym {
+    color: #fff; font-size: 10px;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    letter-spacing: 0.1em;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__rule-label {
+    color: #fff; font-size: 9px;
+    font-family: 'DM Mono', ui-monospace, monospace;
+  }
+
+  #hero-ascii-{{ section.id }} .hero-ascii__title-wrap { position: relative; }
+  #hero-ascii-{{ section.id }} .hero-ascii__dither {
+    display: none;
+    position: absolute; right: -12px; top: 0; bottom: 0; width: 4px;
+    opacity: 0.4;
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0px, transparent 1px, #fff 1px, #fff 2px),
+      repeating-linear-gradient(90deg, transparent 0px, transparent 1px, #fff 1px, #fff 2px);
+    background-size: 3px 3px;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__title {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 24px; font-weight: 700;
+    color: #fff;
+    margin: 0 0 12px 0;
+    line-height: 1.1;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  #hero-ascii-{{ section.id }} .hero-ascii__dots {
+    display: none;
+    gap: 4px;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__dot-tiny {
+    width: 2px; height: 2px; background: #fff; border-radius: 50%;
+  }
+
+  #hero-ascii-{{ section.id }} .hero-ascii__body-wrap { position: relative; }
+  #hero-ascii-{{ section.id }} .hero-ascii__body {
+    font-family: 'Courier Prime', ui-monospace, monospace;
+    font-size: 12px;
+    color: #d1d5db;
+    margin: 0 0 20px 0;
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__side-mark {
+    display: none;
+    position: absolute; left: -16px; top: 50%;
+    width: 12px; height: 12px;
+    border: 1px solid #fff; opacity: 0.3;
+    transform: translateY(-50%);
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__side-mark span {
+    position: absolute; top: 50%; left: 50%;
+    width: 4px; height: 4px; background: #fff;
+    transform: translate(-50%, -50%);
+  }
+
+  #hero-ascii-{{ section.id }} .hero-ascii__buttons {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__btn {
+    position: relative;
+    display: inline-block;
+    padding: 8px 20px;
+    background: transparent;
+    color: #fff;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    border: 1px solid #fff;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__btn:hover {
+    background: #fff; color: #000;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__btn-tick {
+    display: none;
+    position: absolute; width: 8px; height: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__btn:hover .hero-ascii__btn-tick { opacity: 1; }
+  #hero-ascii-{{ section.id }} .hero-ascii__btn-tick--tl { top: -4px; left: -4px; border-top: 1px solid #fff; border-left: 1px solid #fff; }
+  #hero-ascii-{{ section.id }} .hero-ascii__btn-tick--br { bottom: -4px; right: -4px; border-bottom: 1px solid #fff; border-right: 1px solid #fff; }
+
+  /* Footer */
+  #hero-ascii-{{ section.id }} .hero-ascii__footer {
+    position: absolute; left: 0; right: 0; bottom: 5vh;
+    z-index: 20;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__footer-inner {
+    max-width: 1440px; margin: 0 auto;
+    padding: 8px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 8px;
+    color: rgba(255,255,255,0.5);
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__footer-left,
+  #hero-ascii-{{ section.id }} .hero-ascii__footer-right {
+    display: flex; align-items: center; gap: 12px;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__bars { display: none; gap: 4px; }
+  #hero-ascii-{{ section.id }} .hero-ascii__bars span { width: 4px; background: rgba(255,255,255,0.3); }
+  #hero-ascii-{{ section.id }} .hero-ascii__pulse { display: flex; gap: 4px; }
+  #hero-ascii-{{ section.id }} .hero-ascii__pulse span {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(255,255,255,0.6);
+    animation: heroAsciiPulse 1.4s ease-in-out infinite;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__pulse span:nth-child(2) { background: rgba(255,255,255,0.4); animation-delay: 0.2s; }
+  #hero-ascii-{{ section.id }} .hero-ascii__pulse span:nth-child(3) { background: rgba(255,255,255,0.2); animation-delay: 0.4s; }
+  @keyframes heroAsciiPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  #hero-ascii-{{ section.id }} .hero-ascii__desktop { display: none; }
+  #hero-ascii-{{ section.id }} .hero-ascii__mobile { display: inline; }
+
+  /* Tablet */
+  @media (min-width: 768px) {
+    #hero-ascii-{{ section.id }} .hero-ascii__top-inner { padding: 14px 24px; }
+    #hero-ascii-{{ section.id }} .hero-ascii__brand { font-size: 22px; }
+  }
+
+  /* Desktop (matches Tailwind lg: 1024px) */
+  @media (min-width: 1024px) {
+    #hero-ascii-{{ section.id }} .hero-ascii__bg-anim { display: block; }
+    #hero-ascii-{{ section.id }} .hero-ascii__stars { display: none; }
+    #hero-ascii-{{ section.id }} .hero-ascii__top-inner { padding: 16px 32px; }
+    #hero-ascii-{{ section.id }} .hero-ascii__brand { font-size: 24px; gap: 16px; }
+    #hero-ascii-{{ section.id }} .hero-ascii__brand-group { gap: 16px; }
+    #hero-ascii-{{ section.id }} .hero-ascii__divider { height: 16px; }
+    #hero-ascii-{{ section.id }} .hero-ascii__est { font-size: 10px; }
+    #hero-ascii-{{ section.id }} .hero-ascii__coords { display: flex; }
+
+    #hero-ascii-{{ section.id }} .hero-ascii__corner,
+    #hero-ascii-{{ section.id }} .hero-ascii__corner { width: 48px; height: 48px; }
+
+    #hero-ascii-{{ section.id }} .hero-ascii__content {
+      padding-top: 0;
+    }
+    #hero-ascii-{{ section.id }} .hero-ascii__cta {
+      width: 50%;
+      padding: 0 64px 0 64px;
+      padding-right: 10%;
+      max-width: none;
+    }
+    #hero-ascii-{{ section.id }} .hero-ascii__cta > * { max-width: 512px; margin-left: auto; }
+    #hero-ascii-{{ section.id }} .hero-ascii__title {
+      font-size: 48px;
+      margin-bottom: 16px;
+      margin-left: -5%;
+    }
+    #hero-ascii-{{ section.id }} .hero-ascii__body { font-size: 16px; margin-bottom: 24px; }
+    #hero-ascii-{{ section.id }} .hero-ascii__dither { display: block; }
+    #hero-ascii-{{ section.id }} .hero-ascii__dots { display: flex; }
+    #hero-ascii-{{ section.id }} .hero-ascii__side-mark { display: block; }
+    #hero-ascii-{{ section.id }} .hero-ascii__rule--foot { display: flex; }
+
+    #hero-ascii-{{ section.id }} .hero-ascii__buttons { flex-direction: row; gap: 16px; }
+    #hero-ascii-{{ section.id }} .hero-ascii__btn { padding: 10px 24px; font-size: 14px; }
+    #hero-ascii-{{ section.id }} .hero-ascii__btn-tick { display: block; }
+
+    #hero-ascii-{{ section.id }} .hero-ascii__footer-inner { padding: 12px 32px; font-size: 9px; gap: 24px; }
+    #hero-ascii-{{ section.id }} .hero-ascii__footer-left,
+    #hero-ascii-{{ section.id }} .hero-ascii__footer-right { gap: 24px; }
+    #hero-ascii-{{ section.id }} .hero-ascii__bars { display: flex; }
+
+    #hero-ascii-{{ section.id }} .hero-ascii__desktop { display: inline-flex; }
+    #hero-ascii-{{ section.id }} .hero-ascii__mobile { display: none; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero ASCII",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "text",
+      "id": "unicorn_project_id",
+      "label": "UnicornStudio project ID",
+      "default": "OMzqyUv6M3kSnv0JeAtC",
+      "info": "The data-us-project ID from unicorn.studio. Empty to disable the background animation."
+    },
+    {
+      "type": "header",
+      "content": "Top Bar"
+    },
+    {
+      "type": "text",
+      "id": "brand_text",
+      "label": "Brand text",
+      "default": "UIMIX"
+    },
+    {
+      "type": "text",
+      "id": "est_text",
+      "label": "Established / caption",
+      "default": "EST. 2025"
+    },
+    {
+      "type": "text",
+      "id": "coord_lat",
+      "label": "Latitude readout",
+      "default": "LAT: 37.7749°"
+    },
+    {
+      "type": "text",
+      "id": "coord_long",
+      "label": "Longitude readout",
+      "default": "LONG: 122.4194°"
+    },
+    {
+      "type": "header",
+      "content": "CTA"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "ENDLESS PURSUIT"
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body copy",
+      "default": "Like Sisyphus, we push forward — not despite the struggle, but because of it. Every iteration, every pixel, every line of code is our boulder."
+    },
+    {
+      "type": "text",
+      "id": "cta1_text",
+      "label": "Primary button text",
+      "default": "BEGIN THE CLIMB"
+    },
+    {
+      "type": "url",
+      "id": "cta1_url",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "cta2_text",
+      "label": "Secondary button text",
+      "default": "EMBRACE THE JOURNEY"
+    },
+    {
+      "type": "url",
+      "id": "cta2_url",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "text",
+      "id": "protocol_label",
+      "label": "Protocol label",
+      "default": "SISYPHUS.PROTOCOL"
+    },
+    {
+      "type": "header",
+      "content": "Footer"
+    },
+    {
+      "type": "text",
+      "id": "version_text",
+      "label": "Version text",
+      "default": "V1.0.0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero ASCII"
+    }
+  ]
+}
+{% endschema %}
