@@ -13,7 +13,7 @@
       "type": "hero-ascii",
       "name": "Hero ASCII",
       "settings": {
-        "bg_source": "unicorn",
+        "bg_source": "video",
         "unicorn_project_id": "OMzqyUv6M3kSnv0JeAtC",
         "background_video": "shopify://files/videos/ascii-magic-1.mp4",
         "background_video_url": "",
