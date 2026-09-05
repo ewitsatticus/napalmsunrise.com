@@ -35,6 +35,7 @@
     },
     "hero": {
       "type": "hero",
+      "disabled": true,
       "settings": {
         "eyebrow": "Public Lab · Personal Brand · Questionable Conclusions",
         "name": "ATTICUS EBY",
