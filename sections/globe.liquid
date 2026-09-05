@@ -1,0 +1,469 @@
+{%- comment -%}
+  Globe — interactive three.js globe with editable overlay content and pin markers.
+  Ported from OriginKit React component to vanilla JS. All rendering lives in
+  assets/globe.js; this file only wires theme-editor settings into config JSON.
+{%- endcomment -%}
+
+{%- assign uid = 'globe-' | append: section.id -%}
+{%- assign align = section.settings.content_alignment | default: 'center' -%}
+{%- assign section_height = section.settings.height | default: 600 -%}
+{%- assign max_width = section.settings.max_width | default: 'full' -%}
+{%- assign bg_color = section.settings.background_color | default: '#000000' -%}
+{%- assign text_color = section.settings.text_color | default: '#ffffff' -%}
+
+{%- capture markers_json -%}
+[
+{%- assign first_marker = true -%}
+{%- for block in section.blocks -%}
+{%- if block.type == 'marker' and block.settings.lat != blank and block.settings.lng != blank -%}
+{%- unless first_marker %},{% endunless -%}
+{"lat":{{ block.settings.lat }},"lng":{{ block.settings.lng }}
+{%- if block.settings.color != blank -%},"color":"{{ block.settings.color }}"{%- endif -%}
+{%- if block.settings.size > 0 -%},"size":{{ block.settings.size }}{%- endif -%}
+{%- if block.settings.label != blank -%},"label":{{ block.settings.label | json }}{%- endif -%}
+}
+{%- assign first_marker = false -%}
+{%- endif -%}
+{%- endfor -%}
+]
+{%- endcapture -%}
+
+{%- capture config_json -%}
+{
+"speed":{{ section.settings.rotation_speed }},
+"smoothing":{{ section.settings.smoothing }},
+"direction":"{{ section.settings.direction }}",
+"initialLatitude":{{ section.settings.initial_latitude }},
+"initialLongitude":{{ section.settings.initial_longitude }},
+"scale":{{ section.settings.scale }},
+"stopOnHover":{{ section.settings.stop_on_hover }},
+"dragSpeed":{{ section.settings.drag_speed }},
+"detail":{{ section.settings.detail }},
+"fill":"{{ section.settings.fill_style }}",
+"fillColor":"{{ section.settings.fill_color }}",
+"oceanColor":"{{ section.settings.ocean_color }}",
+"outlineColor":"{{ section.settings.outline_color }}",
+"showOutline":{{ section.settings.show_outline }},
+"outlineWidth":{{ section.settings.outline_width }},
+"graticuleColor":"{{ section.settings.grid_color }}",
+"showGrid":{{ section.settings.show_grid }},
+"dots":{"color":"{{ section.settings.dot_color }}","size":{{ section.settings.dot_size }},"density":{{ section.settings.dot_density }},"allDots":{{ section.settings.all_dots }}},
+"markerConfig":{"color":"{{ section.settings.marker_color }}","size":{{ section.settings.marker_size }},"markers":{{ markers_json | strip_newlines }}}
+}
+{%- endcapture -%}
+
+<section class="globe globe--align-{{ align }}" id="{{ uid }}" style="height:{{ section_height }}px;background:{{ bg_color }};color:{{ text_color }};--globe-bg:{{ bg_color }};">
+  <div class="globe__inner"{% if max_width != 'full' %} style="max-width:{{ max_width }}px;"{% endif %}>
+
+    {%- render 'globe-canvas', config_json: config_json, unique_id: uid -%}
+
+    <div class="globe__overlay">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'heading' -%}
+            <h2 class="globe__heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+          {%- when 'subheading' -%}
+            <p class="globe__subheading" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+          {%- when 'rich_text' -%}
+            <div class="globe__rich-text" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- when 'button' -%}
+            {%- if block.settings.label != blank -%}
+              <a class="globe__button globe__button--{{ block.settings.style }}"
+                 href="{{ block.settings.link | default: '#' }}"
+                 {{ block.shopify_attributes }}>
+                <span>{{ block.settings.label }}</span>
+              </a>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{{ 'globe.css' | asset_url | stylesheet_tag }}
+
+{% schema %}
+{
+  "name": "Globe",
+  "tag": "section",
+  "class": "shopify-section--globe",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Height",
+      "min": 300,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Max width",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "1440", "label": "1440px" },
+        { "value": "1200", "label": "1200px" },
+        { "value": "900", "label": "900px" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Overlay text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Overlay alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+
+    { "type": "header", "content": "Globe motion" },
+    {
+      "type": "range",
+      "id": "rotation_speed",
+      "label": "Rotation speed",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 2,
+      "info": "0 disables auto-rotation."
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Rotation direction",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "initial_latitude",
+      "label": "Initial latitude",
+      "min": -90,
+      "max": 90,
+      "step": 1,
+      "default": 23
+    },
+    {
+      "type": "range",
+      "id": "initial_longitude",
+      "label": "Initial longitude",
+      "min": -180,
+      "max": 180,
+      "step": 1,
+      "default": -23
+    },
+    {
+      "type": "range",
+      "id": "scale",
+      "label": "Globe scale",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "stop_on_hover",
+      "label": "Pause rotation on hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "drag_speed",
+      "label": "Drag sensitivity",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "smoothing",
+      "label": "Motion smoothing",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "detail",
+      "label": "Continent outline detail",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "info": "Higher = smoother continent outlines, more polygons."
+    },
+
+    { "type": "header", "content": "Land fill" },
+    {
+      "type": "select",
+      "id": "fill_style",
+      "label": "Fill style",
+      "options": [
+        { "value": "dots", "label": "Dots" },
+        { "value": "solid", "label": "Solid" }
+      ],
+      "default": "dots"
+    },
+    {
+      "type": "color",
+      "id": "fill_color",
+      "label": "Solid fill color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Dot color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "dot_density",
+      "label": "Dot density",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "dot_size",
+      "label": "Dot size",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "all_dots",
+      "label": "Cover oceans with dots too",
+      "default": false
+    },
+
+    { "type": "header", "content": "Ocean & outlines" },
+    {
+      "type": "color",
+      "id": "ocean_color",
+      "label": "Ocean color",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_outline",
+      "label": "Show continent outlines",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "outline_color",
+      "label": "Outline color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "outline_width",
+      "label": "Outline width",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "show_grid",
+      "label": "Show latitude / longitude grid",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "grid_color",
+      "label": "Grid color",
+      "default": "#D4D4D4"
+    },
+
+    { "type": "header", "content": "Marker defaults" },
+    {
+      "type": "paragraph",
+      "content": "Add individual pins as 'Marker' blocks. These control the default color and size used when a marker doesn't override them."
+    },
+    {
+      "type": "color",
+      "id": "marker_color",
+      "label": "Default marker color",
+      "default": "#00f7ff"
+    },
+    {
+      "type": "range",
+      "id": "marker_size",
+      "label": "Default marker size",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Heading",
+          "default": "A globe you can spin"
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Subheading",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Subheading",
+          "default": "Interactive three.js globe with dot-mapped land and custom markers."
+        }
+      ]
+    },
+    {
+      "type": "rich_text",
+      "name": "Rich text",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Body copy",
+          "default": "<p>Add supporting copy here.</p>"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Get in touch"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": [
+            { "value": "primary", "label": "Primary (filled)" },
+            { "value": "secondary", "label": "Secondary (outline)" }
+          ],
+          "default": "secondary"
+        }
+      ]
+    },
+    {
+      "type": "marker",
+      "name": "Marker",
+      "limit": 50,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "info": "Optional. Not shown yet; reserved for future tooltips."
+        },
+        {
+          "type": "number",
+          "id": "lat",
+          "label": "Latitude",
+          "default": 40,
+          "info": "-90 to 90. Decimals allowed."
+        },
+        {
+          "type": "number",
+          "id": "lng",
+          "label": "Longitude",
+          "default": -74,
+          "info": "-180 to 180. Decimals allowed."
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Color (optional)",
+          "info": "Leave blank to use the default marker color."
+        },
+        {
+          "type": "range",
+          "id": "size",
+          "label": "Size override",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 0,
+          "info": "0 = use the default marker size."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Globe hero",
+      "blocks": [
+        { "type": "heading" },
+        { "type": "subheading" },
+        { "type": "button" }
+      ]
+    },
+    {
+      "name": "Globe standalone",
+      "settings": {
+        "height": 500
+      }
+    },
+    {
+      "name": "Globe with markers",
+      "blocks": [
+        { "type": "heading" },
+        { "type": "marker", "settings": { "label": "New York", "lat": 40, "lng": -74 } },
+        { "type": "marker", "settings": { "label": "London",   "lat": 51, "lng": 0 } },
+        { "type": "marker", "settings": { "label": "Tokyo",    "lat": 35, "lng": 139 } }
+      ]
+    }
+  ]
+}
+{% endschema %}
