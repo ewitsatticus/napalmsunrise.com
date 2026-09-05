@@ -14,8 +14,18 @@
 
 <header class="ns-header{% if apply_transparent %} ns-header--transparent{% endif %}{% if apply_transparent and solidify %} ns-header--solidify{% endif %}" data-header>
   <div class="ns-header-inner">
-    <a href="/" class="ns-logo">
-      NAPALM<span>SUNRISE</span>
+    <a href="/" class="ns-logo{% if section.settings.logo %} ns-logo--image{% endif %}" aria-label="{{ shop.name | escape }}">
+      {%- if section.settings.logo -%}
+        {%- assign logo_w = section.settings.logo_width | default: 140 -%}
+        <img src="{{ section.settings.logo | image_url: width: 600 }}"
+             alt="{{ shop.name | escape }}"
+             width="{{ logo_w }}"
+             style="width:{{ logo_w }}px;max-width:100%;"
+             loading="eager"
+             fetchpriority="high">
+      {%- else -%}
+        NAPALM<span>SUNRISE</span>
+      {%- endif -%}
     </a>
 
     <nav class="ns-nav" aria-label="Primary">
@@ -81,8 +91,20 @@
     padding: 14px 0;
     transform: skewX(-8deg);
     display: inline-flex;
+    align-items: center;
   }
   .ns-logo span { color: var(--red); margin-left: 2px; }
+
+  .ns-logo--image {
+    padding: 8px 0;
+    transform: none;
+    letter-spacing: normal;
+  }
+  .ns-logo--image img {
+    display: block;
+    height: auto;
+    max-height: 44px;
+  }
 
   .ns-nav {
     display: flex;
@@ -278,6 +300,30 @@
   "name": "Header",
   "class": "section-header",
   "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image",
+      "info": "Replaces the NAPALM/SUNRISE wordmark. SVG or transparent PNG recommended."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 60,
+      "max": 260,
+      "step": 4,
+      "unit": "px",
+      "default": 140
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
     {
       "type": "link_list",
       "id": "menu",
