@@ -1,0 +1,31 @@
+{%- comment -%}
+  Globe canvas — reusable snippet.
+  Renders one three.js globe instance. Drop into any section or template.
+
+  Required parameter:
+    - config_json: a JSON string with the globe config (see sections/globe.liquid).
+
+  Optional parameter:
+    - unique_id: string used as the container id. Defaults to "globe".
+
+  The snippet emits the shared import map + module script on every render;
+  browsers dedupe the module by URL and merge identical import maps, so it is
+  safe to render this snippet multiple times per page.
+{%- endcomment -%}
+
+{%- assign uid = unique_id | default: 'globe' -%}
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://esm.sh/three@0.170.0",
+    "d3-geo": "https://esm.sh/d3-geo@3.1.1"
+  }
+}
+</script>
+
+<div class="globe__canvas" data-globe data-globe-land-url="{{ 'globe-land.json' | asset_url }}" id="{{ uid }}">
+  <script type="application/json" data-globe-config>{{ config_json }}</script>
+</div>
+
+<script type="module" src="{{ 'globe.js' | asset_url }}"></script>
