@@ -3,16 +3,23 @@
    ═══════════════════════════════════════ */
 
 :root {
-  --bg: #F3EDE0;
-  --black: #0D0D0D;
+  --bg: #0D0D0D;
+  --ink: #F3EDE0;
+  --black: #F3EDE0;            /* legacy alias: everywhere --black was used as text/border ink, it now reads as light */
+  --surface: #17161A;           /* raised card surface */
+  --surface-hi: #1F1E22;        /* stronger raised surface / hover */
   --red: #E8260A;
   --acid: #C8FF00;
-  --gray: #7A7468;
-  --muted: #C5BDAA;
-  --border: 3px solid #0D0D0D;
+  --gray: rgba(243, 237, 224, 0.55);
+  --muted: rgba(243, 237, 224, 0.28);
+  --hairline: rgba(243, 237, 224, 0.14);
+  --hairline-strong: rgba(243, 237, 224, 0.3);
+  --border: 1px solid var(--hairline-strong);
+  --text: var(--ink);
   --font-display: 'Bebas Neue', sans-serif;
   --font-body: 'Courier Prime', monospace;
   --font-ui: 'DM Mono', monospace;
+  --font-mono: var(--font-ui);
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,7 +28,7 @@ html { scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
-  color: var(--black);
+  color: var(--ink);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
@@ -142,7 +149,7 @@ img { max-width: 100%; height: auto; }
   margin-bottom: 7px;
 }
 
-.card p { font-size: 12px; color: #5a5650; line-height: 1.5; }
+.card p { font-size: 12px; color: rgba(243,237,224,0.55); line-height: 1.5; }
 
 /* ── PAGE HEADER ── */
 .page-hdr {
@@ -187,12 +194,12 @@ img { max-width: 100%; height: auto; }
 }
 
 .info-box.dark {
-  background: var(--black);
-  color: var(--bg);
-  border-color: var(--black);
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--hairline-strong);
 }
 
-.info-box.dark h4 { color: rgba(243,237,224,0.3); }
+.info-box.dark h4 { color: var(--muted); }
 .info-box.dark p { color: rgba(243,237,224,0.65); }
 
 /* ── BADGES ── */
@@ -207,7 +214,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .badge-live { background: var(--red); color: white; }
-.badge-done { background: var(--black); color: white; }
+.badge-done { background: var(--ink); color: var(--bg); }
 .badge-queue { background: var(--acid); color: var(--black); }
 .badge-pause { background: var(--gray); color: white; }
 
@@ -264,9 +271,8 @@ img { max-width: 100%; height: auto; }
   color: inherit;
 }
 
-.blog-card:hover { background: var(--black); color: var(--bg); }
-.blog-card:hover .bc-excerpt { color: rgba(243,237,224,0.45); }
-.blog-card:hover .bc-meta { color: rgba(243,237,224,0.3); }
+.blog-card:hover { background: var(--surface-hi); }
+.blog-card:hover .bc-title { color: var(--red); }
 
 .bc-cat {
   font-family: var(--font-ui);
@@ -298,7 +304,7 @@ img { max-width: 100%; height: auto; }
 .bc-excerpt {
   font-size: 13px;
   line-height: 1.6;
-  color: #5a5650;
+  color: rgba(243,237,224,0.55);
   margin-bottom: 16px;
   transition: color 0.12s;
 }
@@ -364,10 +370,10 @@ img { max-width: 100%; height: auto; }
   display: block;
 }
 
-.product-card:hover .prod-info { background: #EDE8DB; }
+.product-card:hover .prod-info { background: var(--surface-hi); }
 
 .prod-img {
-  background: #E5DECE;
+  background: var(--surface);
   height: 260px;
   display: flex;
   align-items: center;
@@ -494,7 +500,7 @@ img { max-width: 100%; height: auto; }
   font-size: 17px;
   line-height: 1.6;
   font-style: italic;
-  color: #3a3632;
+  color: rgba(243,237,224,0.75);
   max-width: 540px;
   margin-bottom: 40px;
 }
@@ -526,7 +532,7 @@ img { max-width: 100%; height: auto; }
 
 .post-list li {
   padding: 12px 0;
-  border-bottom: 1px solid #DDD5C2;
+  border-bottom: 1px solid var(--hairline);
 }
 
 .post-list li a { text-decoration: none; display: block; }
@@ -583,9 +589,10 @@ img { max-width: 100%; height: auto; }
 
 /* ── GORTHOG PROMO BAND ── */
 .gorthog-band {
-  background: var(--black);
-  color: var(--bg);
+  background: var(--surface);
+  color: var(--ink);
   padding: 64px 28px;
+  border-top: 1px solid var(--hairline);
   border-bottom: 4px solid var(--red);
 }
 
@@ -682,7 +689,7 @@ img { max-width: 100%; height: auto; }
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
-  border-bottom: 1px solid #DDD5C2;
+  border-bottom: 1px solid var(--hairline);
   font-family: var(--font-ui);
   font-size: 11px;
   cursor: pointer;
@@ -707,7 +714,7 @@ img { max-width: 100%; height: auto; }
   transition: background 0.1s;
 }
 
-.exp-card:hover { background: #EDE8DB; }
+.exp-card:hover { background: var(--surface-hi); }
 
 .exp-num {
   font-family: var(--font-display);
@@ -737,9 +744,10 @@ img { max-width: 100%; height: auto; }
 
 /* ── GORTHOG PAGE ── */
 .gorthog-hdr {
-  background: var(--black);
-  color: var(--bg);
+  background: var(--surface);
+  color: var(--ink);
   padding: 72px 28px;
+  border-bottom: 1px solid var(--hairline-strong);
 }
 
 .gorthog-hdr-inner {
@@ -796,7 +804,7 @@ img { max-width: 100%; height: auto; }
   transition: background 0.1s;
 }
 
-.answer-entry:hover { background: #EDE8DB; }
+.answer-entry:hover { background: var(--surface-hi); }
 
 .q-text {
   font-size: 17px;
@@ -932,9 +940,10 @@ img { max-width: 100%; height: auto; }
 
 /* ── AUTHOR PAGES ── */
 .author-hdr {
-  background: var(--black);
-  color: var(--bg);
+  background: var(--surface);
+  color: var(--ink);
   padding: 72px 28px;
+  border-bottom: 1px solid var(--hairline-strong);
 }
 
 .author-hdr-inner {
@@ -993,7 +1002,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .product-gallery {
-  background: #E5DECE;
+  background: var(--surface);
   min-height: 400px;
   display: flex;
   align-items: center;
@@ -1024,7 +1033,7 @@ img { max-width: 100%; height: auto; }
   font-size: 15px;
   line-height: 1.7;
   margin-bottom: 32px;
-  color: #3a3632;
+  color: rgba(243,237,224,0.75);
 }
 
 /* ── RESPONSIVE ── */
@@ -1103,7 +1112,7 @@ img { max-width: 100%; height: auto; }
 .ed-hero p {
   font-size: 18px;
   line-height: 1.55;
-  color: #3a3632;
+  color: rgba(243,237,224,0.75);
   max-width: 620px;
   font-style: italic;
 }
@@ -1172,7 +1181,7 @@ img { max-width: 100%; height: auto; }
   transition: background 0.1s;
 }
 
-.ed-post-card:hover { background: #EDE8DB; }
+.ed-post-card:hover { background: var(--surface-hi); }
 
 .ed-post-card .ed-post-meta {
   font-family: var(--font-ui);
@@ -1204,7 +1213,7 @@ img { max-width: 100%; height: auto; }
 .ed-post-card .ed-post-excerpt {
   font-size: 16px;
   line-height: 1.6;
-  color: #5a5650;
+  color: rgba(243,237,224,0.55);
 }
 
 /* Email signup blocks — used inline and as standalone CTA */
@@ -1215,9 +1224,9 @@ img { max-width: 100%; height: auto; }
 }
 
 .ed-email-block-dark {
-  background: var(--black);
-  color: var(--bg);
-  border-color: var(--black);
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--hairline-strong);
 }
 
 .ed-email-block h3 {
@@ -1310,7 +1319,7 @@ img { max-width: 100%; height: auto; }
 .ed-callout p {
   font-size: 16px;
   line-height: 1.65;
-  color: #3a3632;
+  color: rgba(243,237,224,0.75);
   margin-bottom: 24px;
   max-width: 580px;
 }
@@ -1363,7 +1372,7 @@ img { max-width: 100%; height: auto; }
   padding: 0 0 28px;
   font-size: 16px;
   line-height: 1.7;
-  color: #3a3632;
+  color: rgba(243,237,224,0.75);
 }
 
 .ed-faq-item .ed-faq-answer a {
@@ -1540,7 +1549,7 @@ img { max-width: 100%; height: auto; }
 .ed-contact-form textarea:focus { border-color: var(--red); }
 .ed-contact-form button[type="submit"] { margin-top: 8px; }
 .ed-form-errors {
-  background: #FFE8E5;
+  background: rgba(232,38,10,0.12);
   border: 2px solid var(--red);
   padding: 16px 20px;
   margin-bottom: 24px;
