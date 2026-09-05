@@ -1,5 +1,9 @@
 {
   "sections": {
+    "hero_ascii": {
+      "type": "hero-ascii",
+      "settings": {}
+    },
     "hero": {
       "type": "hero",
       "settings": {
@@ -66,5 +70,5 @@
       "settings": {}
     }
   },
-  "order": ["hero", "triple", "gorthog_tama", "gorthog"]
+  "order": ["hero_ascii", "hero", "triple", "gorthog_tama", "gorthog"]
 }
