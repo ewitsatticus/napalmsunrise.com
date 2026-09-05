@@ -6,10 +6,10 @@
         <h2 class="tri-heading">{{ block.settings.heading }}</h2>
 
         {%- if block.settings.card1_title != blank -%}
-          <div class="card"{% if block.settings.dark_card %} style="background:var(--black);color:var(--bg)"{% endif %}>
+          <div class="card"{% if block.settings.dark_card %} style="background:var(--surface);border-color:var(--hairline-strong);"{% endif %}>
             <span class="card-tag{% if block.settings.card1_tag_red %} red{% endif %}">{{ block.settings.card1_tag }}</span>
-            <h4{% if block.settings.dark_card %} style="color:var(--bg)"{% endif %}>{{ block.settings.card1_title }}</h4>
-            <p{% if block.settings.dark_card %} style="color:rgba(243,237,224,0.5)"{% endif %}>{{ block.settings.card1_desc }}</p>
+            <h4>{{ block.settings.card1_title }}</h4>
+            <p>{{ block.settings.card1_desc }}</p>
           </div>
         {%- endif -%}
 
