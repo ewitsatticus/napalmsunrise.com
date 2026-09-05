@@ -1,15 +1,46 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "hero_ascii": {
-      "type": "hero-ascii",
-      "settings": {}
-    },
     "hero": {
       "type": "hero",
       "settings": {
         "eyebrow": "Public Lab · Personal Brand · Questionable Conclusions",
         "name": "ATTICUS EBY",
-        "tagline": "A public lab run by someone who should probably know better. Documented SEO and AEO experiments, AI automation, absurdist merch, and brutally honest advice from an 847-year-old orc."
+        "tagline": "A public lab run by someone who should probably know better. Documented SEO and AEO experiments, AI automation, absurdist merch, and brutally honest advice from an 847-year-old orc.",
+        "cta1_text": "Active Experiments →",
+        "cta1_url": "",
+        "cta2_text": "Lab Notes",
+        "cta2_url": "",
+        "cta3_text": "Ask Gorthog",
+        "cta3_url": "",
+        "blog": ""
+      }
+    },
+    "hero_ascii_iNRnaC": {
+      "type": "hero-ascii",
+      "name": "Hero ASCII",
+      "settings": {
+        "unicorn_project_id": "OMzqyUv6M3kSnv0JeAtC",
+        "brand_text": "UIMIX",
+        "est_text": "EST. 2026",
+        "coord_lat": "LAT: 37.7749°",
+        "coord_long": "LONG: 122.4194°",
+        "title": "NAPALM SUNRISE",
+        "body": "Like Sisyphus, we push forward — not despite the struggle, but because of it. Every iteration, every pixel, every line of code is our boulder.",
+        "cta1_text": "BEGIN THE CLIMB",
+        "cta1_url": "",
+        "cta2_text": "EMBRACE THE JOURNEY",
+        "cta2_url": "",
+        "protocol_label": "SISYPHUS.PROTOCOL",
+        "version_text": "V1.0.0"
       }
     },
     "triple": {
@@ -27,7 +58,9 @@
             "card2_tag": "Queued",
             "card2_title": "Internal Link Velocity: Drip-added links vs. bulk additions",
             "card2_desc": "20-post control group. 2 links per week over 20 weeks vs. 40 links on day 1.",
-            "link_text": "All Experiments →"
+            "dark_card": false,
+            "link_text": "All Experiments →",
+            "link_url": ""
           }
         },
         "col2": {
@@ -42,7 +75,9 @@
             "card2_tag": "Chaos",
             "card2_title": "Wu-Tang Members Ranked by Oregon Trail Survival Probability",
             "card2_desc": "Methodology: food management, disease resistance, oxen judgment, frontier vibes.",
-            "link_text": "All Lab Notes →"
+            "dark_card": false,
+            "link_text": "All Lab Notes →",
+            "link_url": ""
           }
         },
         "col3": {
@@ -54,21 +89,37 @@
             "card1_tag_red": true,
             "card1_title": "Should I take the promotion if it means giving up my passion project?",
             "card1_desc": "In 847 years I have watched kingdoms burn for less foolish reasons than this...",
+            "card2_tag": "",
+            "card2_title": "",
+            "card2_desc": "",
             "dark_card": true,
-            "link_text": "Ask Gorthog →"
+            "link_text": "Ask Gorthog →",
+            "link_url": ""
           }
         }
       },
-      "block_order": ["col1", "col2", "col3"]
-    },
-    "gorthog_tama": {
-      "type": "gorthog-tamagotchi",
+      "block_order": [
+        "col1",
+        "col2",
+        "col3"
+      ],
       "settings": {}
     },
     "gorthog": {
       "type": "gorthog-band",
-      "settings": {}
+      "settings": {
+        "eyebrow": "/ Column Feature",
+        "heading": "ASK<br>GORTHOG",
+        "body": "Gorthog is an 847-year-old orc. He has survived four empires, two recessions, and one particularly ill-advised foray into B2B SaaS. He answers life and career questions with the bluntness of someone who ran out of patience approximately 600 years ago.",
+        "cta_text": "Submit Your Question →",
+        "cta_url": ""
+      }
     }
   },
-  "order": ["hero_ascii", "hero", "triple", "gorthog_tama", "gorthog"]
+  "order": [
+    "hero",
+    "hero_ascii_iNRnaC",
+    "triple",
+    "gorthog"
+  ]
 }
