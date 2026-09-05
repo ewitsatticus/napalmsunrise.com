@@ -26,6 +26,7 @@
     },
     "hero_ascii_iNRnaC": {
       "type": "hero-ascii",
+      "disabled": true,
       "name": "Hero ASCII",
       "settings": {
         "unicorn_project_id": "OMzqyUv6M3kSnv0JeAtC",
