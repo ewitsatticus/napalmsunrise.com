@@ -1,4 +1,18 @@
-<header class="ns-header">
+{%- assign transparent = section.settings.transparent -%}
+{%- assign solidify = section.settings.solidify_on_scroll -%}
+{%- assign home_only = section.settings.transparent_home_only -%}
+{%- assign apply_transparent = false -%}
+{%- if transparent -%}
+  {%- if home_only -%}
+    {%- if template.name == 'index' -%}
+      {%- assign apply_transparent = true -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- assign apply_transparent = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+<header class="ns-header{% if apply_transparent %} ns-header--transparent{% endif %}{% if apply_transparent and solidify %} ns-header--solidify{% endif %}" data-header>
   <div class="ns-header-inner">
     <a href="/" class="ns-logo">
       NAPALM<span>SUNRISE</span>
@@ -41,6 +55,7 @@
     z-index: 200;
     background: var(--bg);
     border-bottom: 1px solid var(--hairline);
+    transition: background 0.2s ease, border-color 0.2s ease;
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
   }
@@ -167,6 +182,41 @@
   @keyframes ns-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
   @keyframes ns-ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
+  /* Transparent mode — floats over the first section */
+  .ns-header--transparent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    background: transparent;
+    border-bottom-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .ns-header--transparent .ns-ticker {
+    background: transparent;
+    border-top-color: transparent;
+    border-bottom-color: rgba(243, 237, 224, 0.12);
+  }
+  .ns-header--transparent .ns-nav-link,
+  .ns-header--transparent .ns-cart-link {
+    border-color: rgba(243, 237, 224, 0.18);
+  }
+
+  /* Solidify on scroll — becomes fixed + opaque once the user scrolls past the threshold */
+  .ns-header--solidify {
+    position: fixed;
+  }
+  .ns-header--solidify.is-scrolled {
+    background: rgba(13, 13, 13, 0.82);
+    border-bottom-color: var(--hairline);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .ns-header--solidify.is-scrolled .ns-ticker {
+    background: var(--surface);
+    border-top-color: var(--hairline);
+    border-bottom-color: var(--hairline);
+  }
+
   /* Mobile */
   @media (max-width: 768px) {
     .ns-header-inner {
@@ -203,6 +253,26 @@
   }
 </style>
 
+{%- if apply_transparent and solidify -%}
+  <script>
+    (function () {
+      var header = document.querySelector('.ns-header--solidify');
+      if (!header) return;
+      var threshold = 24;
+      var raf = null;
+      function update() {
+        raf = null;
+        if (window.scrollY > threshold) header.classList.add('is-scrolled');
+        else header.classList.remove('is-scrolled');
+      }
+      window.addEventListener('scroll', function () {
+        if (raf === null) raf = window.requestAnimationFrame(update);
+      }, { passive: true });
+      update();
+    })();
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Header",
@@ -219,6 +289,31 @@
       "id": "show_ticker",
       "label": "Show ticker bar",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Transparent overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent",
+      "label": "Transparent header",
+      "default": false,
+      "info": "Floats the header over the first section instead of pushing content down. Pair with a full-viewport hero."
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_home_only",
+      "label": "Only on homepage",
+      "default": true,
+      "info": "Keep transparent mode limited to the homepage; other templates stay opaque and sticky."
+    },
+    {
+      "type": "checkbox",
+      "id": "solidify_on_scroll",
+      "label": "Solidify on scroll",
+      "default": true,
+      "info": "Fills the header background in and keeps it fixed once the user scrolls past the hero."
     }
   ],
   "blocks": [
