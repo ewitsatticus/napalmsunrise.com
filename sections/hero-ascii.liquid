@@ -3,16 +3,59 @@
   Ported from 21st.dev React/Tailwind component. Vanilla CSS, scoped to .hero-ascii.
 {%- endcomment -%}
 
+{%- assign bg_source = section.settings.bg_source | default: 'unicorn' -%}
 {%- assign us_project = section.settings.unicorn_project_id | default: 'OMzqyUv6M3kSnv0JeAtC' -%}
+{%- assign overlay_opacity = section.settings.overlay_opacity | default: 40 -%}
+{%- assign overlay_color = section.settings.overlay_color | default: '#000000' -%}
 
-<section class="hero-ascii" id="hero-ascii-{{ section.id }}">
-  {%- if us_project != blank -%}
-    <div class="hero-ascii__bg-anim">
-      <div data-us-project="{{ us_project }}"></div>
-    </div>
+<section class="hero-ascii" id="hero-ascii-{{ section.id }}" data-bg-source="{{ bg_source }}">
+  {%- case bg_source -%}
+    {%- when 'unicorn' -%}
+      {%- if us_project != blank -%}
+        <div class="hero-ascii__bg hero-ascii__bg-anim">
+          <div data-us-project="{{ us_project }}"></div>
+        </div>
+      {%- endif -%}
+      <div class="hero-ascii__stars" aria-hidden="true"></div>
+
+    {%- when 'video' -%}
+      {%- assign video = section.settings.background_video -%}
+      {%- assign poster_url = '' -%}
+      {%- if section.settings.background_image != blank -%}
+        {%- assign poster_url = section.settings.background_image | image_url: width: 1920 -%}
+      {%- endif -%}
+      {%- if video != blank -%}
+        <div class="hero-ascii__bg hero-ascii__bg-video">
+          <video class="hero-ascii__video" autoplay muted loop playsinline preload="auto"
+            {% if poster_url != blank %}poster="{{ poster_url }}"{% endif %}>
+            {%- for source in video.sources -%}
+              <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {%- endfor -%}
+          </video>
+        </div>
+      {%- elsif section.settings.background_video_url != blank -%}
+        <div class="hero-ascii__bg hero-ascii__bg-video">
+          <video class="hero-ascii__video" autoplay muted loop playsinline preload="auto"
+            {% if poster_url != blank %}poster="{{ poster_url }}"{% endif %}>
+            <source src="{{ section.settings.background_video_url }}" type="video/mp4">
+          </video>
+        </div>
+      {%- elsif poster_url != blank -%}
+        <div class="hero-ascii__bg hero-ascii__bg-image" style="background-image:url('{{ poster_url }}')" role="img" aria-label="{{ section.settings.background_image.alt | escape }}"></div>
+      {%- endif -%}
+
+    {%- when 'image' -%}
+      {%- if section.settings.background_image != blank -%}
+        <div class="hero-ascii__bg hero-ascii__bg-image" style="background-image:url('{{ section.settings.background_image | image_url: width: 2400 }}')" role="img" aria-label="{{ section.settings.background_image.alt | escape }}"></div>
+      {%- endif -%}
+
+    {%- when 'none' -%}
+      <div class="hero-ascii__stars" aria-hidden="true"></div>
+  {%- endcase -%}
+
+  {%- if overlay_opacity > 0 -%}
+    <div class="hero-ascii__overlay" aria-hidden="true" style="background:{{ overlay_color }};opacity:{{ overlay_opacity | times: 0.01 }};"></div>
   {%- endif -%}
-
-  <div class="hero-ascii__stars" aria-hidden="true"></div>
 
   <span class="hero-ascii__corner hero-ascii__corner--tl" aria-hidden="true"></span>
   <span class="hero-ascii__corner hero-ascii__corner--tr" aria-hidden="true"></span>
@@ -142,12 +185,33 @@
     font-family: 'Courier Prime', ui-monospace, SFMono-Regular, Menlo, monospace;
   }
 
-  /* Background layers */
-  #hero-ascii-{{ section.id }} .hero-ascii__bg-anim {
+  /* Background layers — all share position/inset */
+  #hero-ascii-{{ section.id }} .hero-ascii__bg {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
-    display: none;
     pointer-events: none;
+    z-index: 0;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__bg-video .hero-ascii__video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__bg-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__overlay {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 5;
+  }
+  #hero-ascii-{{ section.id }} .hero-ascii__bg-anim {
+    display: none;
   }
   #hero-ascii-{{ section.id }} .hero-ascii__bg-anim [data-us-project] {
     width: 100%; height: 100%; min-height: 100vh;
@@ -401,7 +465,7 @@
   /* Desktop (matches Tailwind lg: 1024px) */
   @media (min-width: 1024px) {
     #hero-ascii-{{ section.id }} .hero-ascii__bg-anim { display: block; }
-    #hero-ascii-{{ section.id }} .hero-ascii__stars { display: none; }
+    #hero-ascii-{{ section.id }}[data-bg-source="unicorn"] .hero-ascii__stars { display: none; }
     #hero-ascii-{{ section.id }} .hero-ascii__top-inner { padding: 16px 32px; }
     #hero-ascii-{{ section.id }} .hero-ascii__brand { font-size: 24px; gap: 16px; }
     #hero-ascii-{{ section.id }} .hero-ascii__brand-group { gap: 16px; }
@@ -453,14 +517,64 @@
   "settings": [
     {
       "type": "header",
-      "content": "Animation"
+      "content": "Background"
+    },
+    {
+      "type": "select",
+      "id": "bg_source",
+      "label": "Background source",
+      "options": [
+        { "value": "unicorn", "label": "UnicornStudio animation" },
+        { "value": "video", "label": "Video" },
+        { "value": "image", "label": "Image" },
+        { "value": "none", "label": "None (stars only)" }
+      ],
+      "default": "unicorn"
     },
     {
       "type": "text",
       "id": "unicorn_project_id",
       "label": "UnicornStudio project ID",
       "default": "OMzqyUv6M3kSnv0JeAtC",
-      "info": "The data-us-project ID from unicorn.studio. Empty to disable the background animation."
+      "info": "The data-us-project ID from unicorn.studio. Only used when Background source is UnicornStudio."
+    },
+    {
+      "type": "video",
+      "id": "background_video",
+      "label": "Background video",
+      "info": "Uploaded video (MP4). Autoplays muted and loops. Only used when Background source is Video."
+    },
+    {
+      "type": "url",
+      "id": "background_video_url",
+      "label": "Background video URL (fallback)",
+      "info": "External MP4 URL to use if no video is uploaded above."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image / video poster",
+      "info": "Used when Background source is Image, and shown as poster while the video loads."
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40
     },
     {
       "type": "header",
