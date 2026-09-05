@@ -9,6 +9,30 @@
  */
 {
   "sections": {
+    "hero_ascii_akH9WA": {
+      "type": "hero-ascii",
+      "name": "Hero ASCII",
+      "settings": {
+        "bg_source": "unicorn",
+        "unicorn_project_id": "OMzqyUv6M3kSnv0JeAtC",
+        "background_video": "shopify://files/videos/ascii-magic-1.mp4",
+        "background_video_url": "",
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "brand_text": "UIMIX",
+        "est_text": "EST. 2025",
+        "coord_lat": "LAT: 37.7749°",
+        "coord_long": "LONG: 122.4194°",
+        "title": "ENDLESS PURSUIT",
+        "body": "Like Sisyphus, we push forward — not despite the struggle, but because of it. Every iteration, every pixel, every line of code is our boulder.",
+        "cta1_text": "BEGIN THE CLIMB",
+        "cta1_url": "",
+        "cta2_text": "EMBRACE THE JOURNEY",
+        "cta2_url": "",
+        "protocol_label": "SISYPHUS.PROTOCOL",
+        "version_text": "V1.0.0"
+      }
+    },
     "hero": {
       "type": "hero",
       "settings": {
@@ -29,7 +53,11 @@
       "disabled": true,
       "name": "Hero ASCII",
       "settings": {
+        "bg_source": "unicorn",
         "unicorn_project_id": "OMzqyUv6M3kSnv0JeAtC",
+        "background_video_url": "",
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
         "brand_text": "UIMIX",
         "est_text": "EST. 2026",
         "coord_lat": "LAT: 37.7749°",
@@ -118,6 +146,7 @@
     }
   },
   "order": [
+    "hero_ascii_akH9WA",
     "hero",
     "hero_ascii_iNRnaC",
     "triple",
