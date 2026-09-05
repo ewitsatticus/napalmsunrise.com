@@ -64,9 +64,10 @@
 <style>
   /* ── GORTHOG TAMAGOTCHI ── */
   .gorthog-tama {
-    background: var(--black, #0D0D0D);
-    color: var(--bg, #F3EDE0);
+    background: var(--surface, #17161A);
+    color: var(--ink, #F3EDE0);
     padding: 64px 28px;
+    border-top: 1px solid var(--hairline, rgba(243,237,224,0.14));
     border-bottom: 4px solid var(--red, #E8260A);
     overflow: hidden;
   }
@@ -125,7 +126,7 @@
     flex: 1;
     background: rgba(255,255,255,0.04);
     border: 2px solid rgba(255,255,255,0.12);
-    color: var(--bg, #F3EDE0);
+    color: var(--ink, #F3EDE0);
     font-family: var(--font-body, 'Courier Prime', monospace);
     font-size: 14px;
     font-style: italic;
@@ -183,7 +184,7 @@
   .gt-bar-fill {
     height: 100%;
     width: 100%;
-    background: var(--bg, #F3EDE0);
+    background: var(--ink, #F3EDE0);
     transition: width 0.5s ease, background-color 0.5s ease;
   }
   .gt-bar-fill.warning { background: #C9A227; }
