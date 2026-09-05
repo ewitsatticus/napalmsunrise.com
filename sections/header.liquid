@@ -1,58 +1,206 @@
-<header style="background:var(--black);border-bottom:4px solid var(--red);position:sticky;top:0;z-index:200;">
-  <div class="header-inner" style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:stretch;padding:0 28px;">
-    <a href="/" class="logo" style="font-family:var(--font-display);font-size:26px;letter-spacing:0.1em;color:var(--bg);padding:14px 0;text-decoration:none;user-select:none;display:flex;align-items:center;">
-      NAPALM<span style="color:var(--red);">SUNRISE</span>
+<header class="ns-header">
+  <div class="ns-header-inner">
+    <a href="/" class="ns-logo">
+      NAPALM<span>SUNRISE</span>
     </a>
 
-    <nav style="display:flex;align-items:stretch;justify-content:center;gap:0;">
+    <nav class="ns-nav" aria-label="Primary">
       {%- for link in section.settings.menu.links -%}
-        <a href="{{ link.url }}"
-           style="font-family:var(--font-ui);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(243,237,224,0.55);text-decoration:none;padding:0 16px;display:flex;align-items:center;border-left:1px solid rgba(255,255,255,0.08);transition:background 0.12s,color 0.12s;white-space:nowrap;"
-           {% if link.active %}class="active" {% endif %}
-           onmouseover="this.style.background='rgba(255,255,255,0.06)';this.style.color='#F3EDE0'"
-           onmouseout="if(!this.classList.contains('active')){this.style.background='';this.style.color='rgba(243,237,224,0.55)'}"
-        >
-          {{ link.title }}
-        </a>
+        <a href="{{ link.url }}" class="ns-nav-link{% if link.active %} is-active{% endif %}">{{ link.title }}</a>
       {%- endfor -%}
     </nav>
 
-    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;">
-      <a href="/cart" style="font-family:var(--font-ui);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(243,237,224,0.55);text-decoration:none;padding:7px 14px;border:1px solid rgba(255,255,255,0.15);transition:all 0.12s;"
-         onmouseover="this.style.background='rgba(255,255,255,0.06)';this.style.color='#F3EDE0'"
-         onmouseout="this.style.background='';this.style.color='rgba(243,237,224,0.55)'"
-      >
-        Cart ({{ cart.item_count }})
+    <div class="ns-header-cart">
+      <a href="/cart" class="ns-cart-link" aria-label="Cart">
+        <span class="ns-cart-label">Cart</span>
+        <span class="ns-cart-count">{{ cart.item_count }}</span>
       </a>
     </div>
   </div>
+
+  {%- if section.settings.show_ticker -%}
+    <div class="ns-ticker">
+      <div class="ns-ticker-track">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'ticker_item' -%}
+            <div class="ns-tick">
+              <span class="ns-tick-dot ns-tick-dot--{{ block.settings.status }}"></span>
+              {{ block.settings.text }}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
 </header>
 
-<!-- TICKER -->
-{%- if section.settings.show_ticker -%}
-<div style="background:#0D0D0D;border-bottom:2px solid rgba(232,38,10,0.4);padding:7px 0;overflow:hidden;">
-  <div style="max-width:1440px;margin:0 auto;padding:0 28px;display:flex;gap:56px;align-items:center;animation:ticker-scroll 30s linear infinite;">
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'ticker_item' -%}
-        <div class="tick" style="display:flex;align-items:center;gap:10px;font-family:var(--font-ui);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(243,237,224,0.38);white-space:nowrap;">
-          <div style="width:5px;height:5px;border-radius:50;flex-shrink:0;
-            {%- if block.settings.status == 'active' -%}background:var(--red);animation:blink 2.4s ease-in-out infinite;
-            {%- elsif block.settings.status == 'done' -%}background:var(--muted);
-            {%- elsif block.settings.status == 'queued' -%}background:var(--acid);
-            {%- endif -%}
-            border-radius:50%;"></div>
-          {{ block.settings.text }}
-        </div>
-      {%- endif -%}
-    {%- endfor -%}
-  </div>
-</div>
-{%- endif -%}
-
 <style>
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
-  @keyframes ticker-scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-  nav a.active { background: var(--red) !important; color: var(--bg) !important; }
+  .ns-header {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: var(--bg);
+    border-bottom: 1px solid var(--hairline);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .ns-header-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding: 0 28px;
+    min-height: 56px;
+  }
+
+  .ns-logo {
+    font-family: var(--font-ui);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--ink);
+    text-decoration: none;
+    user-select: none;
+    padding: 14px 0;
+    transform: skewX(-8deg);
+    display: inline-flex;
+  }
+  .ns-logo span { color: var(--red); margin-left: 2px; }
+
+  .ns-nav {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0;
+  }
+  .ns-nav-link {
+    font-family: var(--font-ui);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(243, 237, 224, 0.55);
+    text-decoration: none;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    border-left: 1px solid var(--hairline);
+    transition: color 0.12s, background 0.12s;
+    white-space: nowrap;
+    align-self: stretch;
+  }
+  .ns-nav-link:hover {
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .ns-nav-link.is-active {
+    color: var(--ink);
+    background: rgba(232, 38, 10, 0.14);
+    border-left-color: rgba(232, 38, 10, 0.5);
+  }
+
+  .ns-header-cart { display: flex; align-items: center; padding: 10px 0 10px 12px; }
+  .ns-cart-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(243, 237, 224, 0.65);
+    text-decoration: none;
+    padding: 7px 14px;
+    border: 1px solid var(--hairline-strong);
+    transition: color 0.12s, background 0.12s, border-color 0.12s;
+  }
+  .ns-cart-link:hover {
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--ink);
+  }
+  .ns-cart-count {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  /* Ticker */
+  .ns-ticker {
+    background: var(--surface);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    padding: 7px 0;
+    overflow: hidden;
+  }
+  .ns-ticker-track {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 28px;
+    display: flex;
+    gap: 56px;
+    align-items: center;
+    animation: ns-ticker-scroll 42s linear infinite;
+  }
+  .ns-tick {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(243, 237, 224, 0.45);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .ns-tick-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .ns-tick-dot--active { background: var(--red); animation: ns-blink 2.4s ease-in-out infinite; }
+  .ns-tick-dot--done { background: rgba(243, 237, 224, 0.35); }
+  .ns-tick-dot--queued { background: var(--acid); }
+
+  @keyframes ns-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+  @keyframes ns-ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .ns-header-inner {
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      padding: 0 16px;
+      min-height: 48px;
+      row-gap: 0;
+    }
+    .ns-logo { font-size: 13px; letter-spacing: 0.18em; padding: 12px 0; }
+    .ns-header-cart {
+      justify-self: end;
+      padding: 8px 0;
+    }
+    .ns-cart-link { padding: 6px 10px; font-size: 9px; }
+    .ns-nav {
+      grid-column: 1 / -1;
+      justify-content: flex-start;
+      border-top: 1px solid var(--hairline);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .ns-nav::-webkit-scrollbar { display: none; }
+    .ns-nav-link {
+      padding: 10px 14px;
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      border-left: none;
+      border-right: 1px solid var(--hairline);
+    }
+    .ns-nav-link:first-child { border-left: none; }
+    .ns-ticker-track { padding: 0 16px; gap: 40px; }
+  }
 </style>
 
 {% schema %}
